@@ -15,14 +15,37 @@ class TopicScreen extends StatelessWidget {
     Topic topic = topics.firstWhere((topic) => topic.id == topicId);
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: topic.title.length * 0.5 + 50,
-        title: Expanded(
-          child: Text(
-            topic.title,
-            softWrap: true,
-            overflow: TextOverflow.visible,
-          ),
-        ),
+        toolbarHeight: topic.title.length * 0.5 + 80,
+        title: Column(
+            mainAxisSize: MainAxisSize
+                .min, // This ensures the column doesn't try to expand in the vertical direction.
+            children: [
+              Flexible(
+                fit: FlexFit
+                    .loose, // This allows the text to take as much space as it needs but no more.
+                child: Text(
+                  topic.title,
+                  softWrap: true,
+                  overflow: TextOverflow.visible,
+                ),
+              ),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Chip(
+                      label: Text(
+                    'Questions: ${topic.questionIds.length}',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  )),
+                  Chip(
+                      label: Text(
+                    'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  )),
+                ],
+              )
+            ]),
         elevation: 0.8,
         shadowColor: Colors.grey[700],
       ),

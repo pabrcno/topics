@@ -72,8 +72,8 @@ class _TopicModalState extends State<TopicModal> {
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: ListView(
+              shrinkWrap: true,
               children: <Widget>[
                 TextFormField(
                   autofocus: true,
@@ -88,10 +88,12 @@ class _TopicModalState extends State<TopicModal> {
                   },
                   onSaved: (value) => _title = value!,
                 ),
-                const Spacer(),
+                const SizedBox(height: 28.0),
                 if (_text.isEmpty)
-                  TextButton(
+                  MaterialButton(
                     onPressed: _openCamera,
+                    color: Theme.of(context).highlightColor,
+                    padding: const EdgeInsets.all(10.0),
                     child: const Text('Scan Text'),
                   )
                 else
@@ -103,8 +105,8 @@ class _TopicModalState extends State<TopicModal> {
                     ),
                     onChanged: (value) => _text = value,
                   ),
-                const Spacer(),
-                TextButton(
+                const SizedBox(height: 28.0),
+                MaterialButton(
                   onPressed: _submitForm,
                   child: const Text('Submit'),
                 ),
