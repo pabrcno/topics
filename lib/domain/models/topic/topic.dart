@@ -1,10 +1,13 @@
 class Topic {
   final String title;
-  final int questionsCount;
   final DateTime lastModified;
+  final List<String> questionIds;
+  final DateTime createdAt;
 
-  Topic(
-      {required this.title,
-      required this.questionsCount,
-      required this.lastModified});
+  Topic({
+    required this.title,
+    required this.lastModified,
+    required this.questionIds,
+    required this.createdAt,
+  });
 }

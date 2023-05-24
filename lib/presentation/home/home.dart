@@ -17,16 +17,28 @@ class _HomePageState extends State<HomePage> {
   List<Topic> topics = [
     Topic(
         title: 'Software Architecture and a big name',
-        questionsCount: 10,
-        lastModified: DateTime.now()),
-    Topic(title: 'Topic 2', questionsCount: 5, lastModified: DateTime.now()),
-    Topic(title: 'Topic 3', questionsCount: 8, lastModified: DateTime.now()),
+        questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        lastModified: DateTime.now(),
+        createdAt: DateTime.now()),
+    Topic(
+        title: 'Topic 2',
+        questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        lastModified: DateTime.now(),
+        createdAt: DateTime.now()),
+    Topic(
+        title: 'Topic 3',
+        questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+        lastModified: DateTime.now(),
+        createdAt: DateTime.now()),
   ];
 
   void _addNewTopic(String title) {
     setState(() {
-      topics.add(
-          Topic(title: title, questionsCount: 0, lastModified: DateTime.now()));
+      topics.add(Topic(
+          title: title,
+          questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+          lastModified: DateTime.now(),
+          createdAt: DateTime.now()));
     });
   }
 
