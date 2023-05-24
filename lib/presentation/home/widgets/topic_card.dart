@@ -15,16 +15,9 @@ class TopicCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin:
-          const EdgeInsets.all(8.0), // Add some margin to separate the cards.
-      decoration: BoxDecoration(
-        border: Border.all(
-          color: Colors.white70,
-          width: 2.0,
-        ),
-        borderRadius: BorderRadius.circular(8.0), // Add rounded corners
-      ),
+          const EdgeInsets.all(1.0), // Add some margin to separate the cards.
+
       child: Card(
-        color: Colors.black,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -32,7 +25,6 @@ class TopicCard extends StatelessWidget {
             children: <Widget>[
               Text(
                 title,
-                style: const TextStyle(color: Colors.white70, fontSize: 18.0),
                 textAlign: TextAlign.center,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
@@ -40,11 +32,9 @@ class TopicCard extends StatelessWidget {
               const Spacer(),
               Text(
                 'Last Modified: ${lastModified.day}-${lastModified.month}-${lastModified.year}',
-                style: const TextStyle(color: Colors.white70, fontSize: 12.0),
               ),
               Text(
                 'Number of Questions: $questionCount',
-                style: const TextStyle(color: Colors.white70, fontSize: 12.0),
               ),
             ],
           ),

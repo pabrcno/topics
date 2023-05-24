@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import '../../domain/models/topic/topic.dart';
 import 'widgets/topic_grid.dart';
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomePageState createState() => _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   List<Topic> topics = [
     Topic(
         title: 'Software Architecture and a big name',
@@ -36,10 +36,6 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Topics', style: TextStyle(color: Colors.white70)),
-        backgroundColor: Colors.black,
-        elevation:
-            4.0, // This is the default elevation provided by Material Design
-        shadowColor: Colors.grey[200],
       ),
       body: TopicGrid(topics: topics),
       floatingActionButton: FloatingActionButton(
