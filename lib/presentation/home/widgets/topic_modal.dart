@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
 class TopicModal extends StatefulWidget {
@@ -26,7 +27,32 @@ class _TopicModalState extends State<TopicModal> {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
-      final inputImage = InputImage.fromFilePath(pickedFile.path);
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+        sourcePath: pickedFile.path,
+        aspectRatioPresets: [
+          CropAspectRatioPreset.square,
+          CropAspectRatioPreset.ratio3x2,
+          CropAspectRatioPreset.original,
+          CropAspectRatioPreset.ratio4x3,
+          CropAspectRatioPreset.ratio16x9
+        ],
+        uiSettings: [
+          AndroidUiSettings(
+              toolbarTitle: 'Select your text',
+              toolbarColor: Colors.green.shade700,
+              toolbarWidgetColor: Colors.white,
+              initAspectRatio: CropAspectRatioPreset.original,
+              lockAspectRatio: false),
+          IOSUiSettings(
+            title: 'Cropper',
+          ),
+          WebUiSettings(
+            context: context,
+          ),
+        ],
+      );
+
+      final inputImage = InputImage.fromFilePath(croppedFile?.path ?? '');
       final textDetector = GoogleMlKit.vision.textRecognizer();
       final recognizedText = await textDetector.processImage(inputImage);
 
@@ -34,8 +60,7 @@ class _TopicModalState extends State<TopicModal> {
         _text = recognizedText.text;
       });
 
-      textDetector
-          .close(); // Make sure to dispose the detector when not needed.
+      textDetector.close();
     }
   }
 
@@ -46,34 +71,45 @@ class _TopicModalState extends State<TopicModal> {
         padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              TextFormField(
-                autofocus: true,
-                decoration: const InputDecoration(
-                  labelText: 'Topic Title',
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                TextFormField(
+                  autofocus: true,
+                  decoration: const InputDecoration(
+                    labelText: 'Topic Title',
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a topic title';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => _title = value!,
                 ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter a topic title';
-                  }
-                  return null;
-                },
-                onSaved: (value) => _title = value!,
-              ),
-              TextButton(
-                onPressed: _openCamera,
-                child: const Text('Open Camera'),
-              ),
-              const SizedBox(height: 16.0),
-              Text('OCR Text: $_text'),
-              const SizedBox(height: 16.0),
-              TextButton(
-                onPressed: _submitForm,
-                child: const Text('Submit'),
-              ),
-            ],
+                const SizedBox(height: 16.0),
+                if (_text.isEmpty)
+                  TextButton(
+                    onPressed: _openCamera,
+                    child: const Text('Scan Text'),
+                  )
+                else
+                  TextFormField(
+                    initialValue: _text,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      labelText: 'Text',
+                    ),
+                    onChanged: (value) => _text = value,
+                  ),
+                const SizedBox(height: 16.0),
+                TextButton(
+                  onPressed: _submitForm,
+                  child: const Text('Submit'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
