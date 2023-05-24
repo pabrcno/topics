@@ -1,42 +1,64 @@
 import 'package:flutter/material.dart';
 
+import '../../topic/topic_screen.dart';
+
 class TopicCard extends StatelessWidget {
+  final String topicId;
   final String title;
   final DateTime lastModified;
   final int questionCount;
 
   const TopicCard(
-      {super.key,
+      {Key? key,
+      required this.topicId,
       required this.title,
       required this.lastModified,
-      required this.questionCount});
+      required this.questionCount})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin:
-          const EdgeInsets.all(1.0), // Add some margin to separate the cards.
-
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Text(
-                title,
-                textAlign: TextAlign.center,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
-              const Spacer(),
-              Text(
-                'Last Modified: ${lastModified.day}-${lastModified.month}-${lastModified.year}',
-              ),
-              Text(
-                'Number of Questions: $questionCount',
-              ),
-            ],
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => TopicScreen(
+              topicId: topicId,
+            ),
+          ),
+        );
+      },
+      child: Container(
+        margin:
+            const EdgeInsets.all(1.0), // Add some margin to separate the cards.
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  maxLines: 4,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                const Spacer(),
+                Chip(
+                    label: Text(
+                  'Questions: $questionCount',
+                  style: Theme.of(context).textTheme.labelMedium,
+                )),
+                const SizedBox(height: 4),
+                Chip(
+                    label: Text(
+                  'Modified: ${lastModified.day}-${lastModified.month}-${lastModified.year}',
+                  style: Theme.of(context).textTheme.labelMedium,
+                )),
+              ],
+            ),
           ),
         ),
       ),

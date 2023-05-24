@@ -3,10 +3,8 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionService {
   Future<bool> _requestPermission(Permission permission) async {
     var result = await permission.request();
-    if (result == PermissionStatus.granted) {
-      return true;
-    }
-    return false;
+
+    return result == PermissionStatus.granted;
   }
 
   /// Requests the users permission to read and write from their storage.

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
-import '../../domain/models/topic/topic.dart';
+import '../../mock_data.dart';
 import '../../services/error_notifier.dart';
 import 'widgets/topic_grid.dart';
 
@@ -14,33 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  List<Topic> topics = [
-    Topic(
-        title: 'Software Architecture and a big name',
-        questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-        lastModified: DateTime.now(),
-        createdAt: DateTime.now()),
-    Topic(
-        title: 'Topic 2',
-        questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-        lastModified: DateTime.now(),
-        createdAt: DateTime.now()),
-    Topic(
-        title: 'Topic 3',
-        questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-        lastModified: DateTime.now(),
-        createdAt: DateTime.now()),
-  ];
-
-  void _addNewTopic(String title) {
-    setState(() {
-      topics.add(Topic(
-          title: title,
-          questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
-          lastModified: DateTime.now(),
-          createdAt: DateTime.now()));
-    });
-  }
+  void _addNewTopic(String title) {}
 
   void _openModal() {
     showDialog(

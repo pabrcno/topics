@@ -88,7 +88,7 @@ class _TopicModalState extends State<TopicModal> {
                   },
                   onSaved: (value) => _title = value!,
                 ),
-                const SizedBox(height: 16.0),
+                const Spacer(),
                 if (_text.isEmpty)
                   TextButton(
                     onPressed: _openCamera,
@@ -103,7 +103,7 @@ class _TopicModalState extends State<TopicModal> {
                     ),
                     onChanged: (value) => _text = value,
                   ),
-                const SizedBox(height: 16.0),
+                const Spacer(),
                 TextButton(
                   onPressed: _submitForm,
                   child: const Text('Submit'),
