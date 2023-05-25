@@ -9,9 +9,9 @@ import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/presentation/home/home.dart';
-import 'package:topics/services/error_notifier.dart';
+import 'package:topics/services/exeption_notifier.dart';
 
-import 'app/core/chat_provider.dart';
+import 'app/chat/chat_provider.dart';
 import 'firebase_options.dart';
 
 Future<String?> _loadOpenAiApiKey() async {
@@ -21,7 +21,6 @@ Future<String?> _loadOpenAiApiKey() async {
 }
 
 void main() async {
-  var errorNotifier = ErrorNotifier();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -37,22 +36,23 @@ void main() async {
   final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
+  var exceptionNotifier = ExceptionNotifier();
   runZonedGuarded(() {
     runApp(
       MultiProvider(
         providers: [
-          ChangeNotifierProvider<ErrorNotifier>.value(
-            value: errorNotifier,
+          ChangeNotifierProvider<ExceptionNotifier>.value(
+              value: exceptionNotifier),
+          ChangeNotifierProvider<ChatProvider>(
+            create: (context) =>
+                ChatProvider(exceptionNotifier: exceptionNotifier),
           ),
-
-          ChangeNotifierProvider(create: (_) => ChatProvider()),
-          // Add other providers if necessary
         ],
         child: MyApp(theme: theme),
       ),
     );
-  }, (error, stackTrace) {
-    errorNotifier.addError(error);
+  }, (exception, stackTrace) {
+    exceptionNotifier.addException(exception);
   });
 }
 
@@ -61,13 +61,31 @@ class MyApp extends StatelessWidget {
 
   const MyApp({Key? key, required this.theme}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: const HomePage(),
       theme: theme,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        return Scaffold(
+          body: Builder(
+            builder: (BuildContext context) {
+              var errorNotifier = Provider.of<ExceptionNotifier>(context);
+              if (errorNotifier.lastException != null) {
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(errorNotifier.lastException.toString())),
+                  );
+                });
+                // clear the error
+              }
+              return child!;
+            },
+          ),
+        );
+      },
     );
   }
 }

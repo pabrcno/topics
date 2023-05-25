@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
 import '../../mock_data.dart';
-import '../../services/error_notifier.dart';
 import '../config/configurations.dart';
 import 'widgets/topic_grid.dart';
 
@@ -30,14 +28,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var errorNotifier = Provider.of<ErrorNotifier>(context);
-
-    if (errorNotifier.lastError != null) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(const SnackBar(content: Text('An error occurred')));
-      });
-    }
     return Scaffold(
       appBar: AppBar(
         title: Image.asset(

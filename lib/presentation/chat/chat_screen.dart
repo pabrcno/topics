@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:topics/domain/models/question/question.dart';
 import 'package:topics/mock_data.dart';
 import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 import 'package:topics/presentation/widgets/ocr_input.dart';
+
+import '../../app/chat/chat_provider.dart';
 
 class ChatScreen extends StatefulWidget {
   final Question question;
@@ -15,6 +18,21 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
+  late final ChatProvider _chatProvider;
+
+  @override
+  void initState() {
+    super.initState();
+    _chatProvider = Provider.of<ChatProvider>(context, listen: false);
+  }
+
+  void _sendMessage() {
+    final messageText = _textController.text;
+    if (messageText.isNotEmpty) {
+      _chatProvider.sendMessage(messageText);
+      _textController.clear();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +91,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   icon: const Icon(Icons.send),
                   onPressed: () {
                     if (_textController.text.isNotEmpty) {
-                      _textController.clear();
+                      _sendMessage();
                     }
                   },
                 ),
