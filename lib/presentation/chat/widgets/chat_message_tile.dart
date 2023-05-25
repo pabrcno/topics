@@ -10,7 +10,7 @@ class ChatMessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color tileColor = message.isUser
-        ? Theme.of(context).colorScheme.surfaceVariant
+        ? Theme.of(context).hintColor
         : Theme.of(context).highlightColor;
 
     return Container(
