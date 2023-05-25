@@ -1,15 +1,16 @@
-class Topic {
-  final String id;
-  final String title;
-  final DateTime lastModified;
-  final List<String> chatIds;
-  final DateTime createdAt;
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'topic.freezed.dart';
+part 'topic.g.dart';
 
-  Topic({
-    required this.id,
-    required this.title,
-    required this.lastModified,
-    required this.chatIds,
-    required this.createdAt,
-  });
+@freezed
+class Topic with _$Topic {
+  const factory Topic({
+    required String id,
+    required String title,
+    required DateTime lastModified,
+    required List<String> chatIds,
+    required DateTime createdAt,
+  }) = _Topic;
+
+  factory Topic.fromJson(Map<String, dynamic> json) => _$TopicFromJson(json);
 }

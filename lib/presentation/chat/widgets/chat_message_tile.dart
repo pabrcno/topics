@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
 
 class ChatMessageTile extends StatelessWidget {
@@ -9,16 +10,30 @@ class ChatMessageTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color tileColor = message.isUser
-        ? Theme.of(context).highlightColor
-        : Theme.of(context).buttonTheme.colorScheme?.inversePrimary ??
-            Colors.black;
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
       margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
-        color: tileColor,
+        color: () {
+          switch (message.role) {
+            case EMessageRole.user:
+              return Theme.of(context).highlightColor;
+
+            case EMessageRole.assistant:
+              return Theme.of(context)
+                      .buttonTheme
+                      .colorScheme
+                      ?.inversePrimary ??
+                  Colors.black;
+
+            case EMessageRole.system:
+              return Theme.of(context).colorScheme.error;
+
+            default:
+              return Colors
+                  .grey; // default color in case none of the roles match
+          }
+        }(),
         borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
@@ -26,7 +41,7 @@ class ChatMessageTile extends StatelessWidget {
             message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
           Text(
-            message.text,
+            message.content,
             style: const TextStyle(color: Colors.white),
           ),
           const SizedBox(height: 5),

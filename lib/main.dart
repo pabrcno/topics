@@ -8,8 +8,9 @@ import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:topics/api/openAi/chat_api.dart';
 import 'package:topics/presentation/home/home.dart';
-import 'package:topics/services/exeption_notifier.dart';
+import 'package:topics/services/exception_notifier.dart';
 
 import 'app/chat/chat_provider.dart';
 import 'firebase_options.dart';
@@ -22,6 +23,8 @@ Future<String?> _loadOpenAiApiKey() async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -44,8 +47,8 @@ void main() async {
           ChangeNotifierProvider<ExceptionNotifier>.value(
               value: exceptionNotifier),
           ChangeNotifierProvider<ChatProvider>(
-            create: (context) =>
-                ChatProvider(exceptionNotifier: exceptionNotifier),
+            create: (context) => ChatProvider(
+                exceptionNotifier: exceptionNotifier, chatApi: OpenAIChatApi()),
           ),
         ],
         child: MyApp(theme: theme),

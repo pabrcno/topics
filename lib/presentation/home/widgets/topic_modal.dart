@@ -65,7 +65,7 @@ class _TopicModalState extends State<TopicModal> {
                   controller: _textController,
                   maxLines: null,
                   decoration: const InputDecoration(
-                      labelText: 'Make your first question or scan'),
+                      labelText: 'Write your first message or scan'),
                   onChanged: (value) => _text = value,
                 ),
                 const SizedBox(height: 10.0),

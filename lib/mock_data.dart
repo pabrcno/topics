@@ -1,5 +1,3 @@
-import 'package:topics/domain/models/message/message.dart';
-
 import 'domain/models/chat/chat.dart';
 import 'domain/models/topic/topic.dart';
 
@@ -62,24 +60,4 @@ final List<Chat> chats = [
       lastModified: DateTime.now(),
       summary:
           "This is a summary representing the intent of the Chat. Generated from the first message in the Chat."),
-];
-final List<Message> mockMessages = [
-  Message(
-      id: '1',
-      chatId: '1',
-      text: 'Hello World',
-      sentAt: DateTime.now(),
-      isUser: true),
-  Message(
-      id: '2',
-      chatId: '1',
-      text: 'Hello Back',
-      sentAt: DateTime.now(),
-      isUser: false),
-  Message(
-      id: '3',
-      chatId: '2',
-      text: 'Hallo',
-      sentAt: DateTime.now(),
-      isUser: true),
 ];

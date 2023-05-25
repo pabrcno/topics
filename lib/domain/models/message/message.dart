@@ -1,16 +1,18 @@
-class Message {
-  final String id;
-  final String chatId;
-  final String text;
-  final DateTime sentAt;
-  final bool
-      isUser; // true if this message is sent by the user, false if by GPT
+import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:topics/domain/core/enums.dart';
+part 'message.freezed.dart';
+part 'message.g.dart';
 
-  Message({
-    required this.id,
-    required this.chatId,
-    required this.text,
-    required this.sentAt,
-    required this.isUser,
-  });
+@freezed
+class Message with _$Message {
+  const factory Message({
+    required String id,
+    required String content,
+    required DateTime sentAt,
+    required bool isUser,
+    required EMessageRole role,
+  }) = _Message;
+
+  factory Message.fromJson(Map<String, dynamic> json) =>
+      _$MessageFromJson(json);
 }

@@ -45,6 +45,10 @@ dependencies:
   shared_preferences: ^2.1.1
   url_launcher: ^6.1.11
   dart_openai: ^1.9.92
+  freezed: ^2.3.4
+  freezed_annotation: ^2.2.0
+  json_annotation: ^4.8.1
+  uuid: ^3.0.7
 
 dev_dependencies:
   flutter_test:
@@ -56,6 +60,8 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.4
+  json_serializable: ^6.7.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

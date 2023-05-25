@@ -1,20 +1,19 @@
-class Chat {
-  final String id;
-  final String userId;
-  final String topicId;
-  final DateTime createdAt;
+// This file is "main.dart"
+import 'package:freezed_annotation/freezed_annotation.dart';
+part 'chat.freezed.dart';
+part 'chat.g.dart';
 
-  final DateTime lastModified;
-  final String summary;
-  final List<String> messageIds;
+@freezed
+class Chat with _$Chat {
+  const factory Chat({
+    required String id,
+    required String userId,
+    required String topicId,
+    required DateTime createdAt,
+    required DateTime lastModified,
+    required String summary,
+    required List<String> messageIds,
+  }) = _Chat;
 
-  Chat({
-    required this.id,
-    required this.userId,
-    required this.topicId,
-    required this.createdAt,
-    required this.lastModified,
-    required this.summary,
-    required this.messageIds,
-  });
+  factory Chat.fromJson(Map<String, Object?> json) => _$ChatFromJson(json);
 }
