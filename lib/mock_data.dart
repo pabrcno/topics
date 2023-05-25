@@ -1,3 +1,5 @@
+import 'package:topics/domain/models/message/message.dart';
+
 import 'domain/models/question/question.dart';
 import 'domain/models/topic/topic.dart';
 
@@ -56,4 +58,24 @@ final List<Question> questions = [
       lastModified: DateTime.now(),
       summary:
           "This is a summary representing the intent of the question. Generated from the first message in the question."),
+];
+final List<Message> mockMessages = [
+  Message(
+      id: '1',
+      questionId: '1',
+      text: 'Hello World',
+      sentAt: DateTime.now(),
+      isUser: true),
+  Message(
+      id: '2',
+      questionId: '1',
+      text: 'Hello Back',
+      sentAt: DateTime.now(),
+      isUser: false),
+  Message(
+      id: '3',
+      questionId: '2',
+      text: 'Hallo',
+      sentAt: DateTime.now(),
+      isUser: true),
 ];

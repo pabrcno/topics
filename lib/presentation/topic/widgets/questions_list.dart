@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:topics/presentation/chat/chat_screen.dart';
 
 import '../../../domain/models/question/question.dart';
 
@@ -45,7 +46,14 @@ class QuestionsList extends StatelessWidget {
           ),
           trailing: const Icon(Icons.arrow_forward),
           onTap: () {
-            // Navigate to question detail page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChatScreen(
+                  question: question,
+                ),
+              ),
+            );
           },
         );
       },
