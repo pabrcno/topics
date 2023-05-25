@@ -50,7 +50,7 @@ class ChatProvider with ChangeNotifier {
 
         final aiMessage = response.choices.first;
         messages.add(aiMessage.message);
-        print(aiMessage.message.content);
+        print(aiMessage.message.role);
         notifyListeners();
       } else {
         throw Exception('API Key is not set');

@@ -1,6 +1,6 @@
 class Message {
   final String id;
-  final String questionId;
+  final String chatId;
   final String text;
   final DateTime sentAt;
   final bool
@@ -8,7 +8,7 @@ class Message {
 
   Message({
     required this.id,
-    required this.questionId,
+    required this.chatId,
     required this.text,
     required this.sentAt,
     required this.isUser,

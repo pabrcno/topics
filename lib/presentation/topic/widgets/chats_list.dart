@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:topics/presentation/chat/chat_screen.dart';
 
-import '../../../domain/models/question/question.dart';
+import '../../../domain/models/chat/chat.dart';
 
-class QuestionsList extends StatelessWidget {
-  final List<Question> questions;
+class ChatsList extends StatelessWidget {
+  final List<Chat> chats;
 
-  const QuestionsList({super.key, required this.questions});
+  const ChatsList({super.key, required this.chats});
 
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
-      itemCount: questions.length,
+      itemCount: chats.length,
       padding: const EdgeInsets.only(top: 20),
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
@@ -23,9 +23,9 @@ class QuestionsList extends StatelessWidget {
         // Customize your separator
       },
       itemBuilder: (context, index) {
-        final question = questions[index];
+        final chat = chats[index];
         return ListTile(
-          title: Text(question.summary.split('\n').take(5).join('\n')),
+          title: Text(chat.summary.split('\n').take(5).join('\n')),
           subtitle: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -34,7 +34,7 @@ class QuestionsList extends StatelessWidget {
               ),
               Chip(
                 label: Text(
-                  'Created: ${question.createdAt.day}-${question.createdAt.month}-${question.createdAt.year}',
+                  'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
                 ),
               ),
               const SizedBox(
@@ -42,7 +42,7 @@ class QuestionsList extends StatelessWidget {
               ),
               Chip(
                 label: Text(
-                    'Last updated: ${question.lastModified.day}-${question.lastModified.month}-${question.lastModified.year}'),
+                    'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}'),
               ),
             ],
           ),
@@ -52,7 +52,7 @@ class QuestionsList extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (context) => ChatScreen(
-                  question: question,
+                  chat: chat,
                 ),
               ),
             );

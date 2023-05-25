@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:topics/mock_data.dart';
 
-import 'package:topics/presentation/topic/widgets/questions_list.dart';
+import 'package:topics/presentation/topic/widgets/chats_list.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 
 import '../../domain/models/topic/topic.dart';
@@ -22,7 +22,7 @@ class TopicScreen extends StatelessWidget {
           children: [
             Chip(
                 label: Text(
-              'Questions: ${topic.questionIds.length}',
+              'chats: ${topic.chatIds.length}',
               style: Theme.of(context).textTheme.titleSmall,
             )),
             Chip(
@@ -33,10 +33,10 @@ class TopicScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: QuestionsList(questions: questions),
+      body: ChatsList(chats: chats),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Open a dialog or another screen to add a new question.
+          // Open a dialog or another screen to add a new chat.
         },
         child: const Icon(Icons.messenger_outline),
       ),

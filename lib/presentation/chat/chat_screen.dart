@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/domain/models/question/question.dart';
+import 'package:topics/domain/models/chat/chat.dart';
 import 'package:topics/mock_data.dart';
 import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
@@ -9,8 +9,8 @@ import 'package:topics/presentation/widgets/ocr_input.dart';
 import '../../app/chat/chat_provider.dart';
 
 class ChatScreen extends StatefulWidget {
-  final Question question;
-  const ChatScreen({super.key, required this.question});
+  final Chat chat;
+  const ChatScreen({super.key, required this.chat});
 
   @override
   _ChatScreenState createState() => _ChatScreenState();
@@ -36,18 +36,16 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final messages = mockMessages.where((message) {
-      return message.questionId == widget.question.id;
-    }).toList();
+    final messages = mockMessages;
     return Scaffold(
       appBar: CustomAppBar(
-        title: widget.question.summary,
+        title: widget.chat.summary,
         chipsRow: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Chip(
                 label: Text(
-              'Created: ${widget.question.createdAt.day}-${widget.question.createdAt.month}-${widget.question.createdAt.year}',
+              'Created: ${widget.chat.createdAt.day}-${widget.chat.createdAt.month}-${widget.chat.createdAt.year}',
               style: Theme.of(context).textTheme.titleSmall,
             )),
           ],

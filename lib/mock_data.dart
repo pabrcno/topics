@@ -1,80 +1,84 @@
 import 'package:topics/domain/models/message/message.dart';
 
-import 'domain/models/question/question.dart';
+import 'domain/models/chat/chat.dart';
 import 'domain/models/topic/topic.dart';
 
 List<Topic> topics = [
   Topic(
       id: '3',
       title: 'Software Architecture and a big name',
-      questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      chatIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
       lastModified: DateTime.now(),
       createdAt: DateTime.now()),
   Topic(
       id: '2',
       title:
           'Software Architecture and and an even bigger name, to test the behavior and font sizes',
-      questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      chatIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
       lastModified: DateTime.now(),
       createdAt: DateTime.now()),
   Topic(
       id: '1',
       title: 'Topic 3',
-      questionIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      chatIds: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
       lastModified: DateTime.now(),
       createdAt: DateTime.now()),
 ];
 
-final List<Question> questions = [
-  Question(
+final List<Chat> chats = [
+  Chat(
       id: "1",
+      userId: "1",
       topicId: "1",
       createdAt: DateTime.now(),
-      messages: [],
+      messageIds: [],
       lastModified: DateTime.now(),
       summary:
-          "This is a summary representing the intent of the question. Generated from the first message in the question."),
-  Question(
+          "This is a summary representing the intent of the Chat. Generated from the first message in the Chat."),
+  Chat(
       id: "2",
+      userId: "1",
       topicId: "1",
       createdAt: DateTime.now(),
-      messages: [],
+      messageIds: [],
       lastModified: DateTime.now(),
       summary:
-          "This is a summary representing the intent of the question. Generated from the first message in the question."),
-  Question(
+          "This is a summary representing the intent of the Chat. Generated from the first message in the Chat."),
+  Chat(
       id: "3",
+      userId: "1",
       topicId: "1",
       createdAt: DateTime.now(),
-      messages: [],
+      messageIds: [],
       lastModified: DateTime.now(),
       summary:
-          "This is a summary representing the intent of the question. Generated from the first message in the question."),
-  Question(
+          "This is a summary representing the intent of the Chat. Generated from the first message in the Chat."),
+  Chat(
       id: "4",
+      userId: "1",
       topicId: "1",
       createdAt: DateTime.now(),
-      messages: [],
+      messageIds: [],
       lastModified: DateTime.now(),
       summary:
-          "This is a summary representing the intent of the question. Generated from the first message in the question."),
+          "This is a summary representing the intent of the Chat. Generated from the first message in the Chat."),
 ];
 final List<Message> mockMessages = [
   Message(
       id: '1',
-      questionId: '1',
+      chatId: '1',
       text: 'Hello World',
       sentAt: DateTime.now(),
       isUser: true),
   Message(
       id: '2',
-      questionId: '1',
+      chatId: '1',
       text: 'Hello Back',
       sentAt: DateTime.now(),
       isUser: false),
   Message(
       id: '3',
-      questionId: '2',
+      chatId: '2',
       text: 'Hallo',
       sentAt: DateTime.now(),
       isUser: true),
