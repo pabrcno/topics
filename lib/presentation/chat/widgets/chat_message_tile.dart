@@ -10,8 +10,9 @@ class ChatMessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color tileColor = message.isUser
-        ? Theme.of(context).hintColor
-        : Theme.of(context).highlightColor;
+        ? Theme.of(context).highlightColor
+        : Theme.of(context).buttonTheme.colorScheme?.inversePrimary ??
+            Colors.black;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),

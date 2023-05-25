@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
-import 'package:image_cropper/image_cropper.dart';
-import 'package:image_picker/image_picker.dart';
+
+import '../../widgets/ocr_input.dart';
 
 class TopicModal extends StatefulWidget {
   final Function(String title, String text) onSubmit;
@@ -17,50 +16,10 @@ class _TopicModalState extends State<TopicModal> {
   String _title = '';
   String _text = '';
 
+  final TextEditingController _textController = TextEditingController();
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       widget.onSubmit(_title, _text);
-    }
-  }
-
-  Future<void> _openCamera() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      CroppedFile? croppedFile = await ImageCropper().cropImage(
-        sourcePath: pickedFile.path,
-        aspectRatioPresets: [
-          CropAspectRatioPreset.square,
-          CropAspectRatioPreset.ratio3x2,
-          CropAspectRatioPreset.original,
-          CropAspectRatioPreset.ratio4x3,
-          CropAspectRatioPreset.ratio16x9
-        ],
-        uiSettings: [
-          AndroidUiSettings(
-              toolbarTitle: 'Select your text',
-              toolbarColor: Colors.green.shade700,
-              toolbarWidgetColor: Colors.white,
-              initAspectRatio: CropAspectRatioPreset.original,
-              lockAspectRatio: false),
-          IOSUiSettings(
-            title: 'Cropper',
-          ),
-          WebUiSettings(
-            context: context,
-          ),
-        ],
-      );
-
-      final inputImage = InputImage.fromFilePath(croppedFile?.path ?? '');
-      final textDetector = GoogleMlKit.vision.textRecognizer();
-      final recognizedText = await textDetector.processImage(inputImage);
-
-      setState(() {
-        _text = recognizedText.text;
-      });
-
-      textDetector.close();
     }
   }
 
@@ -89,24 +48,19 @@ class _TopicModalState extends State<TopicModal> {
                   onSaved: (value) => _title = value!,
                 ),
                 const SizedBox(height: 28.0),
-                if (_text.isEmpty)
-                  MaterialButton(
-                    onPressed: _openCamera,
-                    color: Theme.of(context).highlightColor,
-                    padding: const EdgeInsets.all(10.0),
-                    child: const Text('Scan Text'),
-                  )
-                else
-                  TextFormField(
-                    initialValue: _text,
-                    maxLines: null,
-                    decoration: const InputDecoration(
-                      labelText: 'Text',
-                    ),
-                    onChanged: (value) => _text = value,
-                  ),
+                TextFormField(
+                  controller: _textController,
+                  maxLines: null,
+                  decoration: const InputDecoration(
+                      labelText: 'Make your first question or scan'),
+                  onChanged: (value) => _text = value,
+                ),
+                const SizedBox(height: 10.0),
+                OCRInput(onOcrResult: (result) {
+                  _textController.text = result;
+                }),
                 const SizedBox(height: 28.0),
-                MaterialButton(
+                ElevatedButton(
                   onPressed: _submitForm,
                   child: const Text('Submit'),
                 ),

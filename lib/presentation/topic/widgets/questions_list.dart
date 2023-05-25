@@ -14,9 +14,11 @@ class QuestionsList extends StatelessWidget {
       itemCount: questions.length,
       padding: const EdgeInsets.only(top: 20),
       separatorBuilder: (BuildContext context, int index) {
-        return const Divider(
+        return Divider(
           height: 20,
           thickness: 1,
+          color: Theme.of(context).buttonTheme.colorScheme?.inversePrimary ??
+              Colors.white,
         );
         // Customize your separator
       },

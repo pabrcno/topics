@@ -55,10 +55,8 @@ class _OCRInputState extends State<OCRInput> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialButton(
+    return OutlinedButton(
       onPressed: _openCamera,
-      color: Theme.of(context).highlightColor,
-      padding: const EdgeInsets.all(10.0),
       child: const Text('Scan Text'),
     );
   }

@@ -3,6 +3,7 @@ import 'package:topics/domain/models/question/question.dart';
 import 'package:topics/mock_data.dart';
 import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
+import 'package:topics/presentation/widgets/ocr_input.dart';
 
 class ChatScreen extends StatefulWidget {
   final Question question;
@@ -45,6 +46,16 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
+          const SizedBox(height: 10),
+          OCRInput(onOcrResult: (result) {
+            _textController.text = result;
+          }),
+          const SizedBox(height: 10),
+          Divider(
+            height: 1,
+            color: Theme.of(context).buttonTheme.colorScheme?.primary ??
+                Colors.white,
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
@@ -52,6 +63,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Expanded(
                   child: TextField(
                     controller: _textController,
+                    maxLines: null,
                     decoration: const InputDecoration(
                       hintText: 'Type a message',
                     ),
