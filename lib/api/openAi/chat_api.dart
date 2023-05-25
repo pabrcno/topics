@@ -47,7 +47,9 @@ class OpenAIChatApi implements IChatApi {
         content: completionModel.choices.first.delta.content ?? '',
         sentAt: DateTime.now(),
         isUser: completionModel.choices.first.delta.role.toString() == 'user',
-        role: _openAiRoleToMessageRole(OpenAIChatMessageRole.user));
+        role: _openAiRoleToMessageRole(
+          OpenAIChatMessageRole.assistant,
+        ));
   }
 
   List<OpenAIChatCompletionChoiceMessageModel> _convertToOpenAIMessages(

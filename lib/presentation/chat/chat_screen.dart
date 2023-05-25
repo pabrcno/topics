@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/chat/chat.dart';
+import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 import 'package:topics/presentation/widgets/ocr_input.dart';
@@ -10,14 +12,8 @@ import '../widgets/app_chip.dart';
 class ChatScreen extends StatelessWidget {
   final Chat chat;
   final TextEditingController _textController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
-  void _scrollToBottom() {
-    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
-  }
 
-  ChatScreen({Key? key, required this.chat}) : super(key: key) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
-  }
+  ChatScreen({Key? key, required this.chat}) : super(key: key);
 
   void _sendMessage(BuildContext context) async {
     final messageText = _textController.text;
@@ -25,7 +21,6 @@ class ChatScreen extends StatelessWidget {
       _textController.clear();
       await Provider.of<ChatProvider>(context, listen: false)
           .sendMessage(messageText);
-      _scrollToBottom();
     }
   }
 
@@ -49,7 +44,6 @@ class ChatScreen extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                controller: _scrollController,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 itemCount: provider.messages.length,
                 itemBuilder: (context, index) {
@@ -57,6 +51,16 @@ class ChatScreen extends StatelessWidget {
                 },
               ),
             ),
+            provider.messageBuffer.isNotEmpty
+                ? ChatMessageTile(
+                    message: Message(
+                    content: provider.messageBuffer.toString(),
+                    id: 'new',
+                    isUser: false,
+                    role: EMessageRole.assistant,
+                    sentAt: DateTime.now(),
+                  ))
+                : const SizedBox(),
             const SizedBox(height: 10),
             OCRInput(onOcrResult: (result) {
               _textController.text = result;

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,14 +32,6 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  StreamSubscription<Message>? _chatSubscription;
-  @override
-  void dispose() {
-    _chatSubscription
-        ?.cancel(); // Don't forget to cancel the subscription when disposing the provider
-    super.dispose();
-  }
-
   Future<void> loadApiKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     apiKey = prefs.getString('apiKey');
@@ -61,31 +51,8 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // Rest of your code
-
-  void _handleError(dynamic e) {
-    exceptionNotifier.addException(e);
-
-    messages.add(
-      Message(
-        id: const Uuid().v4(),
-        content:
-            'Sorry, I am not feeling well today, apparently I have a bug 🐛. ${e.toString()}',
-        sentAt: DateTime.now(),
-        isUser: false,
-        role: EMessageRole.system,
-      ),
-    );
-    notifyListeners();
-    setLoading(false);
-
-    if (e is Error) {
-      throw e;
-    }
-  }
-
+  String messageBuffer = '';
   Future<void> sendMessage(String content) async {
-    _chatSubscription?.cancel(); // cancel the previous subscription if exists
     try {
       if (!isApiKeySet) {
         throw Exception('OpenAI API Key is not set');
@@ -96,19 +63,49 @@ class ChatProvider with ChangeNotifier {
           sentAt: DateTime.now(),
           isUser: true,
           role: EMessageRole.user);
+
       messages.add(message);
       notifyListeners();
+      setLoading(true);
 
-      _chatSubscription = _chatApi.createChatCompletionStream(messages).listen(
-        (response) {
-          final aiMessage = response;
-          messages.add(aiMessage);
-          notifyListeners();
-        },
-        onError: _handleError,
+      _chatApi.createChatCompletionStream(messages).listen((event) {
+        messageBuffer += event.content;
+        notifyListeners();
+      }, onDone: () {
+        messages.add(
+          Message(
+            id: const Uuid().v4(),
+            content: messageBuffer,
+            sentAt: DateTime.now(),
+            isUser: false,
+            role: EMessageRole.assistant,
+          ),
+        );
+        messageBuffer = '';
+        notifyListeners();
+        setLoading(false);
+      });
+      notifyListeners();
+    } // catch only exceptions
+    catch (e) {
+      exceptionNotifier.addException(e);
+
+      messages.add(
+        Message(
+          id: const Uuid().v4(),
+          content:
+              'Sorry, I am not feeling well today, apparently I have a bug 🐛. ${e.toString()}',
+          sentAt: DateTime.now(),
+          isUser: false,
+          role: EMessageRole.system,
+        ),
       );
-    } catch (e) {
-      _handleError(e);
+      notifyListeners();
+      setLoading(false);
+
+      if (e is Error) {
+        rethrow;
+      }
     }
   }
 
