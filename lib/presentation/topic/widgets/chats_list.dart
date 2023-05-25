@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:topics/presentation/chat/chat_screen.dart';
 
 import '../../../domain/models/chat/chat.dart';
+import '../../widgets/app_chip.dart';
 
 class ChatsList extends StatelessWidget {
   final List<Chat> chats;
@@ -25,24 +26,22 @@ class ChatsList extends StatelessWidget {
       itemBuilder: (context, index) {
         final chat = chats[index];
         return ListTile(
-          title: Text(chat.summary.split('\n').take(5).join('\n')),
-          subtitle: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          title: Padding(
+              padding: const EdgeInsets.only(bottom: 20),
+              child: Text(chat.summary.split('\n').take(5).join('\n'))),
+          subtitle: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const SizedBox(
-                height: 16.0,
-              ),
-              Chip(
-                label: Text(
-                  'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
-                ),
+              AppChip(
+                label:
+                    'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
               ),
               const SizedBox(
                 height: 4.0,
               ),
-              Chip(
-                label: Text(
-                    'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}'),
+              AppChip(
+                label:
+                    'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}',
               ),
             ],
           ),

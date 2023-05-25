@@ -29,8 +29,11 @@ class _OCRInputState extends State<OCRInput> {
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: 'Select your text',
-              toolbarColor: Colors.green.shade700,
-              toolbarWidgetColor: Colors.white,
+              toolbarColor: Colors.grey.shade800,
+              backgroundColor: Colors.grey.shade800,
+              cropFrameColor: Colors.lightBlue,
+              toolbarWidgetColor: Colors.lightBlue,
+              activeControlsWidgetColor: Colors.lightBlue,
               initAspectRatio: CropAspectRatioPreset.original,
               lockAspectRatio: false),
           IOSUiSettings(

@@ -34,6 +34,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           ),
           const SizedBox(height: 10),
           chipsRow,
+          const SizedBox(height: 10),
         ],
       ),
       elevation: 0.8,

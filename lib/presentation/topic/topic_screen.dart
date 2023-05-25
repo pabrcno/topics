@@ -5,6 +5,7 @@ import 'package:topics/presentation/topic/widgets/chats_list.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 
 import '../../domain/models/topic/topic.dart';
+import '../widgets/app_chip.dart';
 
 class TopicScreen extends StatelessWidget {
   final String topicId;
@@ -20,16 +21,13 @@ class TopicScreen extends StatelessWidget {
         chipsRow: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Chip(
-                label: Text(
-              'chats: ${topic.chatIds.length}',
-              style: Theme.of(context).textTheme.titleSmall,
-            )),
-            Chip(
-                label: Text(
-              'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
-              style: Theme.of(context).textTheme.titleSmall,
-            )),
+            AppChip(
+              label: 'chats: ${topic.chatIds.length}',
+            ),
+            AppChip(
+              label:
+                  'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
+            ),
           ],
         ),
       ),

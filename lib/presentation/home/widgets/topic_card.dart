@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../topic/topic_screen.dart';
+import '../../widgets/app_chip.dart';
 
 class TopicCard extends StatelessWidget {
   final String topicId;
@@ -46,17 +47,14 @@ class TopicCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(),
-                Chip(
-                    label: Text(
-                  'Questions: $questionCount',
-                  style: Theme.of(context).textTheme.labelMedium,
-                )),
+                AppChip(
+                  label: 'Chats: $questionCount',
+                ),
                 const SizedBox(height: 4),
-                Chip(
-                    label: Text(
-                  'Modified: ${lastModified.day}-${lastModified.month}-${lastModified.year}',
-                  style: Theme.of(context).textTheme.labelMedium,
-                )),
+                AppChip(
+                  label:
+                      'Modified: ${lastModified.day}-${lastModified.month}-${lastModified.year}',
+                ),
               ],
             ),
           ),

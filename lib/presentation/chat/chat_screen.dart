@@ -5,12 +5,19 @@ import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 import 'package:topics/presentation/widgets/ocr_input.dart';
 import '../../app/chat/chat_provider.dart';
+import '../widgets/app_chip.dart';
 
 class ChatScreen extends StatelessWidget {
   final Chat chat;
   final TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+  void _scrollToBottom() {
+    _scrollController.jumpTo(_scrollController.position.maxScrollExtent);
+  }
 
-  ChatScreen({Key? key, required this.chat}) : super(key: key);
+  ChatScreen({Key? key, required this.chat}) : super(key: key) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToBottom());
+  }
 
   void _sendMessage(BuildContext context) async {
     final messageText = _textController.text;
@@ -18,6 +25,7 @@ class ChatScreen extends StatelessWidget {
       _textController.clear();
       await Provider.of<ChatProvider>(context, listen: false)
           .sendMessage(messageText);
+      _scrollToBottom();
     }
   }
 
@@ -30,11 +38,10 @@ class ChatScreen extends StatelessWidget {
           chipsRow: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Chip(
-                  label: Text(
-                'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
-                style: Theme.of(context).textTheme.titleMedium,
-              )),
+              AppChip(
+                label:
+                    'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
+              ),
             ],
           ),
         ),
@@ -42,6 +49,7 @@ class ChatScreen extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
+                controller: _scrollController,
                 padding: const EdgeInsets.symmetric(horizontal: 10),
                 itemCount: provider.messages.length,
                 itemBuilder: (context, index) {
@@ -73,8 +81,11 @@ class ChatScreen extends StatelessWidget {
                     ),
                   ),
                   IconButton(
+                    iconSize: 30,
                     icon: provider.isLoading
-                        ? const CircularProgressIndicator()
+                        ? const CircularProgressIndicator(
+                            strokeWidth: 2,
+                          )
                         : const Icon(Icons.send),
                     onPressed:
                         provider.isLoading ? null : () => _sendMessage(context),
