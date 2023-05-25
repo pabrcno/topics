@@ -32,7 +32,7 @@ class _OCRInputState extends State<OCRInput> {
               toolbarColor: Colors.grey.shade800,
               backgroundColor: Colors.grey.shade800,
               cropFrameColor: Colors.lightBlue,
-              toolbarWidgetColor: Colors.lightBlue,
+              toolbarWidgetColor: Colors.grey.shade800,
               activeControlsWidgetColor: Colors.lightBlue,
               initAspectRatio: CropAspectRatioPreset.original,
               lockAspectRatio: false),

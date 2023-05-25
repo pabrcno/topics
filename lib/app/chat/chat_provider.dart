@@ -52,6 +52,11 @@ class ChatProvider with ChangeNotifier {
   }
 
   String messageBuffer = '';
+  void updateMessageBuffer(String newValue) {
+    messageBuffer += newValue;
+    notifyListeners();
+  }
+
   Future<void> sendMessage(String content) async {
     try {
       if (!isApiKeySet) {
@@ -69,8 +74,7 @@ class ChatProvider with ChangeNotifier {
       setLoading(true);
 
       _chatApi.createChatCompletionStream(messages).listen((event) {
-        messageBuffer += event.content;
-        notifyListeners();
+        updateMessageBuffer(event.content);
       }, onDone: () {
         messages.add(
           Message(
