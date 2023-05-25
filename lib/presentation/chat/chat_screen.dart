@@ -66,6 +66,7 @@ class ChatScreen extends StatelessWidget {
                       message: Message(
                         content: provider.messageBuffer,
                         id: 'new',
+                        chatId: chat.id,
                         isUser: false,
                         role: EMessageRole.assistant,
                         sentAt: DateTime.now(),

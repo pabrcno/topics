@@ -18,7 +18,6 @@ class TopicGrid extends StatelessWidget {
                 topicId: topic.id,
                 title: topic.title,
                 lastModified: topic.lastModified,
-                questionCount: topic.chatIds.length,
               ))
           .toList(),
     );

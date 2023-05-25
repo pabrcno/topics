@@ -11,7 +11,8 @@ class OpenAIChatApi implements IChatApi {
   OpenAIChatApi({this.model = 'gpt-3.5-turbo'});
 
   @override
-  Future<Message> createChatCompletion(List<Message> messages) async {
+  Future<Message> createChatCompletion(
+      List<Message> messages, String chatId) async {
     if (messages.isEmpty) {
       throw Exception('No messages to convert');
     }
@@ -23,7 +24,7 @@ class OpenAIChatApi implements IChatApi {
       messages: openAIMessages,
     );
 
-    final message = _convertToMessage(completionModel.choices.first);
+    final message = _convertToMessage(completionModel.choices.first, chatId);
 
     return message;
   }
@@ -43,7 +44,8 @@ class OpenAIChatApi implements IChatApi {
   Message _convertStreamMessageToMessage(
       OpenAIStreamChatCompletionModel completionModel) {
     return Message(
-        id: const Uuid().v4(),
+        id: 'partial',
+        chatId: 'partial',
         content: completionModel.choices.first.delta.content ?? '',
         sentAt: DateTime.now(),
         isUser: completionModel.choices.first.delta.role.toString() == 'user',
@@ -65,9 +67,11 @@ class OpenAIChatApi implements IChatApi {
     }).toList();
   }
 
-  Message _convertToMessage(OpenAIChatCompletionChoiceModel openAIChoice) {
+  Message _convertToMessage(
+      OpenAIChatCompletionChoiceModel openAIChoice, String chatId) {
     return Message(
         id: const Uuid().v4(),
+        chatId: chatId,
         content: openAIChoice.message.content,
         sentAt: DateTime.now(),
         isUser: openAIChoice.message.role.toString() == 'user',

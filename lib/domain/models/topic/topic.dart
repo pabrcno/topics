@@ -8,7 +8,6 @@ class Topic with _$Topic {
     required String id,
     required String title,
     required DateTime lastModified,
-    required List<String> chatIds,
     required DateTime createdAt,
   }) = _Topic;
 

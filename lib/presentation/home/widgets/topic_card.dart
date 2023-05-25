@@ -7,15 +7,13 @@ class TopicCard extends StatelessWidget {
   final String topicId;
   final String title;
   final DateTime lastModified;
-  final int questionCount;
 
-  const TopicCard(
-      {Key? key,
-      required this.topicId,
-      required this.title,
-      required this.lastModified,
-      required this.questionCount})
-      : super(key: key);
+  const TopicCard({
+    Key? key,
+    required this.topicId,
+    required this.title,
+    required this.lastModified,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -47,9 +45,6 @@ class TopicCard extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleMedium,
                 ),
                 const Spacer(),
-                AppChip(
-                  label: 'Chats: $questionCount',
-                ),
                 const SizedBox(height: 4),
                 AppChip(
                   label:

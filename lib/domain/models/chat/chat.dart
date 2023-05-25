@@ -12,7 +12,6 @@ class Chat with _$Chat {
     required DateTime createdAt,
     required DateTime lastModified,
     required String summary,
-    required List<String> messageIds,
   }) = _Chat;
 
   factory Chat.fromJson(Map<String, Object?> json) => _$ChatFromJson(json);

@@ -23,7 +23,6 @@ mixin _$Topic {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get lastModified => throw _privateConstructorUsedError;
-  List<String> get chatIds => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -37,11 +36,7 @@ abstract class $TopicCopyWith<$Res> {
       _$TopicCopyWithImpl<$Res, Topic>;
   @useResult
   $Res call(
-      {String id,
-      String title,
-      DateTime lastModified,
-      List<String> chatIds,
-      DateTime createdAt});
+      {String id, String title, DateTime lastModified, DateTime createdAt});
 }
 
 /// @nodoc
@@ -60,7 +55,6 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
     Object? id = null,
     Object? title = null,
     Object? lastModified = null,
-    Object? chatIds = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
@@ -76,10 +70,6 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
           ? _value.lastModified
           : lastModified // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      chatIds: null == chatIds
-          ? _value.chatIds
-          : chatIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -95,11 +85,7 @@ abstract class _$$_TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id,
-      String title,
-      DateTime lastModified,
-      List<String> chatIds,
-      DateTime createdAt});
+      {String id, String title, DateTime lastModified, DateTime createdAt});
 }
 
 /// @nodoc
@@ -114,7 +100,6 @@ class __$$_TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res, _$_Topic>
     Object? id = null,
     Object? title = null,
     Object? lastModified = null,
-    Object? chatIds = null,
     Object? createdAt = null,
   }) {
     return _then(_$_Topic(
@@ -130,10 +115,6 @@ class __$$_TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res, _$_Topic>
           ? _value.lastModified
           : lastModified // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      chatIds: null == chatIds
-          ? _value._chatIds
-          : chatIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
@@ -149,9 +130,7 @@ class _$_Topic implements _Topic {
       {required this.id,
       required this.title,
       required this.lastModified,
-      required final List<String> chatIds,
-      required this.createdAt})
-      : _chatIds = chatIds;
+      required this.createdAt});
 
   factory _$_Topic.fromJson(Map<String, dynamic> json) =>
       _$$_TopicFromJson(json);
@@ -162,20 +141,12 @@ class _$_Topic implements _Topic {
   final String title;
   @override
   final DateTime lastModified;
-  final List<String> _chatIds;
-  @override
-  List<String> get chatIds {
-    if (_chatIds is EqualUnmodifiableListView) return _chatIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_chatIds);
-  }
-
   @override
   final DateTime createdAt;
 
   @override
   String toString() {
-    return 'Topic(id: $id, title: $title, lastModified: $lastModified, chatIds: $chatIds, createdAt: $createdAt)';
+    return 'Topic(id: $id, title: $title, lastModified: $lastModified, createdAt: $createdAt)';
   }
 
   @override
@@ -187,15 +158,14 @@ class _$_Topic implements _Topic {
             (identical(other.title, title) || other.title == title) &&
             (identical(other.lastModified, lastModified) ||
                 other.lastModified == lastModified) &&
-            const DeepCollectionEquality().equals(other._chatIds, _chatIds) &&
             (identical(other.createdAt, createdAt) ||
                 other.createdAt == createdAt));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, title, lastModified,
-      const DeepCollectionEquality().hash(_chatIds), createdAt);
+  int get hashCode =>
+      Object.hash(runtimeType, id, title, lastModified, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -216,7 +186,6 @@ abstract class _Topic implements Topic {
       {required final String id,
       required final String title,
       required final DateTime lastModified,
-      required final List<String> chatIds,
       required final DateTime createdAt}) = _$_Topic;
 
   factory _Topic.fromJson(Map<String, dynamic> json) = _$_Topic.fromJson;
@@ -227,8 +196,6 @@ abstract class _Topic implements Topic {
   String get title;
   @override
   DateTime get lastModified;
-  @override
-  List<String> get chatIds;
   @override
   DateTime get createdAt;
   @override

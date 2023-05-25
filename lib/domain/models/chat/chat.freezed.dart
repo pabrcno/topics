@@ -26,7 +26,6 @@ mixin _$Chat {
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get lastModified => throw _privateConstructorUsedError;
   String get summary => throw _privateConstructorUsedError;
-  List<String> get messageIds => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,8 +43,7 @@ abstract class $ChatCopyWith<$Res> {
       String topicId,
       DateTime createdAt,
       DateTime lastModified,
-      String summary,
-      List<String> messageIds});
+      String summary});
 }
 
 /// @nodoc
@@ -67,7 +65,6 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
     Object? createdAt = null,
     Object? lastModified = null,
     Object? summary = null,
-    Object? messageIds = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -94,10 +91,6 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
               as String,
-      messageIds: null == messageIds
-          ? _value.messageIds
-          : messageIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ) as $Val);
   }
 }
@@ -114,8 +107,7 @@ abstract class _$$_ChatCopyWith<$Res> implements $ChatCopyWith<$Res> {
       String topicId,
       DateTime createdAt,
       DateTime lastModified,
-      String summary,
-      List<String> messageIds});
+      String summary});
 }
 
 /// @nodoc
@@ -133,7 +125,6 @@ class __$$_ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res, _$_Chat>
     Object? createdAt = null,
     Object? lastModified = null,
     Object? summary = null,
-    Object? messageIds = null,
   }) {
     return _then(_$_Chat(
       id: null == id
@@ -160,10 +151,6 @@ class __$$_ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res, _$_Chat>
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
               as String,
-      messageIds: null == messageIds
-          ? _value._messageIds
-          : messageIds // ignore: cast_nullable_to_non_nullable
-              as List<String>,
     ));
   }
 }
@@ -177,9 +164,7 @@ class _$_Chat implements _Chat {
       required this.topicId,
       required this.createdAt,
       required this.lastModified,
-      required this.summary,
-      required final List<String> messageIds})
-      : _messageIds = messageIds;
+      required this.summary});
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) => _$$_ChatFromJson(json);
 
@@ -195,17 +180,10 @@ class _$_Chat implements _Chat {
   final DateTime lastModified;
   @override
   final String summary;
-  final List<String> _messageIds;
-  @override
-  List<String> get messageIds {
-    if (_messageIds is EqualUnmodifiableListView) return _messageIds;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_messageIds);
-  }
 
   @override
   String toString() {
-    return 'Chat(id: $id, userId: $userId, topicId: $topicId, createdAt: $createdAt, lastModified: $lastModified, summary: $summary, messageIds: $messageIds)';
+    return 'Chat(id: $id, userId: $userId, topicId: $topicId, createdAt: $createdAt, lastModified: $lastModified, summary: $summary)';
   }
 
   @override
@@ -220,15 +198,13 @@ class _$_Chat implements _Chat {
                 other.createdAt == createdAt) &&
             (identical(other.lastModified, lastModified) ||
                 other.lastModified == lastModified) &&
-            (identical(other.summary, summary) || other.summary == summary) &&
-            const DeepCollectionEquality()
-                .equals(other._messageIds, _messageIds));
+            (identical(other.summary, summary) || other.summary == summary));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, userId, topicId, createdAt,
-      lastModified, summary, const DeepCollectionEquality().hash(_messageIds));
+  int get hashCode => Object.hash(
+      runtimeType, id, userId, topicId, createdAt, lastModified, summary);
 
   @JsonKey(ignore: true)
   @override
@@ -251,8 +227,7 @@ abstract class _Chat implements Chat {
       required final String topicId,
       required final DateTime createdAt,
       required final DateTime lastModified,
-      required final String summary,
-      required final List<String> messageIds}) = _$_Chat;
+      required final String summary}) = _$_Chat;
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$_Chat.fromJson;
 
@@ -268,8 +243,6 @@ abstract class _Chat implements Chat {
   DateTime get lastModified;
   @override
   String get summary;
-  @override
-  List<String> get messageIds;
   @override
   @JsonKey(ignore: true)
   _$$_ChatCopyWith<_$_Chat> get copyWith => throw _privateConstructorUsedError;

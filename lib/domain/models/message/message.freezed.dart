@@ -22,6 +22,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 mixin _$Message {
   String get id => throw _privateConstructorUsedError;
   String get content => throw _privateConstructorUsedError;
+  String get chatId => throw _privateConstructorUsedError;
   DateTime get sentAt => throw _privateConstructorUsedError;
   bool get isUser => throw _privateConstructorUsedError;
   EMessageRole get role => throw _privateConstructorUsedError;
@@ -39,6 +40,7 @@ abstract class $MessageCopyWith<$Res> {
   $Res call(
       {String id,
       String content,
+      String chatId,
       DateTime sentAt,
       bool isUser,
       EMessageRole role});
@@ -59,6 +61,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
   $Res call({
     Object? id = null,
     Object? content = null,
+    Object? chatId = null,
     Object? sentAt = null,
     Object? isUser = null,
     Object? role = null,
@@ -71,6 +74,10 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      chatId: null == chatId
+          ? _value.chatId
+          : chatId // ignore: cast_nullable_to_non_nullable
               as String,
       sentAt: null == sentAt
           ? _value.sentAt
@@ -98,6 +105,7 @@ abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
   $Res call(
       {String id,
       String content,
+      String chatId,
       DateTime sentAt,
       bool isUser,
       EMessageRole role});
@@ -115,6 +123,7 @@ class __$$_MessageCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? content = null,
+    Object? chatId = null,
     Object? sentAt = null,
     Object? isUser = null,
     Object? role = null,
@@ -127,6 +136,10 @@ class __$$_MessageCopyWithImpl<$Res>
       content: null == content
           ? _value.content
           : content // ignore: cast_nullable_to_non_nullable
+              as String,
+      chatId: null == chatId
+          ? _value.chatId
+          : chatId // ignore: cast_nullable_to_non_nullable
               as String,
       sentAt: null == sentAt
           ? _value.sentAt
@@ -150,6 +163,7 @@ class _$_Message implements _Message {
   const _$_Message(
       {required this.id,
       required this.content,
+      required this.chatId,
       required this.sentAt,
       required this.isUser,
       required this.role});
@@ -162,6 +176,8 @@ class _$_Message implements _Message {
   @override
   final String content;
   @override
+  final String chatId;
+  @override
   final DateTime sentAt;
   @override
   final bool isUser;
@@ -170,7 +186,7 @@ class _$_Message implements _Message {
 
   @override
   String toString() {
-    return 'Message(id: $id, content: $content, sentAt: $sentAt, isUser: $isUser, role: $role)';
+    return 'Message(id: $id, content: $content, chatId: $chatId, sentAt: $sentAt, isUser: $isUser, role: $role)';
   }
 
   @override
@@ -180,6 +196,7 @@ class _$_Message implements _Message {
             other is _$_Message &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.content, content) || other.content == content) &&
+            (identical(other.chatId, chatId) || other.chatId == chatId) &&
             (identical(other.sentAt, sentAt) || other.sentAt == sentAt) &&
             (identical(other.isUser, isUser) || other.isUser == isUser) &&
             (identical(other.role, role) || other.role == role));
@@ -188,7 +205,7 @@ class _$_Message implements _Message {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, content, sentAt, isUser, role);
+      Object.hash(runtimeType, id, content, chatId, sentAt, isUser, role);
 
   @JsonKey(ignore: true)
   @override
@@ -208,6 +225,7 @@ abstract class _Message implements Message {
   const factory _Message(
       {required final String id,
       required final String content,
+      required final String chatId,
       required final DateTime sentAt,
       required final bool isUser,
       required final EMessageRole role}) = _$_Message;
@@ -218,6 +236,8 @@ abstract class _Message implements Message {
   String get id;
   @override
   String get content;
+  @override
+  String get chatId;
   @override
   DateTime get sentAt;
   @override

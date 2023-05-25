@@ -22,9 +22,6 @@ class TopicScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppChip(
-              label: 'chats: ${topic.chatIds.length}',
-            ),
-            AppChip(
               label:
                   'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
             ),
