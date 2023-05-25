@@ -37,6 +37,11 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ChatProvider>(context, listen: false)
+          .setCurrentChatId(chat.id);
+    });
+
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Scaffold(
         appBar: CustomAppBar(
