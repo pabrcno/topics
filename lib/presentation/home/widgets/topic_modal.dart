@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../app/core/chat_provider.dart';
 import '../../widgets/ocr_input.dart';
 
 class TopicModal extends StatefulWidget {
@@ -17,8 +19,19 @@ class _TopicModalState extends State<TopicModal> {
   String _text = '';
 
   final TextEditingController _textController = TextEditingController();
+
   void _submitForm() {
+    final openAIProvider = Provider.of<ChatProvider>(context, listen: false);
+    if (openAIProvider.apiKey == null || openAIProvider.apiKey!.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('API key is not set. Please configure it first.'),
+        ),
+      );
+      return;
+    }
     if (_formKey.currentState!.validate()) {
+      _formKey.currentState!.save();
       widget.onSubmit(_title, _text);
     }
   }

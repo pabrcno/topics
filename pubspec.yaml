@@ -42,6 +42,9 @@ dependencies:
   provider: ^6.0.5
   google_ml_kit: ^0.14.0
   image_cropper: ^4.0.1
+  shared_preferences: ^2.1.1
+  url_launcher: ^6.1.11
+  dart_openai: ^1.9.92
 
 dev_dependencies:
   flutter_test:
@@ -68,7 +71,8 @@ flutter:
 
   assets:
     - assets/appainter_theme.json
-
+    - assets/images/topics_dark_removebg.png
+    - assets/images/avatar.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
