@@ -7,17 +7,20 @@ import 'domain/models/topic/topic.dart';
 List<Topic> topics = [
   Topic(
       id: '3',
+      userId: '1',
       title: 'Software Architecture and a big name',
       lastModified: DateTime.now(),
       createdAt: DateTime.now()),
   Topic(
       id: '2',
+      userId: '1',
       title:
           'Software Architecture and and an even bigger name, to test the behavior and font sizes',
       lastModified: DateTime.now(),
       createdAt: DateTime.now()),
   Topic(
       id: '1',
+      userId: '1',
       title: 'Topic 3',
       lastModified: DateTime.now(),
       createdAt: DateTime.now()),

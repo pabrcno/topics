@@ -1,18 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../../../domain/models/topic/topic.dart';
 import '../../topic/topic_screen.dart';
 import '../../widgets/app_chip.dart';
 
 class TopicCard extends StatelessWidget {
-  final String topicId;
-  final String title;
-  final DateTime lastModified;
+  final Topic topic;
 
   const TopicCard({
     Key? key,
-    required this.topicId,
-    required this.title,
-    required this.lastModified,
+    required this.topic,
   }) : super(key: key);
 
   @override
@@ -23,7 +20,7 @@ class TopicCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => TopicScreen(
-              topicId: topicId,
+              topic: topic,
             ),
           ),
         );
@@ -38,7 +35,7 @@ class TopicCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  title,
+                  topic.title,
                   textAlign: TextAlign.center,
                   maxLines: 4,
                   overflow: TextOverflow.ellipsis,
@@ -48,7 +45,7 @@ class TopicCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 AppChip(
                   label:
-                      'Modified: ${lastModified.day}-${lastModified.month}-${lastModified.year}',
+                      'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
                 ),
               ],
             ),

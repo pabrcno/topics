@@ -21,6 +21,7 @@ Topic _$TopicFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Topic {
   String get id => throw _privateConstructorUsedError;
+  String get userId => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   DateTime get lastModified => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
@@ -36,7 +37,11 @@ abstract class $TopicCopyWith<$Res> {
       _$TopicCopyWithImpl<$Res, Topic>;
   @useResult
   $Res call(
-      {String id, String title, DateTime lastModified, DateTime createdAt});
+      {String id,
+      String userId,
+      String title,
+      DateTime lastModified,
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -53,6 +58,7 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
   @override
   $Res call({
     Object? id = null,
+    Object? userId = null,
     Object? title = null,
     Object? lastModified = null,
     Object? createdAt = null,
@@ -61,6 +67,10 @@ class _$TopicCopyWithImpl<$Res, $Val extends Topic>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -85,7 +95,11 @@ abstract class _$$_TopicCopyWith<$Res> implements $TopicCopyWith<$Res> {
   @override
   @useResult
   $Res call(
-      {String id, String title, DateTime lastModified, DateTime createdAt});
+      {String id,
+      String userId,
+      String title,
+      DateTime lastModified,
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -98,6 +112,7 @@ class __$$_TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res, _$_Topic>
   @override
   $Res call({
     Object? id = null,
+    Object? userId = null,
     Object? title = null,
     Object? lastModified = null,
     Object? createdAt = null,
@@ -106,6 +121,10 @@ class __$$_TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res, _$_Topic>
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
+              as String,
+      userId: null == userId
+          ? _value.userId
+          : userId // ignore: cast_nullable_to_non_nullable
               as String,
       title: null == title
           ? _value.title
@@ -128,6 +147,7 @@ class __$$_TopicCopyWithImpl<$Res> extends _$TopicCopyWithImpl<$Res, _$_Topic>
 class _$_Topic implements _Topic {
   const _$_Topic(
       {required this.id,
+      required this.userId,
       required this.title,
       required this.lastModified,
       required this.createdAt});
@@ -138,6 +158,8 @@ class _$_Topic implements _Topic {
   @override
   final String id;
   @override
+  final String userId;
+  @override
   final String title;
   @override
   final DateTime lastModified;
@@ -146,7 +168,7 @@ class _$_Topic implements _Topic {
 
   @override
   String toString() {
-    return 'Topic(id: $id, title: $title, lastModified: $lastModified, createdAt: $createdAt)';
+    return 'Topic(id: $id, userId: $userId, title: $title, lastModified: $lastModified, createdAt: $createdAt)';
   }
 
   @override
@@ -155,6 +177,7 @@ class _$_Topic implements _Topic {
         (other.runtimeType == runtimeType &&
             other is _$_Topic &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.userId, userId) || other.userId == userId) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.lastModified, lastModified) ||
                 other.lastModified == lastModified) &&
@@ -165,7 +188,7 @@ class _$_Topic implements _Topic {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, title, lastModified, createdAt);
+      Object.hash(runtimeType, id, userId, title, lastModified, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -184,6 +207,7 @@ class _$_Topic implements _Topic {
 abstract class _Topic implements Topic {
   const factory _Topic(
       {required final String id,
+      required final String userId,
       required final String title,
       required final DateTime lastModified,
       required final DateTime createdAt}) = _$_Topic;
@@ -192,6 +216,8 @@ abstract class _Topic implements Topic {
 
   @override
   String get id;
+  @override
+  String get userId;
   @override
   String get title;
   @override

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/domain/models/chat/chat.dart';
 import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 import 'package:topics/presentation/widgets/ocr_input.dart';
@@ -10,12 +9,30 @@ import '../../domain/models/message/message.dart';
 import '../widgets/app_chip.dart';
 import '../widgets/disabled.dart';
 
-class ChatScreen extends StatelessWidget {
-  final Chat chat;
+class ChatScreen extends StatefulWidget {
+  const ChatScreen({Key? key}) : super(key: key);
+
+  @override
+  _ChatScreenState createState() => _ChatScreenState();
+}
+
+class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  ChatScreen({Key? key, required this.chat}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ChatProvider>(context, listen: false).fetchChatAndMessages();
+    });
+  }
+
+  void _fetchChatAndMessages(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Provider.of<ChatProvider>(context, listen: false).fetchChatAndMessages();
+    });
+  }
 
   void _sendMessage(BuildContext context) async {
     final messageText = _textController.text;
@@ -37,21 +54,16 @@ class ChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ChatProvider>(context, listen: false)
-          .setCurrentChatId(chat.id);
-    });
-
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Scaffold(
         appBar: CustomAppBar(
-          title: chat.summary,
+          title: provider.currentChat?.summary ?? '',
           chipsRow: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               AppChip(
                 label:
-                    'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
+                    'Created: ${provider.currentChat?.createdAt.day}-${provider.currentChat?.createdAt.month}-${provider.currentChat?.createdAt.year}',
               ),
             ],
           ),
@@ -71,7 +83,7 @@ class ChatScreen extends StatelessWidget {
                       message: Message(
                         content: provider.messageBuffer,
                         id: 'new',
-                        chatId: chat.id,
+                        chatId: provider.currentChat?.id ?? '',
                         isUser: false,
                         role: EMessageRole.assistant,
                         sentAt: DateTime.now(),

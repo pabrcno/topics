@@ -6,6 +6,7 @@ part 'topic.g.dart';
 class Topic with _$Topic {
   const factory Topic({
     required String id,
+    required String userId,
     required String title,
     required DateTime lastModified,
     required DateTime createdAt,

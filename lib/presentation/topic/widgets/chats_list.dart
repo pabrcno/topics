@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/chat_screen.dart';
 
+import '../../../app/chat/chat_provider.dart';
 import '../../../domain/models/chat/chat.dart';
 import '../../widgets/app_chip.dart';
 
@@ -18,8 +20,7 @@ class ChatsList extends StatelessWidget {
         return Divider(
           height: 20,
           thickness: 1,
-          color: Theme.of(context).buttonTheme.colorScheme?.inversePrimary ??
-              Colors.white,
+          color: Theme.of(context).hintColor,
         );
         // Customize your separator
       },
@@ -47,12 +48,13 @@ class ChatsList extends StatelessWidget {
           ),
           trailing: const Icon(Icons.arrow_forward),
           onTap: () {
+            final chatProvider =
+                Provider.of<ChatProvider>(context, listen: false);
+            chatProvider.setCurrentChatId(chat.id);
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => ChatScreen(
-                  chat: chat,
-                ),
+                builder: (context) => const ChatScreen(),
               ),
             );
           },

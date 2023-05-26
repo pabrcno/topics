@@ -15,9 +15,7 @@ class TopicGrid extends StatelessWidget {
       crossAxisCount: 2,
       children: topics
           .map((topic) => TopicCard(
-                topicId: topic.id,
-                title: topic.title,
-                lastModified: topic.lastModified,
+                topic: topic,
               ))
           .toList(),
     );
