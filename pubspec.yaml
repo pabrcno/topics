@@ -51,6 +51,7 @@ dependencies:
   uuid: ^3.0.7
   firebase_ui_auth: ^1.4.1
   firebase_auth: ^4.6.1
+  google_sign_in: ^6.1.2
 
 dev_dependencies:
   flutter_test:
@@ -84,6 +85,7 @@ flutter:
     - assets/appainter_theme.json
     - assets/images/topics_dark_removebg.png
     - assets/images/avatar.png
+    - assets/images/logo_with_label_1-removebg-preview.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

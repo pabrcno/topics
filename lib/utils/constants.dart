@@ -1,0 +1,1 @@
+const OPENAI_API_KEY_LENGTH = 45;

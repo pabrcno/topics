@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
 import '../../mock_data.dart';
+import '../../services/auth_service.dart';
 import '../config/configurations.dart';
 import 'widgets/topic_grid.dart';
 
@@ -43,10 +44,12 @@ class _HomePageState extends State<HomePage> {
                       builder: (context) => const ConfigurationsPage()),
                 );
               },
-              child: const Padding(
-                  padding: EdgeInsets.only(right: 15),
+              child: Padding(
+                  padding: const EdgeInsets.only(right: 15),
                   child: CircleAvatar(
-                    backgroundImage: AssetImage('assets/images/avatar.png'),
+                    backgroundImage: NetworkImage(
+                      AuthService().getUser()?.photoURL ?? '',
+                    ),
                   )))
         ],
       ),

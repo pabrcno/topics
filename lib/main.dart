@@ -9,8 +9,9 @@ import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/api/openAi/chat_api.dart';
-import 'package:topics/presentation/home/home.dart';
+import 'package:topics/services/auth_service.dart';
 import 'package:topics/services/exception_notifier.dart';
+import 'package:topics/utils/constants.dart';
 
 import 'app/chat/chat_provider.dart';
 import 'firebase_options.dart';
@@ -30,7 +31,7 @@ void main() async {
   );
 
   await _loadOpenAiApiKey().then((value) {
-    if (value != null) {
+    if (value != null && value.length == OPENAI_API_KEY_LENGTH) {
       OpenAI.apiKey = value;
       return;
     }
@@ -67,7 +68,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: const HomePage(),
+      home: authServiceProvider.handleAuthState(),
       theme: theme,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
+import 'package:topics/services/auth_service.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/api/chat/IChatApi.dart';
@@ -10,10 +11,11 @@ import '../../domain/models/chat/chat.dart';
 import '../../domain/models/topic/topic.dart';
 import '../../mock_data.dart';
 import '../../services/exception_notifier.dart';
+import '../../utils/constants.dart';
 
 class ChatProvider with ChangeNotifier {
   String? apiKey;
-  final userId = const Uuid().v4();
+
   List<Message> messages = [];
   final IChatApi _chatApi;
   final ExceptionNotifier exceptionNotifier;
@@ -64,20 +66,22 @@ class ChatProvider with ChangeNotifier {
   Future<void> loadApiKey() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     apiKey = prefs.getString('apiKey');
-    if (apiKey is String && apiKey!.isNotEmpty) {
+    if (apiKey is String && apiKey!.length == OPENAI_API_KEY_LENGTH) {
       OpenAI.apiKey = apiKey!;
+      notifyListeners();
     }
-    notifyListeners();
   }
 
-  Future<void> saveApiKey(String newApiKey) async {
+  Future<bool> saveApiKey(String newApiKey) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setString('apiKey', newApiKey);
     apiKey = newApiKey;
     if (apiKey is String) {
       OpenAI.apiKey = apiKey!;
+      notifyListeners();
+      return true;
     }
-    notifyListeners();
+    return false;
   }
 
   String messageBuffer = '';
@@ -241,7 +245,7 @@ class ChatProvider with ChangeNotifier {
       // Create a new Topic object
       final newTopic = Topic(
         id: newTopicId,
-        userId: userId,
+        userId: authServiceProvider.getUser()?.uid ?? '',
         title: title, // set the topic title
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),
@@ -264,4 +268,18 @@ class ChatProvider with ChangeNotifier {
   }
 
   bool get isApiKeySet => apiKey != null && apiKey!.isNotEmpty;
+
+  void clearChatStates() {
+    currentChatId = null;
+    currentChat = null;
+    currentTopic = null;
+    messages = [];
+    notifyListeners();
+  }
+
+  void clearOpenAiStates() {
+    apiKey = null;
+    OpenAI.apiKey = "YOUR_API_KEY_HERE";
+    notifyListeners();
+  }
 }
