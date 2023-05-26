@@ -1,6 +1,6 @@
 import 'package:dart_openai/dart_openai.dart';
 
-import '../../domain/api/chat/IChatApi.dart';
+import '../../domain/api/chat/i_chat_api.dart';
 import '../../domain/core/enums.dart';
 import '../../domain/models/message/message.dart';
 import 'package:uuid/uuid.dart';

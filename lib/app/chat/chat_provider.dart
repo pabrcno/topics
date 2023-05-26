@@ -6,7 +6,7 @@ import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/services/auth_service.dart';
 import 'package:uuid/uuid.dart';
 
-import '../../domain/api/chat/IChatApi.dart';
+import '../../domain/api/chat/i_chat_api.dart';
 import '../../domain/models/chat/chat.dart';
 import '../../domain/models/topic/topic.dart';
 import '../../main.dart';
