@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
-import '../../app/chat/chat_provider.dart';
 import '../../mock_data.dart';
 import '../../services/auth_service.dart';
 import '../config/configurations.dart';
@@ -29,10 +27,12 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Image.asset(
-          'assets/images/topics_dark_removebg.png',
-          height: 40,
-        ),
+        title: Padding(
+            padding: const EdgeInsets.all(0),
+            child: Image.asset(
+              'assets/images/topics_dark_removebg.png',
+              height: 30,
+            )),
         actions: [
           InkWell(
               onTap: () {
