@@ -64,11 +64,9 @@ class _ChatScreenState extends State<ChatScreen> {
         ),
         body: Column(
           children: <Widget>[
-            const SizedBox(height: 10),
             Expanded(
               child: ListView.builder(
                 controller: _scrollController,
-                padding: const EdgeInsets.symmetric(horizontal: 10),
                 itemCount: provider.messages.length +
                     (provider.messageBuffer.isNotEmpty ? 1 : 0),
                 itemBuilder: (context, index) {
@@ -89,6 +87,12 @@ class _ChatScreenState extends State<ChatScreen> {
                 },
               ),
             ),
+            Divider(
+              height: 1,
+              color: Theme.of(context).buttonTheme.colorScheme?.primary ??
+                  Colors.white,
+            ),
+            const SizedBox(height: 10),
             Disabled(
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
               child: OCRInput(onOcrResult: (result) {
@@ -96,24 +100,19 @@ class _ChatScreenState extends State<ChatScreen> {
               }),
             ),
             const SizedBox(height: 10),
-            Divider(
-              height: 1,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary ??
-                  Colors.white,
-            ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Row(
                 children: <Widget>[
                   Expanded(
-                    child: TextField(
-                      controller: _textController,
-                      maxLines: null,
-                      decoration: const InputDecoration(
-                        hintText: 'Type a message',
-                      ),
+                      child: TextField(
+                    controller: _textController,
+                    maxLines: null,
+                    decoration: const InputDecoration(
+                      hintText: 'Type a message',
                     ),
-                  ),
+                    style: const TextStyle(fontSize: 18),
+                  )),
                   IconButton(
                     iconSize: 30,
                     icon:

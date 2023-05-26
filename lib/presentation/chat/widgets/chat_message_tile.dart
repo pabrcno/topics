@@ -12,7 +12,6 @@ class ChatMessageTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      margin: const EdgeInsets.symmetric(vertical: 5),
       decoration: BoxDecoration(
         color: () {
           switch (message.role) {
@@ -20,21 +19,16 @@ class ChatMessageTile extends StatelessWidget {
               return Theme.of(context).highlightColor;
 
             case EMessageRole.assistant:
-              return Theme.of(context)
-                      .buttonTheme
-                      .colorScheme
-                      ?.inversePrimary ??
-                  Colors.black;
+              return Colors.cyan.shade900 ?? Colors.black;
 
             case EMessageRole.system:
-              return Theme.of(context).colorScheme.error;
+              return Colors.red.shade400;
 
             default:
               return Colors
                   .grey; // default color in case none of the roles match
           }
         }(),
-        borderRadius: BorderRadius.circular(15),
       ),
       child: Column(
         crossAxisAlignment:
@@ -42,7 +36,7 @@ class ChatMessageTile extends StatelessWidget {
         children: [
           Text(
             message.content,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           const SizedBox(height: 5),
           Text(
