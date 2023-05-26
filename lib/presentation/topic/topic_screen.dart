@@ -42,7 +42,7 @@ class TopicScreen extends StatelessWidget {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (newContext) => ChatScreen(),
+                      builder: (newContext) => const ChatScreen(),
                     ));
               });
             },
