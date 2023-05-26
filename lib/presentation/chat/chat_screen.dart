@@ -28,12 +28,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
   }
 
-  void _fetchChatAndMessages(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<ChatProvider>(context, listen: false).fetchChatAndMessages();
-    });
-  }
-
   void _sendMessage(BuildContext context) async {
     final messageText = _textController.text;
     if (messageText.isNotEmpty) {
