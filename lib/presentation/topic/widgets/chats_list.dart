@@ -17,9 +17,8 @@ class ChatsList extends StatelessWidget {
       padding: const EdgeInsets.only(top: 20),
       separatorBuilder: (BuildContext context, int index) {
         return Divider(
-          height: 20,
-          thickness: 1,
-          color: Theme.of(context).hintColor,
+          thickness: .8,
+          color: Colors.grey.shade800,
         );
         // Customize your separator
       },
@@ -27,7 +26,7 @@ class ChatsList extends StatelessWidget {
         final chat = chats[index];
         return ListTile(
           title: Padding(
-              padding: const EdgeInsets.only(bottom: 20),
+              padding: const EdgeInsets.only(bottom: 30),
               child: Text(chat.summary.split('\n').take(5).join('\n'))),
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -45,7 +44,7 @@ class ChatsList extends StatelessWidget {
               ),
             ],
           ),
-          trailing: const Icon(Icons.arrow_forward),
+          trailing: const Icon(Icons.arrow_forward_ios_rounded),
           onTap: () {
             final chatProvider =
                 Provider.of<ChatProvider>(context, listen: false);
