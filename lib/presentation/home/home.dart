@@ -27,11 +27,11 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Padding(
-            padding: const EdgeInsets.all(0),
-            child: Image.asset(
+        leading: IconButton(
+            onPressed: () {},
+            icon: Image.asset(
               'assets/images/topics_dark_removebg.png',
-              height: 30,
+              height: 35,
             )),
         actions: [
           InkWell(
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: Padding(
-                  padding: const EdgeInsets.only(right: 5),
+                  padding: const EdgeInsets.only(right: 10),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
                       AuthService().getUser()?.photoURL ?? '',

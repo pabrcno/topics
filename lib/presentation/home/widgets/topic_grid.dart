@@ -13,6 +13,7 @@ class TopicGrid extends StatelessWidget {
   Widget build(BuildContext context) {
     return GridView.count(
       crossAxisCount: 2,
+      padding: const EdgeInsets.only(top: 10),
       children: topics
           .map((topic) => TopicCard(
                 topic: topic,
