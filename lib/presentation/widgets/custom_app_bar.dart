@@ -25,6 +25,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         mainAxisSize: MainAxisSize
             .min, // This ensures the column doesn't try to expand in the vertical direction.
         children: [
+          const SizedBox(height: 10),
           Flexible(
             fit: FlexFit
                 .loose, // This allows the text to take as much space as it needs but no more.
@@ -35,7 +36,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
               overflow: TextOverflow.ellipsis,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 20),
           chipsRow,
           const SizedBox(height: 10),
         ],

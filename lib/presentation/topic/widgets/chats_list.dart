@@ -4,7 +4,6 @@ import 'package:topics/presentation/chat/chat_screen.dart';
 
 import '../../../app/chat/chat_provider.dart';
 import '../../../domain/models/chat/chat.dart';
-import '../../widgets/app_chip.dart';
 
 class ChatsList extends StatelessWidget {
   final List<Chat> chats;
@@ -33,16 +32,16 @@ class ChatsList extends StatelessWidget {
           subtitle: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              AppChip(
-                label:
-                    'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
+              Text(
+                'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
+                style: Theme.of(context).textTheme.labelSmall,
               ),
               const SizedBox(
                 height: 4.0,
               ),
-              AppChip(
-                label:
-                    'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}',
+              Text(
+                'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}',
+                style: Theme.of(context).textTheme.labelSmall,
               ),
             ],
           ),

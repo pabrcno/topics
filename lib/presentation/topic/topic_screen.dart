@@ -47,7 +47,6 @@ class TopicScreen extends StatelessWidget {
       appBar: CustomAppBar(
         title: topic.title,
         chipsRow: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             AppChip(
               label:
