@@ -16,6 +16,7 @@ import 'package:topics/utils/constants.dart';
 import 'app/chat/chat_provider.dart';
 import 'firebase_options.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 Future<String?> _loadOpenAiApiKey() async {
   SharedPreferences prefs = await SharedPreferences.getInstance();
   String? apiKey = prefs.getString('apiKey');
@@ -68,6 +69,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       home: authServiceProvider.handleAuthState(),
       theme: theme,
       debugShowCheckedModeBanner: false,

@@ -8,7 +8,6 @@ import 'package:topics/presentation/widgets/custom_app_bar.dart';
 
 import '../../app/chat/chat_provider.dart';
 import '../../domain/models/topic/topic.dart';
-import '../chat/chat_screen.dart';
 import '../widgets/app_chip.dart';
 
 class TopicScreen extends StatelessWidget {
@@ -30,20 +29,12 @@ class TopicScreen extends StatelessWidget {
               // Get the current Topic based on topicId
               final currentTopic = topics.firstWhere((t) =>
                   t.id == topicId); // You need to have list of topics in memory
-
+              Navigator.of(context).pop();
               // Create new chat
               chatProvider
                   .createChat(initialMessage, currentTopic)
                   .then((newChat) {
                 // Close the NewChatModal dialog
-                Navigator.of(context).pop();
-
-                // Navigate to ChatScreen with the new chat
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (newContext) => const ChatScreen(),
-                    ));
               });
             },
             topicId: topic.id,

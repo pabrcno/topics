@@ -2,13 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
-import '../../chat/chat_screen.dart';
 import '../../widgets/ocr_input.dart';
 
 class TopicModal extends StatefulWidget {
-  final Function(String title, String text) onSubmit;
-
-  const TopicModal({super.key, required this.onSubmit});
+  const TopicModal({super.key});
 
   @override
   _TopicModalState createState() => _TopicModalState();
@@ -23,6 +20,7 @@ class _TopicModalState extends State<TopicModal> {
 
   void _submitForm() async {
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+
     if (!chatProvider.isApiKeySet) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
@@ -33,15 +31,16 @@ class _TopicModalState extends State<TopicModal> {
     }
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      await chatProvider.createTopic(_title, _text).then((_) {
-        Navigator.of(context).pop(); // close the dialog after submitting
-
-        // Navigate to the Chat screen.
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => const ChatScreen()),
+      try {
+        Navigator.of(context).pop();
+        await chatProvider.createTopic(_title, _text);
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error creating topic: ${e.toString()}'),
+          ),
         );
-      });
+      }
     }
   }
 

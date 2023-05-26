@@ -20,6 +20,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       toolbarHeight: preferredSize.height,
       title: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize
             .min, // This ensures the column doesn't try to expand in the vertical direction.
         children: [
@@ -29,7 +31,8 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             child: Text(
               title,
               softWrap: true,
-              overflow: TextOverflow.visible,
+              maxLines: 3,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
           const SizedBox(height: 10),

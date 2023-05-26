@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
+import '../../app/chat/chat_provider.dart';
 import '../../mock_data.dart';
 import '../../services/auth_service.dart';
 import '../config/configurations.dart';
@@ -14,15 +16,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  void _addNewTopic(String title) {}
-
   void _openModal() {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return TopicModal(
-          onSubmit: (_, __) {},
-        );
+        return const TopicModal();
       },
     );
   }
@@ -45,7 +43,7 @@ class _HomePageState extends State<HomePage> {
                 );
               },
               child: Padding(
-                  padding: const EdgeInsets.only(right: 15),
+                  padding: const EdgeInsets.only(right: 5),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
                       AuthService().getUser()?.photoURL ?? '',

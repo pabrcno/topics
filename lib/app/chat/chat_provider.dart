@@ -9,7 +9,9 @@ import 'package:uuid/uuid.dart';
 import '../../domain/api/chat/IChatApi.dart';
 import '../../domain/models/chat/chat.dart';
 import '../../domain/models/topic/topic.dart';
+import '../../main.dart';
 import '../../mock_data.dart';
+import '../../presentation/chat/chat_screen.dart';
 import '../../services/exception_notifier.dart';
 import '../../utils/constants.dart';
 
@@ -139,6 +141,8 @@ class ChatProvider with ChangeNotifier {
       }
       setLoading(true);
 
+      clearChatStates();
+
       // Define a unique id for the new chat
       final newChatId = const Uuid().v4();
 
@@ -156,26 +160,19 @@ class ChatProvider with ChangeNotifier {
       // await _chatApi.createChat(newChat);
 
       // Then, send the initial message
-      final initialMessageObject = Message(
-        id: const Uuid().v4(),
-        content: initialMessage,
-        chatId: newChatId,
-        sentAt: DateTime.now(),
-        isUser: true,
-        role: EMessageRole.user,
-      );
 
       // Store this message in your backend as well
       // await _chatApi.createMessage(initialMessageObject);
       currentChatId = newChatId;
       currentChat = newChat;
 
-      // Add the message to the messages list
-      sendMessage(initialMessageObject.content);
-
-      notifyListeners();
-
-      setLoading(false);
+      sendMessage(initialMessage);
+      await Navigator.push(
+        navigatorKey.currentState!.context,
+        MaterialPageRoute(
+          builder: (context) => const ChatScreen(), // your chat screen widget
+        ),
+      );
     } catch (e) {
       _handleError(e);
     }
@@ -189,7 +186,7 @@ class ChatProvider with ChangeNotifier {
         id: 'error',
         chatId: 'error',
         content:
-            'Sorry, I am not feeling well today, apparently I have a bug 🐛. ${e.toString()}',
+            'Sorry, I am not feeling well today, apparently I have a bug 🐛.\n ${e.toString()}',
         sentAt: DateTime.now(),
         isUser: false,
         role: EMessageRole.system,
@@ -203,14 +200,13 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  Future<Chat> getChat(String chatId) async {
-    // Fetch the chat from your backend based on the chatId.
-    // Since we're mocking this function, I'll return a hardcoded Chat
+  Future<Chat> fetchChat(String chatId) async {
+    // TODO: when we add database, we need to fetch the chat and messages from the database
     await Future.delayed(const Duration(seconds: 2)); // Simulate network delay
     return Chat(
       id: chatId,
-      userId: "userId", // replace with actual userId
-      topicId: "topicId", // replace with actual topicId
+      userId: authServiceProvider.getUser()?.uid ?? '',
+      topicId: currentTopic?.id ?? '',
       createdAt: DateTime.now(),
       lastModified: DateTime.now(),
       summary: "This is a chat summary", // replace with actual summary
@@ -219,16 +215,14 @@ class ChatProvider with ChangeNotifier {
 
 // Inside ChatProvider
   Future<void> fetchChatAndMessages() async {
-    currentChat = Chat(
-      id: currentChatId ?? '',
-      userId: "userId", // replace with actual userId
-      topicId: "topicId", // replace with actual topicId
-      createdAt: DateTime.now(),
-      lastModified: DateTime.now(),
-      summary: "This is a chat summary", // replace with actual summary
-    ); // Assuming getChat is a method that fetches chat based on ID.
-    // Assuming getMessages is a method that fetches messages for a chat.
-    // add error handling as needed.
+    if (currentChat == null) return;
+
+    currentChat = await fetchChat(currentChat!.id);
+
+    // TODO: when we add database, we need to fetch the chat and messages from the database
+    messages = mockMessages
+        .where((element) => element.chatId == currentChat!.id)
+        .toList();
   }
 
   Future<void> createTopic(String title, String initialMessage) async {
