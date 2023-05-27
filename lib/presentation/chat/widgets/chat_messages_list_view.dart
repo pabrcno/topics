@@ -10,9 +10,13 @@ import 'chat_message_tile.dart';
 class ChatMessagesListView extends StatefulWidget {
   final ScrollController scrollController;
   final Chat chat;
+  final bool isNew;
 
   const ChatMessagesListView(
-      {super.key, required this.scrollController, required this.chat});
+      {super.key,
+      required this.scrollController,
+      required this.chat,
+      this.isNew = false});
 
   @override
   _ChatMessagesListViewState createState() => _ChatMessagesListViewState();
@@ -23,6 +27,9 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
+      if (widget.isNew) {
+        return;
+      }
       Provider.of<ChatProvider>(context, listen: false)
           .setCurrentChat(widget.chat);
     });

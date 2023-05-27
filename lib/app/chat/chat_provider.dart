@@ -188,6 +188,7 @@ class ChatProvider with ChangeNotifier {
         MaterialPageRoute(
           builder: (context) => ChatScreen(
             chat: newChat,
+            isNew: true,
           ), // your chat screen widget
         ),
       );

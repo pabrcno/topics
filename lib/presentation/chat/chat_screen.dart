@@ -12,7 +12,8 @@ class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   final Chat chat;
-  ChatScreen({super.key, required this.chat});
+  final bool isNew;
+  ChatScreen({super.key, required this.chat, this.isNew = false});
 
   void _sendMessage(BuildContext context) async {
     final messageText = _textController.text;
@@ -56,7 +57,10 @@ class ChatScreen extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ChatMessagesListView(
-                  scrollController: _scrollController, chat: chat),
+                scrollController: _scrollController,
+                chat: chat,
+                isNew: isNew,
+              ),
             ),
             Divider(
               height: 1,
