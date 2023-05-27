@@ -32,7 +32,7 @@ class _TopicGridState extends State<TopicGrid> {
         if (topics.isEmpty && chatProvider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (topics.isEmpty) {
-          return const Text('No topics available');
+          return const Center(child: Text('No topics available yet.'));
         } else {
           return RefreshIndicator(
             onRefresh: _refreshTopics,
