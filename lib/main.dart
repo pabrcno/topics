@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:convert';
 
 import 'package:dart_openai/dart_openai.dart';
@@ -42,20 +41,7 @@ void main() async {
         create: (context) => ChatProvider(
             chatRepository: FirestoreChatRepository(),
             chatApi: OpenAIChatApi(),
-            errorCommander: ErrorCommander(
-              (String message) async {
-                // Show a snackbar using the current ScaffoldMessenger.
-                // we can change this functions if we want to trigger other ui elements.
-                // maybe we have to abstract this if we want other providers to use the same instance of ErrorCommander
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text(message),
-                  ),
-                );
-                // Add a return statement to match the expected return type
-                return Future.value();
-              },
-            )), // Pass context to ErrorCommander
+            errorCommander: ErrorCommander()), // Pass context to ErrorCommander
       ),
     ], child: MyApp(theme: theme)),
   );
@@ -73,6 +59,16 @@ class MyApp extends StatelessWidget {
       home: authServiceProvider.handleAuthState(),
       theme: theme,
       debugShowCheckedModeBanner: false,
+      builder: (context, child) {
+        Provider.of<ChatProvider>(context, listen: false)
+            .errorCommander
+            .showSnackbar = (String message) async {
+          ScaffoldMessenger.of(context)
+              .showSnackBar(SnackBar(content: Text(message)));
+          return Future.value();
+        };
+        return child!;
+      },
     );
   }
 }

@@ -1,13 +1,18 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ErrorCommander {
-  final Future<void> Function(String) _showSnackbar;
+  Future<void> Function(String)? _showSnackbar;
 
-  ErrorCommander(Future<void> Function(String) showSnackbar)
-      : _showSnackbar = showSnackbar;
+  ErrorCommander();
+
+  set showSnackbar(Future<void> Function(String)? func) {
+    _showSnackbar = func;
+  }
+
   void _logger(dynamic error) {
     log('Error occurred: ${error.toString()}');
   }
@@ -38,12 +43,15 @@ class ErrorCommander {
           'No internet connection. Please check your connection and try again.';
 
       // General case
+    } else if (error is MissingApiKeyException) {
+      message = 'Please enter OpenAI API key on your profile page.';
     } else {
       message = 'An unexpected issue occurred. Please try again.';
     }
-
-    // Display the snackbar
-    _showSnackbar(message);
+    if (_showSnackbar != null) {
+      // Display the snackbar
+      _showSnackbar!(message);
+    }
   }
 
   Future<T> run<T>(Future<T> Function() execute,

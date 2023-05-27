@@ -19,7 +19,7 @@ class ChatProvider with ChangeNotifier {
   List<Message> messages = [];
   final IChatApi _chatApi;
   final IChatRepository _chatRepository;
-  final ErrorCommander _errorCommander;
+  final ErrorCommander errorCommander;
   bool _isLoading = false;
 
   Chat? currentChat;
@@ -30,14 +30,13 @@ class ChatProvider with ChangeNotifier {
   ChatProvider({
     required IChatApi chatApi,
     required IChatRepository chatRepository,
-    required ErrorCommander errorCommander,
+    required this.errorCommander,
   })  : _chatApi = chatApi,
         _chatRepository = chatRepository,
-        _errorCommander = errorCommander,
         super();
 
   Future<void> fetchMessages() async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       if (currentChat?.id != null) {
         setLoading(true);
         List<Message> fetchedMessages = await _chatRepository.getMessages(
@@ -51,7 +50,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> fetchTopics([String? userId]) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       setLoading(true);
       topics = await _chatRepository.getTopics(
         userId ?? authServiceProvider.getUser()!.uid,
@@ -61,7 +60,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> fetchChatsForTopic(String topicId) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       setLoading(true);
 
       currentTopicChats = await _chatRepository.getChats(
@@ -72,7 +71,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> setCurrentChat(Chat chat) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       currentChat = chat;
       // Clear the messages list to prevent showing old messages
       messages.clear();
@@ -95,7 +94,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> sendMessage(String content) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       final message = Message(
           id: const Uuid().v4(),
           content: content,
@@ -132,7 +131,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> createChat(String initialMessage, Topic topic) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       // Ensure we have an API key before proceeding
 
       setLoading(true);
@@ -170,7 +169,7 @@ class ChatProvider with ChangeNotifier {
 
 // Inside ChatProvider
   Future<void> fetchChatAndMessages(String chatId) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       if (currentChat == null) return;
 
       currentChat = await _chatRepository.getChat(chatId);
@@ -180,7 +179,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> createTopic(String title, String initialMessage) async {
-    await _errorCommander.run(() async {
+    await errorCommander.run(() async {
       setLoading(true);
 
       // Define a unique id for the new topic

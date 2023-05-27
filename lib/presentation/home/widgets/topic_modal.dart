@@ -67,9 +67,10 @@ class _TopicModalState extends State<TopicModal> {
                     ElevatedButton(
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
+                          final messageText = _textController.text;
                           _formKey.currentState!.save();
                           Navigator.of(context).pop();
-                          await chatProvider.createTopic(_title, _text);
+                          await chatProvider.createTopic(_title, messageText);
                         }
                       },
                       child: const Text('Submit'),
