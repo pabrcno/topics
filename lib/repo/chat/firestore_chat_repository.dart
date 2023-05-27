@@ -12,7 +12,10 @@ class FirestoreChatRepository implements IChatRepository {
 
   @override
   Future<void> createChat(Chat chat) async {
-    await _firebaseFirestore.collection('chats').add(chat.toJson());
+    await _firebaseFirestore
+        .collection('chats')
+        .doc(chat.id)
+        .set(chat.toJson());
   }
 
   @override
@@ -21,7 +24,8 @@ class FirestoreChatRepository implements IChatRepository {
         .collection('chats')
         .doc(message.chatId)
         .collection('messages')
-        .add(message.toJson());
+        .doc(message.id)
+        .set(message.toJson());
   }
 
   @override
@@ -32,8 +36,10 @@ class FirestoreChatRepository implements IChatRepository {
 
   @override
   Future<void> createTopic(Topic topic) async {
-    final json = topic.toJson();
-    await _firebaseFirestore.collection('topics').add(json);
+    await _firebaseFirestore
+        .collection('topics')
+        .doc(topic.id)
+        .set(topic.toJson());
   }
 
   @override

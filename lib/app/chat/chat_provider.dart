@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
+import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/services/auth_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -20,16 +21,20 @@ class ChatProvider with ChangeNotifier {
 
   List<Message> messages = [];
   final IChatApi _chatApi;
+  final IChatRepository _chatRepository;
   final ExceptionNotifier exceptionNotifier;
 
   bool _isLoading = false;
   String? currentChatId;
   Chat? currentChat;
   Topic? currentTopic;
+
   ChatProvider({
     required this.exceptionNotifier,
     required IChatApi chatApi,
+    required IChatRepository chatRepository,
   })  : _chatApi = chatApi,
+        _chatRepository = chatRepository,
         super() {
     loadApiKey();
   }
@@ -101,7 +106,7 @@ class ChatProvider with ChangeNotifier {
           id: const Uuid().v4(),
           content: content,
           sentAt: DateTime.now(),
-          chatId: currentChatId ?? '',
+          chatId: currentChatId ?? 'EMPTY_CHAT_ID',
           isUser: true,
           role: EMessageRole.user);
 
@@ -111,22 +116,24 @@ class ChatProvider with ChangeNotifier {
 
       _chatApi.createChatCompletionStream(messages).listen((event) {
         updateMessageBuffer(event.content);
-      }, onDone: () {
-        messages.add(
-          Message(
-            id: const Uuid().v4(),
-            content: messageBuffer,
-            sentAt: DateTime.now(),
-            chatId: currentChatId ?? '',
-            isUser: false,
-            role: EMessageRole.assistant,
-          ),
+      }, onDone: () async {
+        final answer = Message(
+          id: const Uuid().v4(),
+          content: messageBuffer,
+          sentAt: DateTime.now(),
+          chatId: currentChatId ?? 'EMPTY_CHAT_ID',
+          isUser: false,
+          role: EMessageRole.assistant,
         );
+
+        messages.add(answer);
         messageBuffer = '';
+
         notifyListeners();
         setLoading(false);
+        _chatRepository.createMessage(message);
+        _chatRepository.createMessage(answer);
       });
-      notifyListeners();
     } // catch only exceptions
     catch (e) {
       _handleError(e);
@@ -156,23 +163,18 @@ class ChatProvider with ChangeNotifier {
         summary: initialMessage, // using the initial message as a summary
       );
 
-      // Send this new chat to your backend for storage
-      // await _chatApi.createChat(newChat);
-
-      // Then, send the initial message
-
-      // Store this message in your backend as well
-      // await _chatApi.createMessage(initialMessageObject);
       currentChatId = newChatId;
       currentChat = newChat;
-
-      sendMessage(initialMessage);
-      await Navigator.push(
+      Navigator.push(
         navigatorKey.currentState!.context,
         MaterialPageRoute(
           builder: (context) => const ChatScreen(), // your chat screen widget
         ),
       );
+      // Send this new chat to your backend for storage
+      await _chatRepository.createChat(newChat).then((value) {
+        sendMessage(initialMessage);
+      });
     } catch (e) {
       _handleError(e);
     }
@@ -246,16 +248,13 @@ class ChatProvider with ChangeNotifier {
       );
 
       // Send this new topic to your backend for storage
-      // await _topicApi.createTopic(newTopic);
+      await _chatRepository.createTopic(newTopic);
 
       // Now create a new Chat associated with this topic
       await createChat(initialMessage, newTopic);
 
       // Update the current topic
       currentTopic = newTopic;
-
-      // Update local state if necessary
-      setLoading(false);
     } catch (e) {
       _handleError(e);
     }

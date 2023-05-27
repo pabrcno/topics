@@ -9,6 +9,7 @@ import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/api/openAi/chat_api.dart';
+import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/services/auth_service.dart';
 import 'package:topics/services/exception_notifier.dart';
 import 'package:topics/utils/constants.dart';
@@ -50,7 +51,9 @@ void main() async {
               value: exceptionNotifier),
           ChangeNotifierProvider<ChatProvider>(
             create: (context) => ChatProvider(
-                exceptionNotifier: exceptionNotifier, chatApi: OpenAIChatApi()),
+                chatRepository: FirestoreChatRepository(),
+                exceptionNotifier: exceptionNotifier,
+                chatApi: OpenAIChatApi()),
           ),
         ],
         child: MyApp(theme: theme),

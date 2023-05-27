@@ -1,3 +1,4 @@
 {
-  "cSpell.words": ["appainter", "openai", "prefs", "removebg"]
+  "cSpell.words": ["appainter", "openai", "prefs", "removebg"],
+  "java.configuration.updateBuildConfiguration": "interactive"
 }
