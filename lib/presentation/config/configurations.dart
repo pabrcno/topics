@@ -35,7 +35,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   void _logout() {
     var chatProvider = Provider.of<ChatProvider>(context, listen: false);
     chatProvider.clearChatStates();
-    chatProvider.clearOpenAiStates();
+    storageServiceProvider.clearApiKey();
     AuthService().signOut();
 
     Navigator.of(context).pop();
