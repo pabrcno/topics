@@ -22,6 +22,7 @@ class OpenAIChatApi implements IChatApi {
     final completionModel = await OpenAI.instance.chat.create(
       model: model,
       messages: openAIMessages,
+      maxTokens: 3000,
     );
 
     final message = _convertToMessage(completionModel.choices.first, chatId);
@@ -36,6 +37,7 @@ class OpenAIChatApi implements IChatApi {
     final stream = OpenAI.instance.chat.createStream(
       model: model,
       messages: openAIMessages,
+      maxTokens: 3000,
     );
 
     return stream.map((event) => _convertStreamMessageToMessage(event));
