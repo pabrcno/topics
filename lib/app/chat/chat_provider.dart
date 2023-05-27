@@ -1,4 +1,3 @@
-import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
@@ -214,11 +213,6 @@ class ChatProvider with ChangeNotifier {
     currentChat = null;
     currentTopic = null;
     messages = [];
-    notifyListeners();
-  }
-
-  void clearOpenAiStates() {
-    OpenAI.apiKey = "YOUR_API_KEY_HERE";
     notifyListeners();
   }
 }

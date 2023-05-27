@@ -17,6 +17,12 @@ class StorageService {
 
     return await _prefs.setString('apiKey', apiKey);
   }
+
+  Future<bool> clearApiKey() async {
+    OpenAI.apiKey = '';
+
+    return await _prefs.remove('apiKey');
+  }
 }
 
 final storageServiceProvider = StorageService();
