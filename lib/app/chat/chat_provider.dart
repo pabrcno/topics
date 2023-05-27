@@ -1,6 +1,5 @@
 import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
@@ -13,17 +12,14 @@ import '../../domain/models/topic/topic.dart';
 import '../../main.dart';
 
 import '../../presentation/chat/chat_screen.dart';
-import '../../services/exception_notifier.dart';
-import '../../utils/constants.dart';
+
+import '../../services/exception_handling_service.dart';
 
 class ChatProvider with ChangeNotifier {
-  String? apiKey;
-
   List<Message> messages = [];
   final IChatApi _chatApi;
   final IChatRepository _chatRepository;
-  final ExceptionNotifier exceptionNotifier;
-
+  final ErrorCommander _errorCommander;
   bool _isLoading = false;
 
   Chat? currentChat;
@@ -32,49 +28,57 @@ class ChatProvider with ChangeNotifier {
   List<Chat> currentTopicChats = [];
 
   ChatProvider({
-    required this.exceptionNotifier,
     required IChatApi chatApi,
     required IChatRepository chatRepository,
+    required ErrorCommander errorCommander,
   })  : _chatApi = chatApi,
         _chatRepository = chatRepository,
-        super() {
-    loadApiKey();
-  }
+        _errorCommander = errorCommander,
+        super();
 
   Future<void> fetchMessages() async {
-    if (currentChat?.id != null) {
-      setLoading(true);
-      List<Message> fetchedMessages = await _chatRepository.getMessages(
-        currentChat!.id,
-      );
-      setLoading(false);
-      messages = fetchedMessages;
-      notifyListeners();
-    }
+    await _errorCommander.run(() async {
+      if (currentChat?.id != null) {
+        setLoading(true);
+        List<Message> fetchedMessages = await _chatRepository.getMessages(
+          currentChat!.id,
+        );
+        setLoading(false);
+        messages = fetchedMessages;
+        notifyListeners();
+      }
+    });
   }
 
-  Future<void> fetchTopics() async {
-    setLoading(true);
-    topics = await _chatRepository.getTopics(
-      authServiceProvider.getUser()!.uid,
-    );
-    setLoading(false);
+  Future<void> fetchTopics([String? userId]) async {
+    await _errorCommander.run(() async {
+      setLoading(true);
+      topics = await _chatRepository.getTopics(
+        userId ?? authServiceProvider.getUser()!.uid,
+      );
+      setLoading(false);
+    });
   }
 
   Future<void> fetchChatsForTopic(String topicId) async {
-    setLoading(true);
-    currentTopicChats = await _chatRepository.getChats(
-      topicId,
-    );
-    setLoading(false);
+    await _errorCommander.run(() async {
+      setLoading(true);
+
+      currentTopicChats = await _chatRepository.getChats(
+        topicId,
+      );
+      setLoading(false);
+    });
   }
 
-  void setCurrentChat(Chat chat) {
-    currentChat = chat;
-    // Clear the messages list to prevent showing old messages
-    messages.clear();
-    // You might want to fetch the messages for this chat here
-    fetchMessages();
+  Future<void> setCurrentChat(Chat chat) async {
+    await _errorCommander.run(() async {
+      currentChat = chat;
+      // Clear the messages list to prevent showing old messages
+      messages.clear();
+      // You might want to fetch the messages for this chat here
+      await fetchMessages();
+    });
   }
 
   bool get isLoading => _isLoading;
@@ -84,27 +88,6 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> loadApiKey() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    apiKey = prefs.getString('apiKey');
-    if (apiKey is String && apiKey!.length == OPENAI_API_KEY_LENGTH) {
-      OpenAI.apiKey = apiKey!;
-      notifyListeners();
-    }
-  }
-
-  Future<bool> saveApiKey(String newApiKey) async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setString('apiKey', newApiKey);
-    apiKey = newApiKey;
-    if (apiKey is String) {
-      OpenAI.apiKey = apiKey!;
-      notifyListeners();
-      return true;
-    }
-    return false;
-  }
-
   String messageBuffer = '';
   void updateMessageBuffer(String newValue) {
     messageBuffer += newValue;
@@ -112,10 +95,7 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> sendMessage(String content) async {
-    try {
-      if (!isApiKeySet) {
-        throw Exception('OpenAI API Key is not set');
-      }
+    await _errorCommander.run(() async {
       final message = Message(
           id: const Uuid().v4(),
           content: content,
@@ -148,18 +128,13 @@ class ChatProvider with ChangeNotifier {
         _chatRepository.createMessage(message);
         _chatRepository.createMessage(answer);
       });
-    } // catch only exceptions
-    catch (e) {
-      _handleError(e);
-    }
+    });
   }
 
   Future<void> createChat(String initialMessage, Topic topic) async {
-    try {
+    await _errorCommander.run(() async {
       // Ensure we have an API key before proceeding
-      if (!isApiKeySet) {
-        throw Exception('OpenAI API Key is not set');
-      }
+
       setLoading(true);
 
       clearChatStates();
@@ -190,48 +165,22 @@ class ChatProvider with ChangeNotifier {
       await _chatRepository.createChat(newChat).then((value) {
         sendMessage(initialMessage);
       });
-    } catch (e) {
-      _handleError(e);
-    }
-  }
-
-  void _handleError(dynamic e) {
-    exceptionNotifier.addException(e);
-
-    messages.add(
-      Message(
-        id: 'error',
-        chatId: 'error',
-        content:
-            'Sorry, I am not feeling well today, apparently I have a bug 🐛.\n ${e.toString()}',
-        sentAt: DateTime.now(),
-        isUser: false,
-        role: EMessageRole.system,
-      ),
-    );
-    notifyListeners();
-    setLoading(false);
-
-    if (e is Error) {
-      throw e;
-    }
+    });
   }
 
 // Inside ChatProvider
   Future<void> fetchChatAndMessages(String chatId) async {
-    if (currentChat == null) return;
+    await _errorCommander.run(() async {
+      if (currentChat == null) return;
 
-    currentChat = await _chatRepository.getChat(chatId);
+      currentChat = await _chatRepository.getChat(chatId);
 
-    messages = await _chatRepository.getMessages(chatId);
+      messages = await _chatRepository.getMessages(chatId);
+    });
   }
 
   Future<void> createTopic(String title, String initialMessage) async {
-    try {
-      // Ensure we have an API key before proceeding
-      if (!isApiKeySet) {
-        throw Exception('OpenAI API Key is not set');
-      }
+    await _errorCommander.run(() async {
       setLoading(true);
 
       // Define a unique id for the new topic
@@ -255,12 +204,8 @@ class ChatProvider with ChangeNotifier {
       // Update the current topic
       currentTopic = newTopic;
       await fetchTopics();
-    } catch (e) {
-      _handleError(e);
-    }
+    });
   }
-
-  bool get isApiKeySet => apiKey != null && apiKey!.isNotEmpty;
 
   void clearChatStates() {
     currentChat = null;
@@ -271,7 +216,6 @@ class ChatProvider with ChangeNotifier {
   }
 
   void clearOpenAiStates() {
-    apiKey = null;
     OpenAI.apiKey = "YOUR_API_KEY_HERE";
     notifyListeners();
   }

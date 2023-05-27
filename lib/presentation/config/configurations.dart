@@ -4,6 +4,7 @@ import 'package:topics/services/auth_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/chat/chat_provider.dart';
+import '../../services/storage_service.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({Key? key}) : super(key: key);
@@ -23,31 +24,19 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   }
 
   void _loadApiKey() {
-    String? apiKey = Provider.of<ChatProvider>(context, listen: false).apiKey;
+    String? apiKey = storageServiceProvider.getApiKey();
     _controller.text = apiKey ?? '';
   }
 
   void _saveApiKey(String apiKey) async {
-    Provider.of<ChatProvider>(context, listen: false)
-        .saveApiKey(apiKey)
-        .then((success) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(success
-              ? 'API key loaded successfully.'
-              : 'Failed to load API key.'),
-          backgroundColor:
-              success ? Colors.green.shade400 : Colors.red.shade400,
-        ),
-      );
-    });
+    storageServiceProvider.saveApiKey(apiKey);
   }
 
   void _logout() {
     var chatProvider = Provider.of<ChatProvider>(context, listen: false);
     chatProvider.clearChatStates();
     chatProvider.clearOpenAiStates();
-    authServiceProvider.signOut();
+    AuthService().signOut();
 
     Navigator.of(context).pop();
   }

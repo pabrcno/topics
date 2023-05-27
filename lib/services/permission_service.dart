@@ -38,3 +38,5 @@ class PermissionService {
     return permissionStatus == PermissionStatus.granted;
   }
 }
+
+final permissionServiceProvider = PermissionService();

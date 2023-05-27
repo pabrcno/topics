@@ -48,7 +48,11 @@ class _ChatsListState extends State<ChatsList> {
               return ListTile(
                 title: Padding(
                     padding: const EdgeInsets.only(bottom: 30),
-                    child: Text(chat.summary.split('\n').take(5).join('\n'))),
+                    child: Text(
+                      chat.summary,
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                    )),
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

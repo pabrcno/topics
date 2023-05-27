@@ -18,14 +18,7 @@ class NewChatModal extends StatelessWidget {
   Widget build(BuildContext context) {
     void _submitForm() {
       final chatProvider = Provider.of<ChatProvider>(context, listen: false);
-      if (chatProvider.apiKey == null || chatProvider.apiKey!.isEmpty) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('API key is not set. Please configure it first.'),
-          ),
-        );
-        return;
-      }
+
       Navigator.of(context).pop();
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();

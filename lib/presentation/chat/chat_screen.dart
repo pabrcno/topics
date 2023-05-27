@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
-import 'package:topics/presentation/widgets/ocr_input.dart';
 import '../../app/chat/chat_provider.dart';
 import '../../domain/models/chat/chat.dart';
 import '../widgets/app_chip.dart';
 import '../widgets/disabled.dart';
+import '../widgets/ocr_input.dart';
 import '../widgets/suggested_prompt_selector.dart';
 
 class ChatScreen extends StatelessWidget {
@@ -56,6 +56,26 @@ class ChatScreen extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
+            Disabled(
+                disabled:
+                    provider.messageBuffer.isNotEmpty || provider.isLoading,
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: Theme.of(context).appBarTheme.backgroundColor),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SuggestedPromptSelector(
+                        onSelect: (key, value) {
+                          _textController.text = value;
+                        },
+                      ),
+                      OCRInput(onOcrResult: (result) {
+                        _textController.text = result;
+                      }),
+                    ],
+                  ),
+                )),
             Expanded(
               child: ChatMessagesListView(
                 scrollController: _scrollController,
@@ -67,23 +87,6 @@ class ChatScreen extends StatelessWidget {
               height: 1,
               color: Theme.of(context).buttonTheme.colorScheme?.primary ??
                   Colors.white,
-            ),
-            const SizedBox(height: 10),
-            Disabled(
-              disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  SuggestedPromptSelector(
-                    onSelect: (key, value) {
-                      _textController.text = value;
-                    },
-                  ),
-                  OCRInput(onOcrResult: (result) {
-                    _textController.text = result;
-                  }),
-                ],
-              ),
             ),
             const SizedBox(height: 10),
             Container(

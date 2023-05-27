@@ -7,22 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:topics/api/openAi/chat_api.dart';
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/services/auth_service.dart';
-import 'package:topics/services/exception_notifier.dart';
-import 'package:topics/utils/constants.dart';
+import 'package:topics/services/exception_handling_service.dart';
+import 'package:topics/services/storage_service.dart';
 
+import 'api/openAi/chat_api.dart';
 import 'app/chat/chat_provider.dart';
 import 'firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
-Future<String?> _loadOpenAiApiKey() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
-  String? apiKey = prefs.getString('apiKey');
-  return apiKey;
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,36 +26,39 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await _loadOpenAiApiKey().then((value) {
-    if (value != null && value.length == OPENAI_API_KEY_LENGTH) {
-      OpenAI.apiKey = value;
-      return;
-    }
-  });
+  await storageServiceProvider.initializePrefs();
+  final openAIApiKey = storageServiceProvider.getApiKey();
+  if (openAIApiKey != null) {
+    OpenAI.apiKey = openAIApiKey;
+  }
 
   final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
-  var exceptionNotifier = ExceptionNotifier();
-  runZonedGuarded(() {
-    runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider<ExceptionNotifier>.value(
-              value: exceptionNotifier),
-          ChangeNotifierProvider<ChatProvider>(
-            create: (context) => ChatProvider(
-                chatRepository: FirestoreChatRepository(),
-                exceptionNotifier: exceptionNotifier,
-                chatApi: OpenAIChatApi()),
-          ),
-        ],
-        child: MyApp(theme: theme),
+
+  runApp(
+    MultiProvider(providers: [
+      ChangeNotifierProvider<ChatProvider>(
+        create: (context) => ChatProvider(
+            chatRepository: FirestoreChatRepository(),
+            chatApi: OpenAIChatApi(),
+            errorCommander: ErrorCommander(
+              (String message) async {
+                // Show a snackbar using the current ScaffoldMessenger.
+                // we can change this functions if we want to trigger other ui elements.
+                // maybe we have to abstract this if we want other providers to use the same instance of ErrorCommander
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text(message),
+                  ),
+                );
+                // Add a return statement to match the expected return type
+                return Future.value();
+              },
+            )), // Pass context to ErrorCommander
       ),
-    );
-  }, (exception, stackTrace) {
-    exceptionNotifier.addException(exception);
-  });
+    ], child: MyApp(theme: theme)),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -76,25 +73,6 @@ class MyApp extends StatelessWidget {
       home: authServiceProvider.handleAuthState(),
       theme: theme,
       debugShowCheckedModeBanner: false,
-      builder: (context, child) {
-        return Scaffold(
-          body: Builder(
-            builder: (BuildContext context) {
-              var errorNotifier = Provider.of<ExceptionNotifier>(context);
-              if (errorNotifier.lastException != null) {
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                        content: Text(errorNotifier.lastException.toString())),
-                  );
-                });
-                // clear the error
-              }
-              return child!;
-            },
-          ),
-        );
-      },
     );
   }
 }
