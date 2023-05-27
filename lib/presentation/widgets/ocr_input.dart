@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:google_ml_kit/google_ml_kit.dart';
+import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -46,7 +46,7 @@ class _OCRInputState extends State<OCRInput> {
       );
 
       final inputImage = InputImage.fromFilePath(croppedFile?.path ?? '');
-      final textDetector = GoogleMlKit.vision.textRecognizer();
+      final textDetector = TextRecognizer();
       final recognizedText = await textDetector.processImage(inputImage);
 
       textDetector.close();
