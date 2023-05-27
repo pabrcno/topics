@@ -39,12 +39,6 @@ class ChatProvider with ChangeNotifier {
         _chatRepository = chatRepository,
         super() {
     loadApiKey();
-    _init();
-  }
-
-  void _init() async {
-    await fetchTopics();
-    notifyListeners(); // Notifies listeners about the change
   }
 
   Future<void> fetchMessages() async {
