@@ -31,6 +31,12 @@ void main() {
       chatRepository: mockChatRepository,
       exceptionNotifier: mockExceptionNotifier,
     );
+    // Initialize an empty list of messages
+    List<Message> mockMessages = [];
+
+    // Define the behavior of the getMessages() function
+    when(mockChatRepository.getMessages(''))
+        .thenAnswer((_) async => mockMessages);
   });
 
   group('ChatProvider Tests', () {

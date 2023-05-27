@@ -58,7 +58,7 @@ class AuthService {
         'role': 'user',
       });
     }
-    return userCredential;
+    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   signOut() {

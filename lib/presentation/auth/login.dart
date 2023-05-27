@@ -10,6 +10,23 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  bool loading = false;
+
+  Future<void> signInWithGoogle() async {
+    setState(() {
+      loading = true;
+    });
+    await authServiceProvider.signInWithGoogle().then((_) {
+      setState(() {
+        loading = false;
+      });
+    }).catchError((_) {
+      setState(() {
+        loading = false;
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -30,11 +47,12 @@ class _LoginPageState extends State<LoginPage> {
               'assets/images/logo_with_label_1-removebg-preview.png',
               width: 300,
             ),
-            OutlinedButton(
-                onPressed: () {
-                  authServiceProvider.signInWithGoogle();
-                },
-                child: const Text('Sign in with Google')),
+            loading
+                ? const CircularProgressIndicator()
+                : OutlinedButton(
+                    onPressed: signInWithGoogle,
+                    child: const Text('Sign in with Google'),
+                  ),
           ],
         ),
       ),
