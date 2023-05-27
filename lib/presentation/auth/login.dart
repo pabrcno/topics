@@ -2,30 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../../services/auth_service.dart';
 
-class LoginPage extends StatefulWidget {
+class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
-
-  @override
-  _LoginPageState createState() => _LoginPageState();
-}
-
-class _LoginPageState extends State<LoginPage> {
-  bool loading = false;
-
-  Future<void> signInWithGoogle() async {
-    setState(() {
-      loading = true;
-    });
-    await authServiceProvider.signInWithGoogle().then((_) {
-      setState(() {
-        loading = false;
-      });
-    }).catchError((_) {
-      setState(() {
-        loading = false;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,15 +25,51 @@ class _LoginPageState extends State<LoginPage> {
               'assets/images/logo_with_label_1-removebg-preview.png',
               width: 300,
             ),
-            loading
-                ? const CircularProgressIndicator()
-                : OutlinedButton(
-                    onPressed: signInWithGoogle,
-                    child: const Text('Sign in with Google'),
-                  ),
+            SignInButton(
+              onPressed: () => authServiceProvider.signInWithGoogle(),
+            ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class SignInButton extends StatefulWidget {
+  final Future<void> Function() onPressed;
+  const SignInButton({Key? key, required this.onPressed}) : super(key: key);
+
+  @override
+  _SignInButtonState createState() => _SignInButtonState();
+}
+
+class _SignInButtonState extends State<SignInButton> {
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return OutlinedButton(
+      onPressed: _isLoading
+          ? null
+          : () async {
+              setState(() {
+                _isLoading = true;
+              });
+              try {
+                await widget.onPressed();
+              } catch (e) {
+                // Handle the exception here
+              } finally {
+                if (mounted) {
+                  setState(() {
+                    _isLoading = false;
+                  });
+                }
+              }
+            },
+      child: _isLoading
+          ? const CircularProgressIndicator()
+          : const Text('Sign in with Google'),
     );
   }
 }

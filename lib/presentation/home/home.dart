@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      AuthService().getUser()?.photoURL ?? '',
+                      authServiceProvider.getUser()?.photoURL ?? '',
                     ),
                   )))
         ],
