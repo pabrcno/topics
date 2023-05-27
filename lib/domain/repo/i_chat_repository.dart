@@ -7,17 +7,17 @@ abstract class IChatRepository {
   Future<void> updateChat(Chat chat);
   Future<void> deleteChat(String chatId);
   Future<Chat?> getChat(String chatId);
-  Stream<List<Chat>> getChats(String userId);
+  Future<List<Chat>> getChats(String topicId);
 
   Future<void> createMessage(Message message);
   Future<void> updateMessage(Message message);
   Future<void> deleteMessage(String messageId);
   Future<Message?> getMessage(String messageId);
-  Stream<List<Message>> getMessages(String chatId);
+  Future<List<Message>> getMessages(String chatId);
 
   Future<void> createTopic(Topic topic);
   Future<void> updateTopic(Topic topic);
   Future<void> deleteTopic(String topicId);
   Future<Topic?> getTopic(String topicId);
-  Stream<List<Topic>> getTopics(String userId);
+  Future<List<Topic>> getTopics(String userId);
 }

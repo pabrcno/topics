@@ -6,16 +6,13 @@ import 'package:topics/domain/models/topic/topic.dart';
 import '../../domain/repo/i_chat_repository.dart';
 
 class FirestoreChatRepository implements IChatRepository {
-  final FirebaseFirestore _firebaseFirestore;
+  final FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
 
-  FirestoreChatRepository(this._firebaseFirestore);
+  FirestoreChatRepository();
 
   @override
   Future<void> createChat(Chat chat) async {
-    await _firebaseFirestore
-        .collection('chats')
-        .doc(chat.id)
-        .set(chat.toJson());
+    await _firebaseFirestore.collection('chats').add(chat.toJson());
   }
 
   @override
@@ -24,8 +21,7 @@ class FirestoreChatRepository implements IChatRepository {
         .collection('chats')
         .doc(message.chatId)
         .collection('messages')
-        .doc(message.id)
-        .set(message.toJson());
+        .add(message.toJson());
   }
 
   @override
@@ -36,10 +32,8 @@ class FirestoreChatRepository implements IChatRepository {
 
   @override
   Future<void> createTopic(Topic topic) async {
-    await _firebaseFirestore
-        .collection('topics')
-        .doc(topic.id)
-        .set(topic.toJson());
+    final json = topic.toJson();
+    await _firebaseFirestore.collection('topics').add(json);
   }
 
   @override
@@ -59,16 +53,16 @@ class FirestoreChatRepository implements IChatRepository {
   }
 
   @override
-  Stream<List<Chat>> getChats(String userId) {
+  Future<List<Chat>> getChats(String topicId) {
     return _firebaseFirestore
         .collection('chats')
-        .where('userId', isEqualTo: userId)
+        .where('topicId', isEqualTo: topicId)
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs
           .map((doc) => Chat.fromJson(doc.data()))
           .toList();
-    });
+    }).first;
   }
 
   @override
@@ -114,22 +108,21 @@ class FirestoreChatRepository implements IChatRepository {
   }
 
   @override
-  Stream<List<Message>> getMessages(String chatId) {
+  Future<List<Message>> getMessages(String chatId) {
     return _firebaseFirestore
         .collection('chats')
         .doc(chatId)
         .collection('messages')
-        .orderBy('sentAt', descending: true) // order by date, newest first
         .snapshots()
         .map((querySnapshot) {
       return querySnapshot.docs
           .map((doc) => Message.fromJson(doc.data()))
           .toList();
-    });
+    }).first;
   }
 
   @override
-  Stream<List<Topic>> getTopics(String userId) {
+  Future<List<Topic>> getTopics(String userId) {
     return _firebaseFirestore
         .collection('topics')
         .where('userId', isEqualTo: userId)
@@ -138,6 +131,6 @@ class FirestoreChatRepository implements IChatRepository {
       return querySnapshot.docs
           .map((doc) => Topic.fromJson(doc.data()))
           .toList();
-    });
+    }).first;
   }
 }
