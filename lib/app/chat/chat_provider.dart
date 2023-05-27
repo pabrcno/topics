@@ -151,7 +151,9 @@ class ChatProvider with ChangeNotifier {
         lastModified: DateTime.now(),
         summary: initialMessage, // using the initial message as a summary
       );
+      currentChat = newChat;
 
+      currentTopic = topic;
       Navigator.push(
         navigatorKey.currentState!.context,
         MaterialPageRoute(
