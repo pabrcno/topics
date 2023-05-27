@@ -1,32 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/presentation/chat/widgets/chat_message_tile.dart';
+import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 import 'package:topics/presentation/widgets/ocr_input.dart';
 import '../../app/chat/chat_provider.dart';
-import '../../domain/core/enums.dart';
-import '../../domain/models/message/message.dart';
+import '../../domain/models/chat/chat.dart';
 import '../widgets/app_chip.dart';
 import '../widgets/disabled.dart';
 
-class ChatScreen extends StatefulWidget {
-  const ChatScreen({Key? key}) : super(key: key);
-
-  @override
-  _ChatScreenState createState() => _ChatScreenState();
-}
-
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Provider.of<ChatProvider>(context, listen: false).fetchChatAndMessages();
-    });
-  }
+  final Chat chat;
+  ChatScreen({super.key, required this.chat});
 
   void _sendMessage(BuildContext context) async {
     final messageText = _textController.text;
@@ -34,13 +20,13 @@ class _ChatScreenState extends State<ChatScreen> {
       _textController.clear();
       await Provider.of<ChatProvider>(context, listen: false)
           .sendMessage(messageText);
-      _scrollToBottom();
+      _scrollToBottom(_scrollController);
     }
   }
 
-  void _scrollToBottom() {
-    _scrollController.animateTo(
-      _scrollController.position.maxScrollExtent,
+  void _scrollToBottom(ScrollController scrollController) {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
       duration: const Duration(milliseconds: 100),
       curve: Curves.easeOut,
     );
@@ -48,6 +34,10 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await Provider.of<ChatProvider>(context, listen: false).fetchMessages();
+    });
+
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Scaffold(
         appBar: CustomAppBar(
@@ -65,27 +55,8 @@ class _ChatScreenState extends State<ChatScreen> {
         body: Column(
           children: <Widget>[
             Expanded(
-              child: ListView.builder(
-                controller: _scrollController,
-                itemCount: provider.messages.length +
-                    (provider.messageBuffer.isNotEmpty ? 1 : 0),
-                itemBuilder: (context, index) {
-                  if (index == provider.messages.length) {
-                    return ChatMessageTile(
-                      message: Message(
-                        content: provider.messageBuffer,
-                        id: 'new',
-                        chatId: provider.currentChat?.id ?? '',
-                        isUser: false,
-                        role: EMessageRole.assistant,
-                        sentAt: DateTime.now(),
-                      ),
-                    );
-                  } else {
-                    return ChatMessageTile(message: provider.messages[index]);
-                  }
-                },
-              ),
+              child: ChatMessagesListView(
+                  scrollController: _scrollController, chat: chat),
             ),
             Divider(
               height: 1,

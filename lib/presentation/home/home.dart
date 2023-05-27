@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
-import '../../mock_data.dart';
 import '../../services/auth_service.dart';
 import '../config/configurations.dart';
 import 'widgets/topic_grid.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class HomePage extends StatelessWidget {
+  const HomePage({Key? key}) : super(key: key);
 
-  @override
-  _HomePageState createState() => _HomePageState();
-}
-
-class _HomePageState extends State<HomePage> {
-  void _openModal() {
+  void _openModal(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -51,9 +45,9 @@ class _HomePageState extends State<HomePage> {
                   )))
         ],
       ),
-      body: TopicGrid(topics: topics),
+      body: const TopicGrid(),
       floatingActionButton: FloatingActionButton(
-        onPressed: _openModal,
+        onPressed: () => _openModal(context),
         tooltip: 'Add Topic',
         child: const Icon(Icons.add),
       ),

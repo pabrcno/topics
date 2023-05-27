@@ -11,7 +11,7 @@ import '../../domain/api/chat/i_chat_api.dart';
 import '../../domain/models/chat/chat.dart';
 import '../../domain/models/topic/topic.dart';
 import '../../main.dart';
-import '../../mock_data.dart';
+
 import '../../presentation/chat/chat_screen.dart';
 import '../../services/exception_notifier.dart';
 import '../../utils/constants.dart';
@@ -25,9 +25,11 @@ class ChatProvider with ChangeNotifier {
   final ExceptionNotifier exceptionNotifier;
 
   bool _isLoading = false;
-  String? currentChatId;
+
   Chat? currentChat;
   Topic? currentTopic;
+  List<Topic> topics = [];
+  List<Chat> currentTopicChats = [];
 
   ChatProvider({
     required this.exceptionNotifier,
@@ -37,30 +39,48 @@ class ChatProvider with ChangeNotifier {
         _chatRepository = chatRepository,
         super() {
     loadApiKey();
+    _init();
   }
 
-  void setCurrentChatId(String id) {
-    currentChatId = id;
+  void _init() async {
+    await fetchTopics();
+    notifyListeners(); // Notifies listeners about the change
+  }
+
+  Future<void> fetchMessages() async {
+    if (currentChat?.id != null) {
+      setLoading(true);
+      List<Message> fetchedMessages = await _chatRepository.getMessages(
+        currentChat!.id,
+      );
+      setLoading(false);
+      messages = fetchedMessages;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchTopics() async {
+    setLoading(true);
+    topics = await _chatRepository.getTopics(
+      authServiceProvider.getUser()!.uid,
+    );
+    setLoading(false);
+  }
+
+  Future<void> fetchChatsForTopic(String topicId) async {
+    setLoading(true);
+    currentTopicChats = await _chatRepository.getChats(
+      topicId,
+    );
+    setLoading(false);
+  }
+
+  void setCurrentChat(Chat chat) {
+    currentChat = chat;
     // Clear the messages list to prevent showing old messages
     messages.clear();
     // You might want to fetch the messages for this chat here
-    fetchMessagesForCurrentChat();
-  }
-
-  Future<void> fetchMessagesForCurrentChat() async {
-    // Replace this with actual logic to get messages based on currentChatId
-    // For example:
-    if (currentChatId != null) {
-      try {
-        List<Message> fetchedMessages = mockMessages
-            .where((element) => element.chatId == currentChatId)
-            .toList();
-        messages = fetchedMessages;
-        notifyListeners();
-      } catch (e) {
-        // Handle exception
-      }
-    }
+    fetchMessages();
   }
 
   bool get isLoading => _isLoading;
@@ -106,7 +126,7 @@ class ChatProvider with ChangeNotifier {
           id: const Uuid().v4(),
           content: content,
           sentAt: DateTime.now(),
-          chatId: currentChatId ?? 'EMPTY_CHAT_ID',
+          chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
           isUser: true,
           role: EMessageRole.user);
 
@@ -121,7 +141,7 @@ class ChatProvider with ChangeNotifier {
           id: const Uuid().v4(),
           content: messageBuffer,
           sentAt: DateTime.now(),
-          chatId: currentChatId ?? 'EMPTY_CHAT_ID',
+          chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
           isUser: false,
           role: EMessageRole.assistant,
         );
@@ -163,12 +183,12 @@ class ChatProvider with ChangeNotifier {
         summary: initialMessage, // using the initial message as a summary
       );
 
-      currentChatId = newChatId;
-      currentChat = newChat;
       Navigator.push(
         navigatorKey.currentState!.context,
         MaterialPageRoute(
-          builder: (context) => const ChatScreen(), // your chat screen widget
+          builder: (context) => ChatScreen(
+            chat: newChat,
+          ), // your chat screen widget
         ),
       );
       // Send this new chat to your backend for storage
@@ -202,29 +222,13 @@ class ChatProvider with ChangeNotifier {
     }
   }
 
-  Future<Chat> fetchChat(String chatId) async {
-    // TODO: when we add database, we need to fetch the chat and messages from the database
-    await Future.delayed(const Duration(seconds: 2)); // Simulate network delay
-    return Chat(
-      id: chatId,
-      userId: authServiceProvider.getUser()?.uid ?? '',
-      topicId: currentTopic?.id ?? '',
-      createdAt: DateTime.now(),
-      lastModified: DateTime.now(),
-      summary: "This is a chat summary", // replace with actual summary
-    );
-  }
-
 // Inside ChatProvider
-  Future<void> fetchChatAndMessages() async {
+  Future<void> fetchChatAndMessages(String chatId) async {
     if (currentChat == null) return;
 
-    currentChat = await fetchChat(currentChat!.id);
+    currentChat = await _chatRepository.getChat(chatId);
 
-    // TODO: when we add database, we need to fetch the chat and messages from the database
-    messages = mockMessages
-        .where((element) => element.chatId == currentChat!.id)
-        .toList();
+    messages = await _chatRepository.getMessages(chatId);
   }
 
   Future<void> createTopic(String title, String initialMessage) async {
@@ -255,6 +259,7 @@ class ChatProvider with ChangeNotifier {
 
       // Update the current topic
       currentTopic = newTopic;
+      await fetchTopics();
     } catch (e) {
       _handleError(e);
     }
@@ -263,7 +268,7 @@ class ChatProvider with ChangeNotifier {
   bool get isApiKeySet => apiKey != null && apiKey!.isNotEmpty;
 
   void clearChatStates() {
-    currentChatId = null;
+    currentChat = null;
     currentChat = null;
     currentTopic = null;
     messages = [];

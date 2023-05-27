@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:topics/mock_data.dart';
 
 import 'package:topics/presentation/topic/widgets/chats_list.dart';
 import 'package:topics/presentation/topic/widgets/new_chat_modal.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 
-import '../../app/chat/chat_provider.dart';
 import '../../domain/models/topic/topic.dart';
 import '../widgets/app_chip.dart';
 
@@ -22,22 +19,7 @@ class TopicScreen extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return NewChatModal(
-            onSubmit: (initialMessage, topicId) async {
-              final chatProvider =
-                  Provider.of<ChatProvider>(context, listen: false);
-
-              // Get the current Topic based on topicId
-              final currentTopic = topics.firstWhere((t) =>
-                  t.id == topicId); // You need to have list of topics in memory
-              Navigator.of(context).pop();
-              // Create new chat
-              chatProvider
-                  .createChat(initialMessage, currentTopic)
-                  .then((newChat) {
-                // Close the NewChatModal dialog
-              });
-            },
-            topicId: topic.id,
+            topic: topic,
           );
         },
       );
@@ -55,7 +37,7 @@ class TopicScreen extends StatelessWidget {
           ],
         ),
       ),
-      body: ChatsList(chats: chats),
+      body: ChatsList(topicId: topic.id),
       floatingActionButton: FloatingActionButton(
         onPressed: openModal,
         child: const Icon(Icons.messenger_outline),
