@@ -7,6 +7,7 @@ import '../../app/chat/chat_provider.dart';
 import '../../domain/models/chat/chat.dart';
 import '../widgets/app_chip.dart';
 import '../widgets/disabled.dart';
+import '../widgets/suggested_prompt_selector.dart';
 
 class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
@@ -70,9 +71,19 @@ class ChatScreen extends StatelessWidget {
             const SizedBox(height: 10),
             Disabled(
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
-              child: OCRInput(onOcrResult: (result) {
-                _textController.text = result;
-              }),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: [
+                  SuggestedPromptSelector(
+                    onSelect: (key, value) {
+                      _textController.text = value;
+                    },
+                  ),
+                  OCRInput(onOcrResult: (result) {
+                    _textController.text = result;
+                  }),
+                ],
+              ),
             ),
             const SizedBox(height: 10),
             Container(

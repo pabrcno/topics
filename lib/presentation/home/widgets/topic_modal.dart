@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
 import '../../widgets/ocr_input.dart';
+import '../../widgets/suggested_prompt_selector.dart';
 
 class TopicModal extends StatefulWidget {
   const TopicModal({super.key});
@@ -68,6 +69,11 @@ class _TopicModalState extends State<TopicModal> {
                   onSaved: (value) => _title = value!,
                 ),
                 const SizedBox(height: 28.0),
+                SuggestedPromptSelector(
+                  onSelect: (key, value) {
+                    _textController.text = value;
+                  },
+                ),
                 TextFormField(
                   controller: _textController,
                   maxLines: null,
