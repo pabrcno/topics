@@ -42,8 +42,9 @@ class ChatProvider with ChangeNotifier {
         List<Message> fetchedMessages = await _chatRepository.getMessages(
           currentChat!.id,
         );
-        setLoading(false);
+
         messages = fetchedMessages;
+        setLoading(false);
         notifyListeners();
       }
     });
@@ -124,8 +125,8 @@ class ChatProvider with ChangeNotifier {
 
         notifyListeners();
         setLoading(false);
-        _chatRepository.createMessage(message);
-        _chatRepository.createMessage(answer);
+        await _chatRepository.createMessage(message);
+        await _chatRepository.createMessage(answer);
       });
     });
   }
