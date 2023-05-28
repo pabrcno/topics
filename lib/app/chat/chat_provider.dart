@@ -104,10 +104,12 @@ class ChatProvider with ChangeNotifier {
           role: EMessageRole.user);
 
       messages.add(message);
-      notifyListeners();
-      setLoading(true);
 
+      await _chatRepository.createMessage(message);
+
+      notifyListeners();
       _chatApi.createChatCompletionStream(messages).listen((event) {
+        if (!isLoading) setLoading(true);
         updateMessageBuffer(event.content);
       }, onDone: () async {
         final answer = Message(
@@ -124,7 +126,7 @@ class ChatProvider with ChangeNotifier {
 
         notifyListeners();
         setLoading(false);
-        await _chatRepository.createMessage(message);
+
         await _chatRepository.createMessage(answer);
       });
     });
@@ -135,8 +137,6 @@ class ChatProvider with ChangeNotifier {
       // Ensure we have an API key before proceeding
 
       setLoading(true);
-
-      clearChatStates();
 
       // Define a unique id for the new chat
       final newChatId = const Uuid().v4();
