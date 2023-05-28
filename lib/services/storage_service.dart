@@ -19,7 +19,7 @@ class StorageService {
   }
 
   Future<bool> clearApiKey() async {
-    OpenAI.apiKey = '';
+    OpenAI.apiKey = 'EMPTY';
 
     return await _prefs.remove('apiKey');
   }
