@@ -29,6 +29,10 @@ class ChatMessageTile extends StatelessWidget {
                   .grey; // default color in case none of the roles match
           }
         }(),
+        border: Border.all(
+          color: Colors.blueGrey.shade800,
+          width: 1,
+        ),
       ),
       child: Column(
         crossAxisAlignment:
