@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 import 'package:topics/app/chat/chat_provider.dart';
+import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/api/chat/i_chat_api.dart';
 import 'package:topics/services/exception_handling_service.dart';
@@ -106,35 +109,25 @@ void main() {
     expect(chatProvider.isLoading, equals(false));
   });
 
-  // test('_handleSendMessageCompletion completes with the answer message',
-  //     () async {
-  //   const mockContent = 'Hello!';
-  //   final mockEvent = mockMessage;
+  test('sendMessage completes with the sent message', () async {
+    const mockContent = 'Hello!';
+    final mockEvent = mockMessage;
 
-  //   // Mock the necessary dependencies
-  //   when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
-  //     final controller = StreamController<Message>();
-  //     controller.add(mockEvent);
-  //     controller.close();
-  //     return controller.stream;
-  //   });
+    // Mock the necessary dependencies
+    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+      final controller = StreamController<Message>();
+      controller.add(mockEvent);
+      controller.close();
+      return controller.stream;
+    });
 
-  //   // Invoke the method and await the result
-  //   final result = await chatProvider.handleSendMessageCompletion();
+    // Invoke the method and await the result
+    await chatProvider.sendMessage(mockContent);
 
-  //   // Verify the result
-  //   expect(result.content, equals(mockContent));
-  //   expect(chatProvider.messageBuffer, equals(''));
-  // });
-
-  // test('_handleSendMessageCompletion throws an error on failure', () async {
-  //   // Mock the necessary dependencies to simulate an error
-  //   when(mockChatApi.createChatCompletionStream(any))
-  //       .thenThrow(Exception('Failed'));
-
-  //   // Invoke the method and expect an error to be thrown
-  //   expect(chatProvider.handleSendMessageCompletion(), throwsException);
-  // });
+    // Verify the result
+    expect(mockChatRepository.createMessage(mockEvent), completes);
+    expect(chatProvider.messageBuffer, equals(''));
+  });
 
   // test('createChat creates a new chat and sends initial message', () async {
   //   const mockInitialMessage = 'Hello!';
