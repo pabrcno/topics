@@ -208,6 +208,20 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
+  Future<void> deleteTopic(Topic topic) async {
+    await errorCommander.run(() async {
+      setLoading(true);
+
+      // Delete the topic from the repository
+      await _chatRepository.deleteTopic(topic.id);
+
+      // Remove the topic from the topics list
+      topics.remove(topic);
+
+      setLoading(false);
+    });
+  }
+
   void clearChatStates() {
     currentChat = null;
     currentChat = null;
