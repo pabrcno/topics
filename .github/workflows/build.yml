@@ -15,7 +15,6 @@ jobs:
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.7.7"
           channel: "stable"
 
       - name: Get version from pubspec
@@ -35,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
+          release_name: Build ${{ steps.version.outputs.version }}
           draft: false
           prerelease: false
 
