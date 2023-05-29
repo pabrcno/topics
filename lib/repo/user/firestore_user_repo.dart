@@ -15,7 +15,11 @@ class FirestoreUserRepository implements IUserRepository {
   Future<AppUser?> getUser(String uid) async {
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(uid).get();
-    return AppUser.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+
+    if (!documentSnapshot.exists) {
+      return AppUser.fromJson(documentSnapshot.data() as Map<String, dynamic>);
+    }
+    return null;
   }
 
   @override

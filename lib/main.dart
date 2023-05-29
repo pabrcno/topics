@@ -7,6 +7,7 @@ import 'package:flutter/services.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
+import 'package:topics/repo/user/firestore_user_repo.dart';
 import 'package:topics/services/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 import 'package:topics/services/storage_service.dart';
@@ -38,9 +39,10 @@ void main() async {
     MultiProvider(providers: [
       ChangeNotifierProvider<ChatProvider>(
         create: (context) => ChatProvider(
-            chatRepository: FirestoreChatRepository(),
-            chatApi: OpenAIChatApi(),
-            errorCommander: ErrorCommander()), // Pass context to ErrorCommander
+          chatRepository: FirestoreChatRepository(),
+          userRepository: FirestoreUserRepository(),
+          chatApi: OpenAIChatApi(),
+        ), // Pass context to ErrorCommander
       ),
     ], child: MyApp(theme: theme)),
   );

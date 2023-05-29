@@ -7,6 +7,7 @@ import 'package:topics/app/chat/chat_provider.dart';
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/api/chat/i_chat_api.dart';
+import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
 @GenerateMocks([IChatRepository, IChatApi])
@@ -41,7 +42,7 @@ void main() {
     chatProvider = ChatProvider(
       chatApi: mockChatApi,
       chatRepository: mockChatRepository,
-      errorCommander: mockErrorCommander,
+      userRepository: MockIUserRepository(),
     );
   });
 
@@ -190,3 +191,5 @@ void main() {
     expect(chatProvider.isLoading, equals(false));
   });
 }
+
+class MockIUserRepository extends Mock implements IUserRepository {}

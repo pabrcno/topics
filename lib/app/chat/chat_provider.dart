@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
+import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/services/auth_service.dart';
 import 'package:uuid/uuid.dart';
 
@@ -18,7 +19,8 @@ class ChatProvider with ChangeNotifier {
   List<Message> messages = [];
   final IChatApi _chatApi;
   final IChatRepository _chatRepository;
-  final ErrorCommander errorCommander;
+  final IUserRepository _userRepository;
+  final ErrorCommander errorCommander = ErrorCommander();
   bool _isLoading = false;
 
   Chat? currentChat;
@@ -29,9 +31,10 @@ class ChatProvider with ChangeNotifier {
   ChatProvider({
     required IChatApi chatApi,
     required IChatRepository chatRepository,
-    required this.errorCommander,
+    required IUserRepository userRepository,
   })  : _chatApi = chatApi,
         _chatRepository = chatRepository,
+        _userRepository = userRepository,
         super();
 
   Future<void> fetchMessages() async {
@@ -127,7 +130,11 @@ class ChatProvider with ChangeNotifier {
         notifyListeners();
         setLoading(false);
 
-        await _chatRepository.createMessage(answer);
+        await Future.wait([
+          _chatRepository.createMessage(answer),
+          _userRepository.reduceMessages(
+              authServiceProvider.getUser()?.uid ?? '', 1)
+        ]);
       }, onError: (e) {
         setLoading(false);
         throw Exception('Error while receiving message: $e');
@@ -168,6 +175,7 @@ class ChatProvider with ChangeNotifier {
         ),
       );
       // Send this new chat to your backend for storage
+
       await _chatRepository.createChat(newChat).then((value) {
         sendMessage(initialMessage);
       });
