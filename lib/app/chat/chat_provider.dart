@@ -96,7 +96,27 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> reduceUserMessages() async {
+    await errorCommander.run(() async {
+      await _userRepository
+          .getUser(authServiceProvider.getUser()?.uid ?? '')
+          .then((user) async {
+        if (user != null) {
+          if (user.messageCount > 0) {
+            await _userRepository.reduceMessages(
+                authServiceProvider.getUser()?.uid ?? '', 1);
+          } else {
+            throw Exception('No messages left');
+          }
+        } else {
+          throw Exception('User not found');
+        }
+      });
+    });
+  }
+
   Future<void> sendMessage(String content) async {
+    await reduceUserMessages();
     await errorCommander.run(() async {
       final message = Message(
           id: const Uuid().v4(),
