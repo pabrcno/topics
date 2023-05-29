@@ -128,6 +128,9 @@ class ChatProvider with ChangeNotifier {
         setLoading(false);
 
         await _chatRepository.createMessage(answer);
+      }, onError: (e) {
+        setLoading(false);
+        throw Exception('Error while receiving message: $e');
       });
     });
   }
@@ -151,6 +154,8 @@ class ChatProvider with ChangeNotifier {
         summary: initialMessage, // using the initial message as a summary
       );
       currentChat = newChat;
+
+      currentTopicChats.add(newChat);
 
       currentTopic = topic;
       Navigator.push(
@@ -217,6 +222,20 @@ class ChatProvider with ChangeNotifier {
 
       // Remove the topic from the topics list
       topics.remove(topic);
+
+      setLoading(false);
+    });
+  }
+
+  Future<void> deleteChat(Chat chat) async {
+    await errorCommander.run(() async {
+      setLoading(true);
+
+      // Delete the chat from the repository
+      await _chatRepository.deleteChat(chat.id);
+
+      // Remove the chat from the chats list
+      currentTopicChats.remove(chat);
 
       setLoading(false);
     });
