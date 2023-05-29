@@ -38,7 +38,7 @@ jobs:
         run: |
           flutter pub get
           flutter test
-          flutter build appbundle --no-tree-shake-icons
+          flutter build appbundle --release --no-tree-shake-icons
 
       - name: Create Release
         id: create_release
