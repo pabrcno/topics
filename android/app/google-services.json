@@ -14,11 +14,19 @@
       },
       "oauth_client": [
         {
-          "client_id": "199942357204-ou8l8l6oodco18d2h7ckl2jj4oi6emr2.apps.googleusercontent.com",
+          "client_id": "199942357204-65lfq11ofb02j3g633g639dqoj16tu15.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.sequencetech.topics",
-            "certificate_hash": "c8566a51c02cd4a07842abfedd60f3a3a720fe0e"
+            "certificate_hash": "92c57e4521172ee967133ac4b3449f76280442c2"
+          }
+        },
+        {
+          "client_id": "199942357204-lvjinv67rehf34p9ld7hlgq39ukrv2nt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sequencetech.topics",
+            "certificate_hash": "2678c2dfd7e87e4727d4edbf81cb30e4d8baa8f0"
           }
         },
         {
@@ -39,10 +47,10 @@
               "client_type": 3
             },
             {
-              "client_id": "199942357204-lhjpjtm9l974lm55od73v1ja63dgki0m.apps.googleusercontent.com",
+              "client_id": "199942357204-fefi2a3t2si8u8u29cadu2eqaaavumao.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.topics"
+                "bundle_id": "com.example.topics.RunnerTests"
               }
             }
           ]
