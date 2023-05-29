@@ -22,7 +22,7 @@ class ChatMessageTile extends StatelessWidget {
               return Colors.cyan.shade900;
 
             case EMessageRole.system:
-              return Colors.red.shade400;
+              return Colors.yellow.shade900;
 
             default:
               return Colors

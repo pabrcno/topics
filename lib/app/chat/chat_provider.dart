@@ -96,28 +96,34 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> reduceUserMessages() async {
-    await errorCommander.run(() async {
-      await _userRepository
-          .getUser(authServiceProvider.getUser()?.uid ?? '')
-          .then((user) async {
-        if (user != null) {
-          if (user.messageCount > 0) {
-            await _userRepository.reduceMessages(
-                authServiceProvider.getUser()?.uid ?? '', 1);
-          } else {
-            throw Exception('No messages left');
-          }
-        } else {
-          throw Exception('User not found');
-        }
-      });
+  Future<bool> _decrementUserMessages() async {
+    return await _userRepository
+        .getUser(authServiceProvider.getUser()?.uid ?? '')
+        .then((user) async {
+      if (user == null || user.messageCount < 0) {
+        messages.add(Message(
+            id: 'warning',
+            content:
+                'It seems you ran out of messages. Please contact your admin.',
+            chatId: currentChat?.id ?? '',
+            sentAt: DateTime.now(),
+            isUser: false,
+            role: EMessageRole.system));
+        notifyListeners();
+
+        return false;
+      }
+      await _userRepository.reduceMessages(
+          authServiceProvider.getUser()?.uid ?? '', 1);
+      return true;
     });
   }
 
   Future<void> sendMessage(String content) async {
-    await reduceUserMessages();
     await errorCommander.run(() async {
+      final userHasMessages = await _decrementUserMessages();
+      if (!userHasMessages) return;
+
       final message = Message(
           id: const Uuid().v4(),
           content: content,
@@ -152,8 +158,6 @@ class ChatProvider with ChangeNotifier {
 
         await Future.wait([
           _chatRepository.createMessage(answer),
-          _userRepository.reduceMessages(
-              authServiceProvider.getUser()?.uid ?? '', 1)
         ]);
       }, onError: (e) {
         setLoading(false);
@@ -162,7 +166,7 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
-  Future<void> createChat(String initialMessage, Topic topic) async {
+  Future<void> createChat(String? initialMessage, Topic topic) async {
     await errorCommander.run(() async {
       // Ensure we have an API key before proceeding
 
@@ -178,7 +182,8 @@ class ChatProvider with ChangeNotifier {
         topicId: topic.id, // replace with actual topicId
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),
-        summary: initialMessage, // using the initial message as a summary
+        summary: initialMessage ??
+            'New chat', // using the initial message as a summary
       );
       currentChat = newChat;
 
@@ -197,7 +202,11 @@ class ChatProvider with ChangeNotifier {
       // Send this new chat to your backend for storage
 
       await _chatRepository.createChat(newChat).then((value) {
-        sendMessage(initialMessage);
+        if (initialMessage != null) {
+          sendMessage(initialMessage);
+          return;
+        }
+        setLoading(false);
       });
     });
   }

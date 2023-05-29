@@ -1,4 +1,4 @@
-const OPENAI_API_KEY_LENGTH = 45;
+const OPENAI_API_KEY_LENGTH = 51;
 
 const Map<String, String> defaultSuggestedPrompts = {
   "Note-taking assistant":

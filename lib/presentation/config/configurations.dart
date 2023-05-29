@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/services/auth_service.dart';
+import 'package:topics/services/exception_handling_service.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/chat/chat_provider.dart';
 import '../../services/storage_service.dart';
+import '../../utils/constants.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({Key? key}) : super(key: key);
@@ -16,7 +18,7 @@ class ConfigurationsPage extends StatefulWidget {
 class _ConfigurationsPageState extends State<ConfigurationsPage> {
   final TextEditingController _controller = TextEditingController();
   bool _obscureText = true;
-
+  final ErrorCommander errorCommander = ErrorCommander();
   @override
   void initState() {
     super.initState();
@@ -28,8 +30,13 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
     _controller.text = apiKey ?? '';
   }
 
-  void _saveApiKey(String apiKey) async {
-    storageServiceProvider.saveApiKey(apiKey);
+  Future<void> _saveApiKey() async {
+    await errorCommander.run(() async {
+      if (_controller.text.length != OPENAI_API_KEY_LENGTH) {
+        throw const FormatException('Invalid API Key');
+      }
+      storageServiceProvider.saveApiKey(_controller.text);
+    });
   }
 
   void _logout() {
@@ -71,17 +78,39 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                     ),
                   ),
                   obscureText: _obscureText,
-                  onSubmitted: _saveApiKey,
+                  onSubmitted: (_) {
+                    _saveApiKey();
+                  },
                 ),
                 const SizedBox(height: 10.0),
-                OutlinedButton(
-                  onPressed: () async => launchUrl(
-                      Uri.parse(
-                        'https://platform.openai.com/account/api-keys',
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    OutlinedButton(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            Theme.of(context).colorScheme.secondary),
                       ),
-                      mode: LaunchMode.externalApplication),
-                  child: const Text('Get API Key'),
-                ),
+                      onPressed: () async => launchUrl(
+                          Uri.parse(
+                            'https://platform.openai.com/account/api-keys',
+                          ),
+                          mode: LaunchMode.externalApplication),
+                      child: const Text('Get API Key'),
+                    ),
+                    OutlinedButton(
+                      onPressed: () {
+                        _saveApiKey();
+                        //show snackbar
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            backgroundColor: Colors.green.shade200,
+                            content:
+                                const Text('OpenAI API Key set successfully')));
+                      },
+                      child: const Text('Set API Key'),
+                    ),
+                  ],
+                )
               ],
             ),
             OutlinedButton(

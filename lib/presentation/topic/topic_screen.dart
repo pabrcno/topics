@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import 'package:topics/presentation/topic/widgets/chats_list.dart';
-import 'package:topics/presentation/topic/widgets/new_chat_modal.dart';
 import 'package:topics/presentation/widgets/custom_app_bar.dart';
 
+import '../../app/chat/chat_provider.dart';
 import '../../domain/models/topic/topic.dart';
 import '../widgets/app_chip.dart';
 
@@ -14,15 +15,10 @@ class TopicScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void openModal() {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return NewChatModal(
-            topic: topic,
-          );
-        },
-      );
+    void createNewChat() async {
+      final chatProvider = Provider.of<ChatProvider>(context, listen: false);
+
+      await chatProvider.createChat(null, topic);
     }
 
     return Scaffold(
@@ -39,7 +35,7 @@ class TopicScreen extends StatelessWidget {
       ),
       body: ChatsList(topicId: topic.id),
       floatingActionButton: FloatingActionButton(
-        onPressed: openModal,
+        onPressed: createNewChat,
         child: const Icon(Icons.messenger_outline),
       ),
     );

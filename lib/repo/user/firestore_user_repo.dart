@@ -16,7 +16,7 @@ class FirestoreUserRepository implements IUserRepository {
     DocumentSnapshot documentSnapshot =
         await _firestore.collection('users').doc(uid).get();
 
-    if (!documentSnapshot.exists) {
+    if (documentSnapshot.data() != null) {
       return AppUser.fromJson(documentSnapshot.data() as Map<String, dynamic>);
     }
     return null;
