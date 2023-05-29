@@ -14,7 +14,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "199942357204-72mgej08h79qm2kt6bvboadflj2756rg.apps.googleusercontent.com",
+          "client_id": "199942357204-dmp6lgirhci6m8de39ebo2ko4a584l66.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.topics",
+            "certificate_hash": "2678c2dfd7e87e4727d4edbf81cb30e4d8baa8f0"
+          }
+        },
+        {
+          "client_id": "199942357204-2sf88fkrtbvf5orkemouap8s16k348eb.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,59 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "199942357204-72mgej08h79qm2kt6bvboadflj2756rg.apps.googleusercontent.com",
+              "client_id": "199942357204-2sf88fkrtbvf5orkemouap8s16k348eb.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "199942357204-lhjpjtm9l974lm55od73v1ja63dgki0m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.topics"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:199942357204:android:7057f62771b2cb096e7b41",
+        "android_client_info": {
+          "package_name": "com.sequencetech.topics"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "199942357204-ou8l8l6oodco18d2h7ckl2jj4oi6emr2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sequencetech.topics",
+            "certificate_hash": "c8566a51c02cd4a07842abfedd60f3a3a720fe0e"
+          }
+        },
+        {
+          "client_id": "199942357204-2sf88fkrtbvf5orkemouap8s16k348eb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAH_GgzhU1gnkjj6LGXo50JGXf302MmEg4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "199942357204-2sf88fkrtbvf5orkemouap8s16k348eb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "199942357204-lhjpjtm9l974lm55od73v1ja63dgki0m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.topics"
+              }
             }
           ]
         }

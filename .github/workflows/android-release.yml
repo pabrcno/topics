@@ -17,6 +17,18 @@ jobs:
         with:
           channel: "stable"
 
+      - name: Setup keystore
+        run: echo "${{ secrets.KEYSTORE }}" | base64 --decode > /tmp/my-release-key.jks
+        env:
+          KEYSTORE: ${{ secrets.KEYSTORE }}
+
+      - name: Set keystore properties
+        run: |
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> $GITHUB_ENV
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> $GITHUB_ENV
+          echo "keyAlias=${{ secrets.KEY_ALIAS }}" >> $GITHUB_ENV
+          echo "storeFile=/tmp/my-release-key.jks" >> $GITHUB_ENV
+
       - name: Get version from pubspec
         id: version
         run: |
