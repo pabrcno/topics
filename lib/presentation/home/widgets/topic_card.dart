@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/app/chat/chat_provider.dart';
 
+import '../../../app/chat/chat_provider.dart';
 import '../../../domain/models/topic/topic.dart';
 import '../../topic/topic_screen.dart';
 import '../../widgets/app_chip.dart';
@@ -13,6 +13,30 @@ class TopicCard extends StatelessWidget {
     Key? key,
     required this.topic,
   }) : super(key: key);
+
+  void _showDialog(BuildContext context, Widget content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxHeight: 200),
+              child: content,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,8 +52,7 @@ class TopicCard extends StatelessWidget {
         );
       },
       child: Container(
-        margin:
-            const EdgeInsets.all(1.0), // Add some margin to separate the cards.
+        margin: const EdgeInsets.all(1.0),
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -54,12 +77,45 @@ class TopicCard extends StatelessWidget {
                             value: 'delete',
                             child: Text('Delete'),
                           ),
+                          const PopupMenuItem<String>(
+                            value: 'changeTitle',
+                            child: Text('Change Title'),
+                          ),
                         ];
                       },
                       onSelected: (String value) {
                         if (value == 'delete') {
-                          Provider.of<ChatProvider>(context, listen: false)
-                              .deleteTopic(topic);
+                          _showDialog(
+                            context,
+                            const Text(
+                                'Are you sure you want to delete this topic?'),
+                          );
+                        } else if (value == 'changeTitle') {
+                          TextEditingController titleController =
+                              TextEditingController();
+                          _showDialog(
+                            context,
+                            Column(
+                              children: [
+                                const Text('Change the title of the topic:'),
+                                TextField(
+                                  controller: titleController,
+                                  decoration: const InputDecoration(
+                                      hintText: 'New title'),
+                                ),
+                                TextButton(
+                                  child: const Text('Change'),
+                                  onPressed: () {
+                                    Provider.of<ChatProvider>(context,
+                                            listen: false)
+                                        .modifyTopicTitle(topic.copyWith(
+                                            title: titleController.text));
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            ),
+                          );
                         }
                       },
                     ),

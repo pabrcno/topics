@@ -278,6 +278,22 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
+  Future<void> modifyTopicTitle(Topic topicNewTitle) async {
+    await errorCommander.run(() async {
+      setLoading(true);
+
+      // Modify the topic title in the repository
+      await _chatRepository.updateTopic(topicNewTitle);
+
+      // Update the topic title in the topics list
+
+      final topicIndex =
+          topics.indexWhere((topic) => topic.id == topicNewTitle.id);
+      topics[topicIndex] = topicNewTitle;
+      setLoading(false);
+    });
+  }
+
   void clearChatStates() {
     currentChat = null;
     currentChat = null;
