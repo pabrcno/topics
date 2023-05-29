@@ -5,11 +5,11 @@ import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ErrorCommander {
-  Future<void> Function(String)? _showSnackbar;
+  static Future<void> Function(String)? _showSnackbar;
 
   ErrorCommander();
 
-  set showSnackbar(Future<void> Function(String)? func) {
+  static set showSnackbar(Future<void> Function(String)? func) {
     _showSnackbar = func;
   }
 

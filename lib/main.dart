@@ -60,9 +60,7 @@ class MyApp extends StatelessWidget {
       theme: theme,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {
-        Provider.of<ChatProvider>(context, listen: false)
-            .errorCommander
-            .showSnackbar = (String message) async {
+        ErrorCommander.showSnackbar = (String message) async {
           ScaffoldMessenger.of(context)
               .showSnackBar(SnackBar(content: Text(message)));
           return Future.value();

@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:package_info/package_info.dart';
 
 import '../../services/auth_service.dart';
+import '../legal/privacy_policy.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({Key? key}) : super(key: key);
+  Future<String> getVersionNumber() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +25,7 @@ class LoginPage extends StatelessWidget {
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Image.asset(
               'assets/images/logo_with_label_1-removebg-preview.png',
@@ -27,6 +33,24 @@ class LoginPage extends StatelessWidget {
             ),
             SignInButton(
               onPressed: () => authServiceProvider.signInWithGoogle(),
+            ),
+            FutureBuilder<String>(
+              future: getVersionNumber(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return Text('Version: ${snapshot.data}');
+                }
+              },
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => const PrivacyPolicyScreen(),
+                ),
+              ),
+              child: const Text('Privacy Policy'),
             ),
           ],
         ),
