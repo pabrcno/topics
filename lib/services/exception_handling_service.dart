@@ -46,7 +46,8 @@ class ErrorCommander {
     } else if (error is MissingApiKeyException) {
       message = 'Please enter OpenAI API key on your profile page.';
     } else {
-      message = 'An unexpected issue occurred. Please try again.';
+      message =
+          'An unexpected issue occurred. Please try again. ${error.toString()}';
     }
     if (_showSnackbar != null) {
       // Display the snackbar

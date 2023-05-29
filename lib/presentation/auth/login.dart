@@ -47,7 +47,7 @@ class LoginPage extends StatelessWidget {
             TextButton(
               onPressed: () => Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => const PrivacyPolicyScreen(),
+                  builder: (context) => PrivacyPolicyScreen(),
                 ),
               ),
               child: const Text('Privacy Policy'),
