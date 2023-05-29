@@ -1,11 +1,11 @@
 <mxfile host="65bd71144e">
     <diagram id="3vhoRqhPPUoY-iDbqvLI" name="Page-1">
-        <mxGraphModel dx="2138" dy="1374" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="2138" dy="2226" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
                 <mxCell id="43" value="" style="group;fillColor=#eeeeee;strokeColor=#36393d;fontColor=#000000;" vertex="1" connectable="0" parent="1">
-                    <mxGeometry x="-660" y="610" width="1310" height="1450" as="geometry"/>
+                    <mxGeometry x="-620" y="610" width="1310" height="1450" as="geometry"/>
                 </mxCell>
                 <mxCell id="42" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;fontColor=#000000;" vertex="1" parent="43">
                     <mxGeometry width="1310" height="1450" as="geometry"/>
@@ -161,9 +161,12 @@
                 <mxCell id="52" value="" style="ellipse;shape=cloud;whiteSpace=wrap;html=1;labelBackgroundColor=#000000;fontColor=#000000;" vertex="1" parent="43">
                     <mxGeometry x="800" y="1102.5" width="85" height="65" as="geometry"/>
                 </mxCell>
+<<<<<<< HEAD
                 <mxCell id="60" value="&lt;font color=&quot;#ffffff&quot;&gt;Logout&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=#000000;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="43">
                     <mxGeometry x="1000" y="90" width="170" height="40" as="geometry"/>
                 </mxCell>
+=======
+>>>>>>> release/0.0.6
                 <mxCell id="46" style="edgeStyle=none;html=1;entryX=0.575;entryY=-0.001;entryDx=0;entryDy=0;entryPerimeter=0;fontColor=#000000;" edge="1" parent="1" source="44" target="42">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
@@ -173,14 +176,25 @@
                 <mxCell id="48" value="Auth&lt;br&gt;&amp;nbsp;Screen" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#eeeeee;strokeColor=#36393d;fontColor=#000000;" vertex="1" parent="1">
                     <mxGeometry x="20" y="40" width="120" height="60" as="geometry"/>
                 </mxCell>
+<<<<<<< HEAD
                 <mxCell id="61" style="edgeStyle=none;html=1;fontColor=#FFFFFF;" edge="1" parent="1" source="60">
                     <mxGeometry relative="1" as="geometry">
                         <mxPoint x="200" y="100" as="targetPoint"/>
+=======
+                <mxCell id="61" style="edgeStyle=none;html=1;fontColor=#FFFFFF;" edge="1" parent="1" source="60" target="44">
+                    <mxGeometry relative="1" as="geometry">
+>>>>>>> release/0.0.6
                         <Array as="points">
                             <mxPoint x="480" y="100"/>
                         </Array>
                     </mxGeometry>
                 </mxCell>
+<<<<<<< HEAD
+=======
+                <mxCell id="60" value="&lt;font color=&quot;#ffffff&quot;&gt;Logout&lt;/font&gt;" style="rounded=1;whiteSpace=wrap;html=1;labelBackgroundColor=#000000;fontColor=#333333;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+                    <mxGeometry x="390" y="720" width="170" height="40" as="geometry"/>
+                </mxCell>
+>>>>>>> release/0.0.6
             </root>
         </mxGraphModel>
     </diagram>
