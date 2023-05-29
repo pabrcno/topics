@@ -294,6 +294,21 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
+  Future<void> modifyChatSummary(Chat chatWithNewTitle) async {
+    await errorCommander.run(() async {
+      setLoading(true);
+
+      // Modify the chat summary in the repository
+      await _chatRepository.updateChat(chatWithNewTitle);
+
+      // Update the chat summary in the chats list
+      final chatIndex = currentTopicChats
+          .indexWhere((chat) => chat.id == chatWithNewTitle.id);
+      currentTopicChats[chatIndex] = chatWithNewTitle;
+      setLoading(false);
+    });
+  }
+
   void clearChatStates() {
     currentChat = null;
     currentChat = null;

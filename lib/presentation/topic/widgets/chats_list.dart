@@ -67,10 +67,35 @@ class ChatTile extends StatelessWidget {
   final VoidCallback onDelete;
 
   const ChatTile({
-    super.key,
+    Key? key,
     required this.chat,
     required this.onDelete,
-  });
+  }) : super(key: key);
+
+  void _showDialog(BuildContext context, Widget content) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: SingleChildScrollView(
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                  maxHeight: MediaQuery.of(context).size.height * 0.3),
+              child: content,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -93,11 +118,40 @@ class ChatTile extends StatelessWidget {
                     value: 'delete',
                     child: Text('Delete'),
                   ),
+                  const PopupMenuItem(
+                    value: 'changeSummary',
+                    child: Text('Change Summary'),
+                  ),
                 ];
               },
               onSelected: (value) {
                 if (value == 'delete') {
                   onDelete();
+                } else if (value == 'changeSummary') {
+                  TextEditingController summaryController =
+                      TextEditingController();
+                  _showDialog(
+                    context,
+                    Column(
+                      children: [
+                        const Text('Change the summary of the chat:'),
+                        TextField(
+                          controller: summaryController,
+                          decoration:
+                              const InputDecoration(hintText: 'New summary'),
+                        ),
+                        TextButton(
+                          child: const Text('Change'),
+                          onPressed: () {
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .modifyChatSummary(chat.copyWith(
+                                    summary: summaryController.text));
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    ),
+                  );
                 }
               },
             ),
