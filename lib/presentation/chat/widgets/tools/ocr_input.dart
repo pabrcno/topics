@@ -58,7 +58,7 @@ class _OCRInputState extends State<OCRInput> {
 
   @override
   Widget build(BuildContext context) {
-    return OutlinedButton(
+    return TextButton(
       onPressed: _openCamera,
       child: const Text('Scan Text'),
     );

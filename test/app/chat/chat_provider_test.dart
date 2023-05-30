@@ -266,8 +266,7 @@ void main() {
       return controller.stream;
     });
 
-    const mockInitialMessage = 'Hello!';
-    await chatProvider.createTopic(mockTopicNewTitle.title, mockInitialMessage);
+    await chatProvider.createTopic(mockTopicNewTitle.title);
 
     // Check if new topic is created
     expect(

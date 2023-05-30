@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
-import 'package:topics/presentation/widgets/custom_app_bar.dart';
+import 'package:topics/presentation/chat/widgets/tools/tools_container.dart';
 import '../../app/chat/chat_provider.dart';
 import '../../domain/models/chat/chat.dart';
-import '../widgets/app_chip.dart';
 import '../widgets/disabled.dart';
-import '../widgets/ocr_input.dart';
-import '../widgets/suggested_prompt_selector.dart';
+import 'widgets/tools/ocr_input.dart';
+import 'widgets/tools/suggested_prompt_selector.dart';
 
 class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
@@ -42,40 +41,31 @@ class ChatScreen extends StatelessWidget {
 
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Scaffold(
-        appBar: CustomAppBar(
-          title: provider.currentChat?.summary ?? '',
-          chipsRow: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              AppChip(
-                label:
-                    'Created: ${provider.currentChat?.createdAt.day}-${provider.currentChat?.createdAt.month}-${provider.currentChat?.createdAt.year}',
-              ),
-            ],
+        appBar: AppBar(
+          title: Text(
+            chat.summary,
+            maxLines: 2,
           ),
         ),
         body: Column(
           children: <Widget>[
             Disabled(
-                disabled:
-                    provider.messageBuffer.isNotEmpty || provider.isLoading,
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: Theme.of(context).appBarTheme.backgroundColor),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SuggestedPromptSelector(
-                        onSelect: (key, value) {
-                          _textController.text = value;
-                        },
-                      ),
-                      OCRInput(onOcrResult: (result) {
-                        _textController.text = result;
-                      }),
-                    ],
+              disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
+              child: ToolsContainer(
+                widgetList: [
+                  SuggestedPromptSelector(
+                    onSelect: (key, value) {
+                      _textController.text = value;
+                    },
                   ),
-                )),
+                  SizedBox(
+                      width: 130,
+                      child: OCRInput(onOcrResult: (result) {
+                        _textController.text = result;
+                      })),
+                ],
+              ),
+            ),
             Expanded(
               child: ChatMessagesListView(
                 scrollController: _scrollController,

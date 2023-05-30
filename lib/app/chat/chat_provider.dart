@@ -229,7 +229,7 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
-  Future<void> createTopic(String title, String initialMessage) async {
+  Future<void> createTopic(String title) async {
     await errorCommander.run(() async {
       setLoading(true);
 
@@ -249,7 +249,7 @@ class ChatProvider with ChangeNotifier {
       await _chatRepository.createTopic(newTopic);
 
       // Now create a new Chat associated with this topic
-      await createChat(initialMessage, newTopic);
+      await createChat(null, newTopic);
 
       // Update the current topic
       currentTopic = newTopic;

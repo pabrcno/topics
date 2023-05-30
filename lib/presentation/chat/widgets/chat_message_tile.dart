@@ -16,7 +16,7 @@ class ChatMessageTile extends StatelessWidget {
         color: () {
           switch (message.role) {
             case EMessageRole.user:
-              return Theme.of(context).highlightColor;
+              return Colors.grey.shade900;
 
             case EMessageRole.assistant:
               return Colors.cyan.shade900;
@@ -30,8 +30,8 @@ class ChatMessageTile extends StatelessWidget {
           }
         }(),
         border: Border.all(
-          color: Colors.blueGrey.shade800,
-          width: 1,
+          color: Colors.grey.shade800,
+          width: .5,
         ),
       ),
       child: Column(
