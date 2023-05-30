@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/home/widgets/topic_card.dart';
 
@@ -33,7 +32,7 @@ class _TopicGridState extends State<TopicGrid> {
         if (topics.isEmpty && chatProvider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         } else if (topics.isEmpty) {
-          return Center(child: Text(translate('no_topics_available')));
+          return const Center(child: Text('No topics available yet.'));
         } else {
           return RefreshIndicator(
             onRefresh: _refreshTopics,

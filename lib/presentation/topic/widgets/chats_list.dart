@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
@@ -115,13 +114,13 @@ class ChatTile extends StatelessWidget {
             PopupMenuButton(
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry>[
-                  PopupMenuItem(
+                  const PopupMenuItem(
                     value: 'delete',
-                    child: Text(translate('delete')),
+                    child: Text('Delete'),
                   ),
-                  PopupMenuItem(
+                  const PopupMenuItem(
                     value: 'changeSummary',
-                    child: Text(translate('change_summary')),
+                    child: Text('Change Summary'),
                   ),
                 ];
               },
@@ -135,14 +134,14 @@ class ChatTile extends StatelessWidget {
                     context,
                     Column(
                       children: [
-                        Text(translate('change_summary_chat')),
+                        const Text('Change the summary of the chat:'),
                         TextField(
                           controller: summaryController,
-                          decoration: InputDecoration(
-                              hintText: translate('new_summary')),
+                          decoration:
+                              const InputDecoration(hintText: 'New summary'),
                         ),
                         TextButton(
-                          child: Text(translate('change')),
+                          child: const Text('Change'),
                           onPressed: () {
                             Provider.of<ChatProvider>(context, listen: false)
                                 .modifyChatSummary(chat.copyWith(
@@ -163,20 +162,12 @@ class ChatTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            translate('created', args: {
-              'day': chat.createdAt.day,
-              'month': chat.createdAt.month,
-              'year': chat.createdAt.year
-            }),
+            'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
             style: Theme.of(context).textTheme.labelSmall,
           ),
           const SizedBox(height: 4.0),
           Text(
-            translate('last_updated', args: {
-              'day': chat.lastModified.day,
-              'month': chat.lastModified.month,
-              'year': chat.lastModified.year
-            }),
+            'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}',
             style: Theme.of(context).textTheme.labelSmall,
           ),
         ],

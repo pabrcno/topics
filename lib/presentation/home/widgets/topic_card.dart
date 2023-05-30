@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
@@ -74,20 +73,23 @@ class TopicCard extends StatelessWidget {
                     PopupMenuButton<String>(
                       itemBuilder: (BuildContext context) {
                         return [
-                          PopupMenuItem<String>(
+                          const PopupMenuItem<String>(
                             value: 'delete',
-                            child: Text(translate('delete')),
+                            child: Text('Delete'),
                           ),
-                          PopupMenuItem<String>(
+                          const PopupMenuItem<String>(
                             value: 'changeTitle',
-                            child: Text(translate('change_title')),
+                            child: Text('Change Title'),
                           ),
                         ];
                       },
                       onSelected: (String value) {
                         if (value == 'delete') {
-                          _showDialog(context,
-                              Text(translate('are_you_sure_delete_topic')));
+                          _showDialog(
+                            context,
+                            const Text(
+                                'Are you sure you want to delete this topic?'),
+                          );
                         } else if (value == 'changeTitle') {
                           TextEditingController titleController =
                               TextEditingController();
@@ -95,14 +97,14 @@ class TopicCard extends StatelessWidget {
                             context,
                             Column(
                               children: [
-                                Text(translate('change_title_of_topic')),
+                                const Text('Change the title of the topic:'),
                                 TextField(
                                   controller: titleController,
-                                  decoration: InputDecoration(
-                                      hintText: translate('new_title')),
+                                  decoration: const InputDecoration(
+                                      hintText: 'New title'),
                                 ),
                                 TextButton(
-                                  child: Text(translate('change')),
+                                  child: const Text('Change'),
                                   onPressed: () {
                                     Provider.of<ChatProvider>(context,
                                             listen: false)

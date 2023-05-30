@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
 import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
@@ -91,8 +90,8 @@ class ChatScreen extends StatelessWidget {
                       child: TextField(
                     controller: _textController,
                     maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: translate('type_a_message'),
+                    decoration: const InputDecoration(
+                      hintText: 'Type a message',
                     ),
                     style: const TextStyle(fontSize: 18),
                   )),

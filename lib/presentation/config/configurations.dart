@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
@@ -20,7 +19,6 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   final TextEditingController _controller = TextEditingController();
   bool _obscureText = true;
   final ErrorCommander errorCommander = ErrorCommander();
-
   @override
   void initState() {
     super.initState();
@@ -35,7 +33,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   Future<void> _saveApiKey() async {
     await errorCommander.run(() async {
       if (_controller.text.length != OPENAI_API_KEY_LENGTH) {
-        throw FormatException(translate('invalid_api_key'));
+        throw const FormatException('Invalid API Key');
       }
       storageServiceProvider.saveApiKey(_controller.text);
     });
@@ -54,7 +52,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(translate('configurations')),
+        title: const Text('Configurations'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -66,7 +64,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                 TextField(
                   controller: _controller,
                   decoration: InputDecoration(
-                    labelText: translate('openai_api_key'),
+                    labelText: 'OpenAI API Key',
                     suffixIcon: IconButton(
                       icon: Icon(
                         _obscureText ? Icons.visibility_off : Icons.visibility,
@@ -98,7 +96,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                             'https://platform.openai.com/account/api-keys',
                           ),
                           mode: LaunchMode.externalApplication),
-                      child: Text(translate('get_api_key')),
+                      child: const Text('Get API Key'),
                     ),
                     OutlinedButton(
                       onPressed: () {
@@ -107,9 +105,9 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             backgroundColor: Colors.green.shade200,
                             content:
-                                Text(translate('api_key_set_successfully'))));
+                                const Text('OpenAI API Key set successfully')));
                       },
-                      child: Text(translate('set_api_key')),
+                      child: const Text('Set API Key'),
                     ),
                   ],
                 )
@@ -120,7 +118,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                 style: OutlinedButton.styleFrom(
                   foregroundColor: Theme.of(context).colorScheme.error,
                 ),
-                child: Text(translate('sign_out')))
+                child: const Text('Sign out'))
           ],
         ),
       ),
