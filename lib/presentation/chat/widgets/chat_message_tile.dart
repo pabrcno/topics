@@ -16,10 +16,10 @@ class ChatMessageTile extends StatelessWidget {
         color: () {
           switch (message.role) {
             case EMessageRole.user:
-              return const Color.fromARGB(215, 25, 15, 58);
+              return const Color.fromARGB(225, 25, 25, 38);
 
             case EMessageRole.assistant:
-              return const Color.fromARGB(245, 45, 45, 68);
+              return const Color.fromARGB(245, 45, 55, 78);
 
             case EMessageRole.system:
               return Colors.yellow.shade900;
