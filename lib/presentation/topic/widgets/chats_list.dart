@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
@@ -86,7 +87,7 @@ class ChatTile extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(translate('cancel')),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -114,13 +115,13 @@ class ChatTile extends StatelessWidget {
             PopupMenuButton(
               itemBuilder: (BuildContext context) {
                 return <PopupMenuEntry>[
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'delete',
-                    child: Text('Delete'),
+                    child: Text(translate('delete')),
                   ),
-                  const PopupMenuItem(
+                  PopupMenuItem(
                     value: 'changeSummary',
-                    child: Text('Change Summary'),
+                    child: Text(translate('change_summary')),
                   ),
                 ];
               },
@@ -134,14 +135,14 @@ class ChatTile extends StatelessWidget {
                     context,
                     Column(
                       children: [
-                        const Text('Change the summary of the chat:'),
+                        Text(translate('change_summary_chat')),
                         TextField(
                           controller: summaryController,
-                          decoration:
-                              const InputDecoration(hintText: 'New summary'),
+                          decoration: InputDecoration(
+                              hintText: translate('new_summary')),
                         ),
                         TextButton(
-                          child: const Text('Change'),
+                          child: Text(translate('change')),
                           onPressed: () {
                             Provider.of<ChatProvider>(context, listen: false)
                                 .modifyChatSummary(chat.copyWith(
@@ -162,12 +163,13 @@ class ChatTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            'Created: ${chat.createdAt.day}-${chat.createdAt.month}-${chat.createdAt.year}',
+            '${translate('created')} ${chat.createdAt.day}/${chat.createdAt.month}/${chat.createdAt.year}',
             style: Theme.of(context).textTheme.labelSmall,
           ),
           const SizedBox(height: 4.0),
           Text(
-            'Last updated: ${chat.lastModified.day}-${chat.lastModified.month}-${chat.lastModified.year}',
+            translate(
+                '${translate('last_updated')} ${chat.createdAt.day}/${chat.createdAt.month}/${chat.createdAt.year}'),
             style: Theme.of(context).textTheme.labelSmall,
           ),
         ],

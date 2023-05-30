@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
@@ -27,7 +28,7 @@ class TopicCard extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(translate('cancel')),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -73,23 +74,20 @@ class TopicCard extends StatelessWidget {
                     PopupMenuButton<String>(
                       itemBuilder: (BuildContext context) {
                         return [
-                          const PopupMenuItem<String>(
+                          PopupMenuItem<String>(
                             value: 'delete',
-                            child: Text('Delete'),
+                            child: Text(translate('delete')),
                           ),
-                          const PopupMenuItem<String>(
+                          PopupMenuItem<String>(
                             value: 'changeTitle',
-                            child: Text('Change Title'),
+                            child: Text(translate('change_title')),
                           ),
                         ];
                       },
                       onSelected: (String value) {
                         if (value == 'delete') {
-                          _showDialog(
-                            context,
-                            const Text(
-                                'Are you sure you want to delete this topic?'),
-                          );
+                          _showDialog(context,
+                              Text(translate('are_you_sure_delete_topic')));
                         } else if (value == 'changeTitle') {
                           TextEditingController titleController =
                               TextEditingController();
@@ -97,14 +95,14 @@ class TopicCard extends StatelessWidget {
                             context,
                             Column(
                               children: [
-                                const Text('Change the title of the topic:'),
+                                Text(translate('change_title_of_topic')),
                                 TextField(
                                   controller: titleController,
-                                  decoration: const InputDecoration(
-                                      hintText: 'New title'),
+                                  decoration: InputDecoration(
+                                      hintText: translate('new_title')),
                                 ),
                                 TextButton(
-                                  child: const Text('Change'),
+                                  child: Text(translate('change')),
                                   onPressed: () {
                                     Provider.of<ChatProvider>(context,
                                             listen: false)
@@ -125,7 +123,7 @@ class TopicCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 AppChip(
                   label:
-                      'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
+                      '${translate('modified')}: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
                 ),
               ],
             ),

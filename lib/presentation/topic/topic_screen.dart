@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import 'package:topics/presentation/topic/widgets/chats_list.dart';
@@ -28,7 +29,7 @@ class TopicScreen extends StatelessWidget {
           children: [
             AppChip(
               label:
-                  'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
+                  '${translate('modified')}: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
             ),
           ],
         ),

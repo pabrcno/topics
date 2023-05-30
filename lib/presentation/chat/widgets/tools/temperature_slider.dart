@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_translate/flutter_translate.dart';
+
 import '../../../../app/chat/chat_provider.dart';
 
 class TemperatureSliderButton extends StatelessWidget {
@@ -15,8 +17,10 @@ class TemperatureSliderButton extends StatelessWidget {
         provider.currentChat?.temperature ?? _temperatureController.value;
 
     return TextButton(
-      child: Text('Temperature',
-          style: TextStyle(color: Colors.blueGrey.shade100)),
+      child: Text(
+        translate('temperature'),
+        style: TextStyle(color: Colors.blueGrey.shade100),
+      ),
       onPressed: () {
         showModalBottomSheet(
           context: context,
@@ -29,18 +33,18 @@ class TemperatureSliderButton extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Consistency ',
-                        style: TextStyle(
+                        translate('consistency'),
+                        style: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),
                       Text(
-                        ' Diversity',
-                        style: TextStyle(
+                        translate('diversity'),
+                        style: const TextStyle(
                           color: Colors.grey,
                         ),
                       ),

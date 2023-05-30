@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
 import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
@@ -48,6 +49,7 @@ class ChatScreen extends StatelessWidget {
             chat.summary,
             maxLines: 2,
           ),
+          elevation: 1,
         ),
         body: Column(
           children: <Widget>[
@@ -58,11 +60,6 @@ class ChatScreen extends StatelessWidget {
                 isNew: isNew,
               ),
             ),
-            Divider(
-              height: 1,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary ??
-                  Colors.white,
-            ),
             Disabled(
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
               child: ToolsContainer(
@@ -72,11 +69,9 @@ class ChatScreen extends StatelessWidget {
                       _textController.text = value;
                     },
                   ),
-                  SizedBox(
-                      width: 130,
-                      child: OCRInput(onOcrResult: (result) {
-                        _textController.text = result;
-                      })),
+                  OCRInput(onOcrResult: (result) {
+                    _textController.text = result;
+                  }),
                   TemperatureSliderButton()
                 ],
               ),
@@ -90,8 +85,8 @@ class ChatScreen extends StatelessWidget {
                       child: TextField(
                     controller: _textController,
                     maxLines: null,
-                    decoration: const InputDecoration(
-                      hintText: 'Type a message',
+                    decoration: InputDecoration(
+                      hintText: translate('type_a_message'),
                     ),
                     style: const TextStyle(fontSize: 18),
                   )),
