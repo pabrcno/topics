@@ -28,7 +28,7 @@ class TopicCard extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(translate('cancel')),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -123,7 +123,7 @@ class TopicCard extends StatelessWidget {
                 const SizedBox(height: 4),
                 AppChip(
                   label:
-                      'Modified: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
+                      '${translate('modified')}: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
                 ),
               ],
             ),

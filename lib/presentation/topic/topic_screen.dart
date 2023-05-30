@@ -28,11 +28,8 @@ class TopicScreen extends StatelessWidget {
         chipsRow: Row(
           children: [
             AppChip(
-              label: translate('modified', args: {
-                'day': topic.lastModified.day,
-                'month': topic.lastModified.month,
-                'year': topic.lastModified.year
-              }),
+              label:
+                  '${translate('modified')}: ${topic.lastModified.day}-${topic.lastModified.month}-${topic.lastModified.year}',
             ),
           ],
         ),

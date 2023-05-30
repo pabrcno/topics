@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +21,7 @@ import 'firebase_options.dart';
 final navigatorKey = GlobalKey<NavigatorState>();
 Future<LocalizationDelegate> setupLocalizationDelegate() async {
   var localizationDelegate = await LocalizationDelegate.create(
-      fallbackLocale: 'en_US', supportedLocales: ['en_US', 'es_ES']);
+      fallbackLocale: 'en_US', supportedLocales: ['en_US', 'es']);
 
   return localizationDelegate;
 }
@@ -82,9 +82,9 @@ class MyApp extends StatelessWidget {
         theme: theme,
         localizationsDelegates: [
           localizationDelegate,
-          DefaultMaterialLocalizations.delegate,
-          DefaultWidgetsLocalizations.delegate,
-          DefaultCupertinoLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
         ],
         supportedLocales: localizationDelegate.supportedLocales,
         locale: localizationDelegate.currentLocale,

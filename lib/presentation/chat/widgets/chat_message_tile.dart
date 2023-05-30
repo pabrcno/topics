@@ -16,10 +16,10 @@ class ChatMessageTile extends StatelessWidget {
         color: () {
           switch (message.role) {
             case EMessageRole.user:
-              return const Color.fromARGB(225, 25, 25, 38);
+              return Theme.of(context).colorScheme.primaryContainer;
 
             case EMessageRole.assistant:
-              return const Color.fromARGB(245, 45, 55, 78);
+              return Theme.of(context).colorScheme.onTertiary;
 
             case EMessageRole.system:
               return Colors.yellow.shade900;
@@ -40,7 +40,7 @@ class ChatMessageTile extends StatelessWidget {
         children: [
           SelectableText(
             message.content,
-            style: const TextStyle(color: Colors.white, fontSize: 18),
+            style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           const SizedBox(height: 5),
           Text(

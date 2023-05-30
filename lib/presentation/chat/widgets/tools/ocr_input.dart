@@ -63,6 +63,7 @@ class _OCRInputState extends State<OCRInput> {
       onPressed: _openCamera,
       child: Text(
         translate('scan_text'),
+        style: TextStyle(color: Colors.blueGrey.shade100),
       ),
     );
   }

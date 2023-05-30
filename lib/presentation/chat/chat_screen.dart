@@ -49,6 +49,7 @@ class ChatScreen extends StatelessWidget {
             chat.summary,
             maxLines: 2,
           ),
+          elevation: 1,
         ),
         body: Column(
           children: <Widget>[
@@ -59,11 +60,6 @@ class ChatScreen extends StatelessWidget {
                 isNew: isNew,
               ),
             ),
-            Divider(
-              height: 1,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary ??
-                  Colors.white,
-            ),
             Disabled(
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
               child: ToolsContainer(
@@ -73,11 +69,9 @@ class ChatScreen extends StatelessWidget {
                       _textController.text = value;
                     },
                   ),
-                  SizedBox(
-                      width: 130,
-                      child: OCRInput(onOcrResult: (result) {
-                        _textController.text = result;
-                      })),
+                  OCRInput(onOcrResult: (result) {
+                    _textController.text = result;
+                  }),
                   TemperatureSliderButton()
                 ],
               ),

@@ -87,7 +87,7 @@ class ChatTile extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              child: const Text('Cancel'),
+              child: Text(translate('cancel')),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -163,20 +163,13 @@ class ChatTile extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            translate('created', args: {
-              'day': chat.createdAt.day,
-              'month': chat.createdAt.month,
-              'year': chat.createdAt.year
-            }),
+            '${translate('created')} ${chat.createdAt.day}/${chat.createdAt.month}/${chat.createdAt.year}',
             style: Theme.of(context).textTheme.labelSmall,
           ),
           const SizedBox(height: 4.0),
           Text(
-            translate('last_updated', args: {
-              'day': chat.lastModified.day,
-              'month': chat.lastModified.month,
-              'year': chat.lastModified.year
-            }),
+            translate(
+                '${translate('last_updated')} ${chat.createdAt.day}/${chat.createdAt.month}/${chat.createdAt.year}'),
             style: Theme.of(context).textTheme.labelSmall,
           ),
         ],
