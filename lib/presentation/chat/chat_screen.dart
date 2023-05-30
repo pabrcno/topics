@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
+import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
 import 'package:topics/presentation/chat/widgets/tools/tools_container.dart';
 import '../../app/chat/chat_provider.dart';
 import '../../domain/models/chat/chat.dart';
@@ -41,6 +42,7 @@ class ChatScreen extends StatelessWidget {
 
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Scaffold(
+        resizeToAvoidBottomInset: true,
         appBar: AppBar(
           title: Text(
             chat.summary,
@@ -63,6 +65,7 @@ class ChatScreen extends StatelessWidget {
                       child: OCRInput(onOcrResult: (result) {
                         _textController.text = result;
                       })),
+                  TemperatureSliderButton()
                 ],
               ),
             ),

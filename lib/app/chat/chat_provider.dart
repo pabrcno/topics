@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
@@ -135,11 +137,13 @@ class ChatProvider with ChangeNotifier {
           role: EMessageRole.user);
 
       messages.add(message);
-
+      log('CHAT TEMPERATURE${currentChat?.temperature}');
       await _chatRepository.createMessage(message);
 
       notifyListeners();
-      _chatApi.createChatCompletionStream(messages).listen((event) async {
+      _chatApi
+          .createChatCompletionStream(messages, currentChat?.temperature)
+          .listen((event) async {
         await errorCommander.run(() async {
           if (!isLoading) setLoading(true);
 
@@ -314,6 +318,13 @@ class ChatProvider with ChangeNotifier {
       currentTopicChats[chatIndex] = chatWithNewTitle;
       setLoading(false);
     });
+  }
+
+  Future<void> setCurrentChatTemperature(double chatTemperature) async {
+    if (currentChat == null) return;
+    currentChat = currentChat?.copyWith(temperature: chatTemperature);
+    await _chatRepository.updateChat(currentChat!);
+    notifyListeners();
   }
 
   void clearChatStates() {

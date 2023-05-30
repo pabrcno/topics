@@ -26,6 +26,7 @@ mixin _$Chat {
   DateTime get createdAt => throw _privateConstructorUsedError;
   DateTime get lastModified => throw _privateConstructorUsedError;
   String get summary => throw _privateConstructorUsedError;
+  double get temperature => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -43,7 +44,8 @@ abstract class $ChatCopyWith<$Res> {
       String topicId,
       DateTime createdAt,
       DateTime lastModified,
-      String summary});
+      String summary,
+      double temperature});
 }
 
 /// @nodoc
@@ -65,6 +67,7 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
     Object? createdAt = null,
     Object? lastModified = null,
     Object? summary = null,
+    Object? temperature = null,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -91,6 +94,10 @@ class _$ChatCopyWithImpl<$Res, $Val extends Chat>
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
               as String,
+      temperature: null == temperature
+          ? _value.temperature
+          : temperature // ignore: cast_nullable_to_non_nullable
+              as double,
     ) as $Val);
   }
 }
@@ -107,7 +114,8 @@ abstract class _$$_ChatCopyWith<$Res> implements $ChatCopyWith<$Res> {
       String topicId,
       DateTime createdAt,
       DateTime lastModified,
-      String summary});
+      String summary,
+      double temperature});
 }
 
 /// @nodoc
@@ -125,6 +133,7 @@ class __$$_ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res, _$_Chat>
     Object? createdAt = null,
     Object? lastModified = null,
     Object? summary = null,
+    Object? temperature = null,
   }) {
     return _then(_$_Chat(
       id: null == id
@@ -151,6 +160,10 @@ class __$$_ChatCopyWithImpl<$Res> extends _$ChatCopyWithImpl<$Res, _$_Chat>
           ? _value.summary
           : summary // ignore: cast_nullable_to_non_nullable
               as String,
+      temperature: null == temperature
+          ? _value.temperature
+          : temperature // ignore: cast_nullable_to_non_nullable
+              as double,
     ));
   }
 }
@@ -164,7 +177,8 @@ class _$_Chat implements _Chat {
       required this.topicId,
       required this.createdAt,
       required this.lastModified,
-      required this.summary});
+      required this.summary,
+      this.temperature = 0.5});
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) => _$$_ChatFromJson(json);
 
@@ -180,10 +194,13 @@ class _$_Chat implements _Chat {
   final DateTime lastModified;
   @override
   final String summary;
+  @override
+  @JsonKey()
+  final double temperature;
 
   @override
   String toString() {
-    return 'Chat(id: $id, userId: $userId, topicId: $topicId, createdAt: $createdAt, lastModified: $lastModified, summary: $summary)';
+    return 'Chat(id: $id, userId: $userId, topicId: $topicId, createdAt: $createdAt, lastModified: $lastModified, summary: $summary, temperature: $temperature)';
   }
 
   @override
@@ -198,13 +215,15 @@ class _$_Chat implements _Chat {
                 other.createdAt == createdAt) &&
             (identical(other.lastModified, lastModified) ||
                 other.lastModified == lastModified) &&
-            (identical(other.summary, summary) || other.summary == summary));
+            (identical(other.summary, summary) || other.summary == summary) &&
+            (identical(other.temperature, temperature) ||
+                other.temperature == temperature));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, id, userId, topicId, createdAt, lastModified, summary);
+  int get hashCode => Object.hash(runtimeType, id, userId, topicId, createdAt,
+      lastModified, summary, temperature);
 
   @JsonKey(ignore: true)
   @override
@@ -227,7 +246,8 @@ abstract class _Chat implements Chat {
       required final String topicId,
       required final DateTime createdAt,
       required final DateTime lastModified,
-      required final String summary}) = _$_Chat;
+      required final String summary,
+      final double temperature}) = _$_Chat;
 
   factory _Chat.fromJson(Map<String, dynamic> json) = _$_Chat.fromJson;
 
@@ -243,6 +263,8 @@ abstract class _Chat implements Chat {
   DateTime get lastModified;
   @override
   String get summary;
+  @override
+  double get temperature;
   @override
   @JsonKey(ignore: true)
   _$$_ChatCopyWith<_$_Chat> get copyWith => throw _privateConstructorUsedError;

@@ -32,12 +32,14 @@ class OpenAIChatApi implements IChatApi {
   }
 
   @override
-  Stream<Message> createChatCompletionStream(List<Message> messages) {
+  Stream<Message> createChatCompletionStream(
+      List<Message> messages, double? temperature) {
     final openAIMessages = _convertToOpenAIMessages(messages);
 
     final stream = OpenAI.instance.chat.createStream(
       model: model,
       messages: openAIMessages,
+      temperature: temperature,
     );
 
     return stream.map((event) => _convertStreamMessageToMessage(event));

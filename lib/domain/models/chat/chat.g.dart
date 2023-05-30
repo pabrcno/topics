@@ -13,6 +13,7 @@ _$_Chat _$$_ChatFromJson(Map<String, dynamic> json) => _$_Chat(
       createdAt: DateTime.parse(json['createdAt'] as String),
       lastModified: DateTime.parse(json['lastModified'] as String),
       summary: json['summary'] as String,
+      temperature: (json['temperature'] as num?)?.toDouble() ?? 0.5,
     );
 
 Map<String, dynamic> _$$_ChatToJson(_$_Chat instance) => <String, dynamic>{
@@ -22,4 +23,5 @@ Map<String, dynamic> _$$_ChatToJson(_$_Chat instance) => <String, dynamic>{
       'createdAt': instance.createdAt.toIso8601String(),
       'lastModified': instance.lastModified.toIso8601String(),
       'summary': instance.summary,
+      'temperature': instance.temperature,
     };

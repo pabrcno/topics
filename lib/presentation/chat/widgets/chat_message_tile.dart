@@ -16,10 +16,10 @@ class ChatMessageTile extends StatelessWidget {
         color: () {
           switch (message.role) {
             case EMessageRole.user:
-              return Colors.grey.shade900;
+              return const Color.fromARGB(255, 55, 55, 78);
 
             case EMessageRole.assistant:
-              return Colors.cyan.shade900;
+              return const Color.fromARGB(255, 0, 75, 78);
 
             case EMessageRole.system:
               return Colors.yellow.shade900;
@@ -38,9 +38,9 @@ class ChatMessageTile extends StatelessWidget {
         crossAxisAlignment:
             message.isUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
         children: [
-          Text(
+          SelectableText(
             message.content,
-            style: const TextStyle(color: Colors.white, fontSize: 16),
+            style: const TextStyle(color: Colors.white, fontSize: 18),
           ),
           const SizedBox(height: 5),
           Text(
