@@ -4,9 +4,9 @@ part 'app_user.freezed.dart';
 part 'app_user.g.dart';
 
 enum ESubscriptions {
-  Basic,
-  Premium,
-  VIP
+  basic,
+  premium,
+  vip
 } // replace with your actual subscriptions enum
 
 @freezed
