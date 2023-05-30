@@ -51,6 +51,18 @@ class ChatScreen extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
+            Expanded(
+              child: ChatMessagesListView(
+                scrollController: _scrollController,
+                chat: chat,
+                isNew: isNew,
+              ),
+            ),
+            Divider(
+              height: 1,
+              color: Theme.of(context).buttonTheme.colorScheme?.primary ??
+                  Colors.white,
+            ),
             Disabled(
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
               child: ToolsContainer(
@@ -68,18 +80,6 @@ class ChatScreen extends StatelessWidget {
                   TemperatureSliderButton()
                 ],
               ),
-            ),
-            Expanded(
-              child: ChatMessagesListView(
-                scrollController: _scrollController,
-                chat: chat,
-                isNew: isNew,
-              ),
-            ),
-            Divider(
-              height: 1,
-              color: Theme.of(context).buttonTheme.colorScheme?.primary ??
-                  Colors.white,
             ),
             const SizedBox(height: 10),
             Container(
