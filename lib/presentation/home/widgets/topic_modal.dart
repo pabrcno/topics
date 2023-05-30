@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
@@ -27,12 +28,12 @@ class _TopicModalState extends State<TopicModal> {
                   child: SingleChildScrollView(
                     child: ListView(shrinkWrap: true, children: <Widget>[
                       TextFormField(
-                        decoration: const InputDecoration(
-                          labelText: 'Topic Title',
+                        decoration: InputDecoration(
+                          labelText: translate('topic_title'),
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Your can store related chats on Topics. Choose a good one!';
+                            return translate('topic_empty_error_message');
                           }
                           return null;
                         },
@@ -47,7 +48,7 @@ class _TopicModalState extends State<TopicModal> {
                             chatProvider.createTopic(_textController.text);
                           }
                         },
-                        child: const Text('Go to Chat >'),
+                        child: Text(translate('go_to_chat')),
                       ),
                     ]),
                   ),

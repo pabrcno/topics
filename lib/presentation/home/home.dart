@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 import 'package:topics/services/auth/auth_service.dart';
 
@@ -48,7 +49,7 @@ class HomePage extends StatelessWidget {
       body: const TopicGrid(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openModal(context),
-        tooltip: 'Add Topic',
+        tooltip: translate('add_topic'),
         child: const Icon(Icons.add),
       ),
     );

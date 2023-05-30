@@ -22,33 +22,31 @@ class ErrorCommander {
     _logger(error);
 
     String message;
-
     if (error is FormatException) {
-      message = 'Invalid format. Please check your input.';
+      message = 'error_invalid_format';
 
       // Firebase Exceptions
     } else if (error is FirebaseException) {
-      message = 'Firebase error: ${error.message}';
+      message = 'error_firebase';
 
       // FirebaseAuth Exceptions
     } else if (error is FirebaseAuthException) {
-      message = 'Authentication error: ${error.message}';
+      message = 'error_authentication';
 
       // Cloud Firestore Exceptions
     } else if (error is FirebaseException) {
-      message = 'Firestore error: ${error.message}';
+      message = 'error_firestore';
       // Socket Exceptions
     } else if (error is SocketException) {
-      message =
-          'No internet connection. Please check your connection and try again.';
+      message = 'error_no_internet';
 
       // General case
     } else if (error is MissingApiKeyException) {
-      message = 'Please enter OpenAI API key on your profile page.';
+      message = 'error_missing_api_key';
     } else {
-      message =
-          'An unexpected issue occurred. Please try again. ${error.toString()}';
+      message = '$error';
     }
+
     if (_showSnackbar != null) {
       // Display the snackbar
       _showSnackbar!(message);
