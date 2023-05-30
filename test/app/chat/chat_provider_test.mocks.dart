@@ -211,11 +211,16 @@ class MockIChatApi extends _i1.Mock implements _i7.IChatApi {
       ) as _i4.Future<_i2.Message>);
   @override
   _i4.Stream<_i2.Message> createChatCompletionStream(
-          List<_i2.Message>? messages) =>
+    List<_i2.Message>? messages,
+    double? temperature,
+  ) =>
       (super.noSuchMethod(
         Invocation.method(
           #createChatCompletionStream,
-          [messages],
+          [
+            messages,
+            temperature,
+          ],
         ),
         returnValue: _i4.Stream<_i2.Message>.empty(),
       ) as _i4.Stream<_i2.Message>);

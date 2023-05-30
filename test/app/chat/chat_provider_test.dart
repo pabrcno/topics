@@ -142,7 +142,7 @@ void main() {
     const mockContent = 'Hello!';
     final mockEvent = mockMessage;
 
-    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+    when(mockChatApi.createChatCompletionStream(any, any)).thenAnswer((_) {
       final controller = StreamController<Message>();
       controller.add(mockEvent);
       controller.close();
@@ -163,7 +163,7 @@ void main() {
     const mockContent = 'Hello!';
     final mockEvent = mockMessage;
 
-    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+    when(mockChatApi.createChatCompletionStream(any, any)).thenAnswer((_) {
       final controller = StreamController<Message>();
       controller.add(mockEvent);
       controller.close();
@@ -186,7 +186,7 @@ void main() {
     final mockEvent = mockMessage;
 
     // Mock the necessary dependencies
-    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+    when(mockChatApi.createChatCompletionStream(any, any)).thenAnswer((_) {
       final controller = StreamController<Message>();
       controller.add(mockEvent);
       controller.close();
@@ -212,7 +212,7 @@ void main() {
     final mockEvent = mockMessage;
 
     // Mock the necessary dependencies
-    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+    when(mockChatApi.createChatCompletionStream(any, any)).thenAnswer((_) {
       final controller = StreamController<Message>();
       controller.add(mockEvent);
       controller.close();
@@ -229,7 +229,7 @@ void main() {
     when(mockChatRepository.createChat(any)).thenAnswer((_) async {});
     when(mockUserRepository.getUser(any))
         .thenAnswer((_) async => mockAppUserWithMessages);
-    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+    when(mockChatApi.createChatCompletionStream(any, any)).thenAnswer((_) {
       final controller = StreamController<Message>();
       controller.add(mockMessage);
       controller.close();
@@ -259,7 +259,7 @@ void main() {
     when(mockChatRepository.createTopic(any)).thenAnswer((_) async {});
     when(mockChatRepository.getTopics(any))
         .thenAnswer((_) async => mockTopics..add(mockTopicNewTitle));
-    when(mockChatApi.createChatCompletionStream(any)).thenAnswer((_) {
+    when(mockChatApi.createChatCompletionStream(any, any)).thenAnswer((_) {
       final controller = StreamController<Message>();
       controller.add(mockMessage);
       controller.close();

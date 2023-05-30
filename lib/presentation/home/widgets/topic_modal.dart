@@ -42,6 +42,7 @@ class _TopicModalState extends State<TopicModal> {
                       // create button
                       TextButton(
                         onPressed: () {
+                          Navigator.of(context).pop();
                           if (_formKey.currentState!.validate()) {
                             chatProvider.createTopic(_textController.text);
                           }
