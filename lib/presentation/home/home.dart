@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
-import 'package:topics/services/auth_service.dart';
+import 'package:topics/services/auth/auth_service.dart';
 
 import '../config/configurations.dart';
 import 'widgets/topic_grid.dart';
@@ -40,7 +40,7 @@ class HomePage extends StatelessWidget {
                   padding: const EdgeInsets.only(right: 10),
                   child: CircleAvatar(
                     backgroundImage: NetworkImage(
-                      AuthService().getUser()?.photoURL ?? '',
+                      AuthService().getCurrentUser()?.photoURL ?? '',
                     ),
                   )))
         ],

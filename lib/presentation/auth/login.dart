@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 
-import '../../services/auth_service.dart';
+import '../../services/auth/auth_service.dart';
 import '../legal/privacy_policy.dart';
 
 class LoginPage extends StatelessWidget {
@@ -32,7 +32,7 @@ class LoginPage extends StatelessWidget {
               width: 300,
             ),
             SignInButton(
-              onPressed: () => authServiceProvider.signInWithGoogle(),
+              onPressed: () => AuthService().signInWithGoogle(),
             ),
             FutureBuilder<String>(
               future: getVersionNumber(),

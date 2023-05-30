@@ -8,7 +8,7 @@ import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/repo/user/firestore_user_repo.dart';
-import 'package:topics/services/auth_service.dart';
+import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 import 'package:topics/services/storage_service.dart';
 
@@ -41,6 +41,7 @@ void main() async {
         create: (context) => ChatProvider(
           chatRepository: FirestoreChatRepository(),
           userRepository: FirestoreUserRepository(),
+          authServiceProvider: AuthService(),
           chatApi: OpenAIChatApi(),
         ), // Pass context to ErrorCommander
       ),
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      home: authServiceProvider.handleAuthState(),
+      home: AuthService().handleAuthState(),
       theme: theme,
       debugShowCheckedModeBanner: false,
       builder: (context, child) {

@@ -3,7 +3,7 @@ import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/repo/i_user_repository.dart';
-import 'package:topics/services/auth_service.dart';
+import 'package:topics/domain/services/i_auth_service.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../domain/api/chat/i_chat_api.dart';
@@ -21,6 +21,7 @@ class ChatProvider with ChangeNotifier {
   final IChatRepository _chatRepository;
   final IUserRepository _userRepository;
   final ErrorCommander errorCommander = ErrorCommander();
+  final IAuthService authServiceProvider;
   bool _isLoading = false;
 
   Chat? currentChat;
@@ -32,6 +33,7 @@ class ChatProvider with ChangeNotifier {
     required IChatApi chatApi,
     required IChatRepository chatRepository,
     required IUserRepository userRepository,
+    required this.authServiceProvider,
   })  : _chatApi = chatApi,
         _chatRepository = chatRepository,
         _userRepository = userRepository,
@@ -56,7 +58,7 @@ class ChatProvider with ChangeNotifier {
     await errorCommander.run(() async {
       setLoading(true);
       topics = await _chatRepository.getTopics(
-        userId ?? authServiceProvider.getUser()!.uid,
+        userId ?? authServiceProvider.getCurrentUser()!.uid,
       );
       setLoading(false);
     });
@@ -98,9 +100,9 @@ class ChatProvider with ChangeNotifier {
 
   Future<bool> _decrementUserMessages() async {
     return await _userRepository
-        .getUser(authServiceProvider.getUser()?.uid ?? '')
+        .getUser(authServiceProvider.getCurrentUser()?.uid ?? '')
         .then((user) async {
-      if (user == null || user.messageCount < 0) {
+      if (user == null || user.messageCount <= 0) {
         messages.add(Message(
             id: 'warning',
             content:
@@ -114,7 +116,7 @@ class ChatProvider with ChangeNotifier {
         return false;
       }
       await _userRepository.reduceMessages(
-          authServiceProvider.getUser()?.uid ?? '', 1);
+          authServiceProvider.getCurrentUser()?.uid ?? '', 1);
       return true;
     });
   }
@@ -122,7 +124,7 @@ class ChatProvider with ChangeNotifier {
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
       final userHasMessages = await _decrementUserMessages();
-      if (!userHasMessages) return;
+      if (!userHasMessages) throw Exception('You ran out of messages');
 
       final message = Message(
           id: const Uuid().v4(),
@@ -190,15 +192,17 @@ class ChatProvider with ChangeNotifier {
       currentTopicChats.add(newChat);
 
       currentTopic = topic;
-      Navigator.push(
-        navigatorKey.currentState!.context,
-        MaterialPageRoute(
-          builder: (context) => ChatScreen(
-            chat: newChat,
-            isNew: true,
-          ), // your chat screen widget
-        ),
-      );
+      if (navigatorKey.currentState != null) {
+        Navigator.push(
+          navigatorKey.currentState!.context,
+          MaterialPageRoute(
+            builder: (context) => ChatScreen(
+              chat: newChat,
+              isNew: true,
+            ), // your chat screen widget
+          ),
+        );
+      }
       // Send this new chat to your backend for storage
 
       await _chatRepository.createChat(newChat).then((value) {
@@ -232,7 +236,7 @@ class ChatProvider with ChangeNotifier {
       // Create a new Topic object
       final newTopic = Topic(
         id: newTopicId,
-        userId: authServiceProvider.getUser()?.uid ?? '',
+        userId: authServiceProvider.getCurrentUser()?.uid ?? '',
         title: title, // set the topic title
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),

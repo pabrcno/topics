@@ -30,7 +30,7 @@ Map<String, dynamic> _$$_AppUserToJson(_$_AppUser instance) =>
     };
 
 const _$ESubscriptionsEnumMap = {
-  ESubscriptions.Basic: 'Basic',
-  ESubscriptions.Premium: 'Premium',
-  ESubscriptions.VIP: 'VIP',
+  ESubscriptions.basic: 'basic',
+  ESubscriptions.premium: 'premium',
+  ESubscriptions.vip: 'vip',
 };

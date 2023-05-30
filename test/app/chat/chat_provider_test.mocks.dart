@@ -12,7 +12,9 @@ import 'package:topics/domain/api/chat/i_chat_api.dart' as _i7;
 import 'package:topics/domain/models/chat/chat.dart' as _i5;
 import 'package:topics/domain/models/message/message.dart' as _i2;
 import 'package:topics/domain/models/topic/topic.dart' as _i6;
+import 'package:topics/domain/models/user/app_user.dart' as _i9;
 import 'package:topics/domain/repo/i_chat_repository.dart' as _i3;
+import 'package:topics/domain/repo/i_user_repository.dart' as _i8;
 
 // ignore_for_file: type=lint
 // ignore_for_file: avoid_redundant_argument_values
@@ -217,4 +219,47 @@ class MockIChatApi extends _i1.Mock implements _i7.IChatApi {
         ),
         returnValue: _i4.Stream<_i2.Message>.empty(),
       ) as _i4.Stream<_i2.Message>);
+}
+
+/// A class which mocks [IUserRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIUserRepository extends _i1.Mock implements _i8.IUserRepository {
+  MockIUserRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<void> createUser(_i9.AppUser? user) => (super.noSuchMethod(
+        Invocation.method(
+          #createUser,
+          [user],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
+  @override
+  _i4.Future<_i9.AppUser?> getUser(String? uid) => (super.noSuchMethod(
+        Invocation.method(
+          #getUser,
+          [uid],
+        ),
+        returnValue: _i4.Future<_i9.AppUser?>.value(),
+      ) as _i4.Future<_i9.AppUser?>);
+  @override
+  _i4.Future<void> reduceMessages(
+    String? uid,
+    int? decrement,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #reduceMessages,
+          [
+            uid,
+            decrement,
+          ],
+        ),
+        returnValue: _i4.Future<void>.value(),
+        returnValueForMissingStub: _i4.Future<void>.value(),
+      ) as _i4.Future<void>);
 }

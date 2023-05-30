@@ -2,6 +2,7 @@ import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/chat/chat.dart';
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/models/topic/topic.dart';
+import 'package:topics/domain/models/user/app_user.dart';
 
 final mockMessages = [
   Message(
@@ -62,4 +63,26 @@ final mockMessage = Message(
   sentAt: DateTime.now(),
   isUser: false,
   role: EMessageRole.assistant,
+);
+
+final AppUser mockAppUserWithMessages = AppUser(
+  uid: 'testMessages',
+  email: 'testEmail',
+  displayName: 'testDisplayName',
+  photoURL: 'testPhotoURL',
+  emailVerified: true,
+  subscription: ESubscriptions.basic,
+  messageCount: 1,
+  createdAt: DateTime.now(),
+);
+
+final AppUser mockAppUserWithoutMessages = AppUser(
+  uid: 'testNoMessages',
+  email: 'testEmail',
+  displayName: 'testDisplayName',
+  photoURL: 'testPhotoURL',
+  emailVerified: true,
+  subscription: ESubscriptions.basic,
+  messageCount: 0,
+  createdAt: DateTime.now(),
 );
