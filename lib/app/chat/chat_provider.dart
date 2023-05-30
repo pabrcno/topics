@@ -139,9 +139,12 @@ class ChatProvider with ChangeNotifier {
       await _chatRepository.createMessage(message);
 
       notifyListeners();
-      _chatApi.createChatCompletionStream(messages).listen((event) {
-        if (!isLoading) setLoading(true);
-        updateMessageBuffer(event.content);
+      _chatApi.createChatCompletionStream(messages).listen((event) async {
+        await errorCommander.run(() async {
+          if (!isLoading) setLoading(true);
+
+          updateMessageBuffer(event.content);
+        });
       }, onDone: () async {
         final answer = Message(
           id: const Uuid().v4(),
