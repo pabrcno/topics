@@ -20,6 +20,7 @@ class AppUser with _$AppUser {
     required ESubscriptions subscription,
     required int messageCount,
     required DateTime createdAt,
+    required String openAiApiKey,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>

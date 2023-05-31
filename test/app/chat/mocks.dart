@@ -74,15 +74,16 @@ final AppUser mockAppUserWithMessages = AppUser(
   subscription: ESubscriptions.basic,
   messageCount: 1,
   createdAt: DateTime.now(),
+  openAiApiKey: 'testApiKey',
 );
 
 final AppUser mockAppUserWithoutMessages = AppUser(
-  uid: 'testNoMessages',
-  email: 'testEmail',
-  displayName: 'testDisplayName',
-  photoURL: 'testPhotoURL',
-  emailVerified: true,
-  subscription: ESubscriptions.basic,
-  messageCount: 0,
-  createdAt: DateTime.now(),
-);
+    uid: 'testNoMessages',
+    email: 'testEmail',
+    displayName: 'testDisplayName',
+    photoURL: 'testPhotoURL',
+    emailVerified: true,
+    subscription: ESubscriptions.basic,
+    messageCount: 0,
+    createdAt: DateTime.now(),
+    openAiApiKey: 'testApiKey');

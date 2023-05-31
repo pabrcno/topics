@@ -16,6 +16,7 @@ class UserDTO with _$UserDTO {
     required String subscription,
     required int messageCount,
     required DateTime createdAt,
+    required String openAiApiKey,
   }) = _UserDTO;
 
   factory UserDTO.fromDomain(AppUser user) {
@@ -28,6 +29,7 @@ class UserDTO with _$UserDTO {
       subscription: user.subscription.toString().split('.').last,
       messageCount: user.messageCount,
       createdAt: user.createdAt,
+      openAiApiKey: user.openAiApiKey,
     );
   }
 
@@ -42,6 +44,7 @@ class UserDTO with _$UserDTO {
           .firstWhere((e) => e.toString().split('.').last == subscription),
       messageCount: messageCount,
       createdAt: createdAt,
+      openAiApiKey: openAiApiKey,
     );
   }
 }
