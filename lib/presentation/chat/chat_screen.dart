@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/presentation/chat/widgets/chat_input.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
 import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
 import 'package:topics/presentation/chat/widgets/tools/tools_container.dart';
@@ -13,6 +13,7 @@ import 'widgets/tools/suggested_prompt_selector.dart';
 class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+  final FocusNode _focusNode = FocusNode();
   final Chat chat;
   final bool isNew;
   ChatScreen({super.key, required this.chat, this.isNew = false});
@@ -33,6 +34,10 @@ class ChatScreen extends StatelessWidget {
       duration: const Duration(milliseconds: 100),
       curve: Curves.easeOut,
     );
+  }
+
+  double _contextWidth(BuildContext context) {
+    return MediaQuery.of(context).size.width;
   }
 
   @override
@@ -76,33 +81,10 @@ class ChatScreen extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 10),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                      child: TextField(
-                    controller: _textController,
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: translate('type_a_message'),
-                    ),
-                    style: const TextStyle(fontSize: 18),
-                  )),
-                  IconButton(
-                    iconSize: 30,
-                    icon:
-                        provider.isLoading || provider.messageBuffer.isNotEmpty
-                            ? const CircularProgressIndicator(
-                                strokeWidth: 2,
-                              )
-                            : const Icon(Icons.send),
-                    onPressed:
-                        provider.isLoading ? null : () => _sendMessage(context),
-                  ),
-                ],
-              ),
+            ChatInput(
+              textController: _textController,
+              focusNode: _focusNode,
+              onSend: () => _sendMessage(context),
             ),
           ],
         ),

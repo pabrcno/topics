@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 const Map<String, String> defaultSuggestedPrompts = {
-  "note_taking_assistant_title": "Note-taking assistant",
-  "chat_gpt_prompt_title": "ChatGPT Prompt",
-  "proofreader_title": "Proofreader",
-  "diagram_title": "Diagram",
-  "midjourney_prompt_title": "Midjourney Prompt",
-  "math_teacher_title": "Math Teacher",
+  "note_taking_assistant_title": "note_taking_assistant",
+  "chat_gpt_prompt_title": "chat_gpt_prompt",
+  "proofreader_title": "proofreader",
+  "diagram_title": "diagram",
+  "midjourney_prompt_title": "midjourney_prompt",
+  "math_teacher_title": "math_teacher",
 };
 
 typedef OnSelect = void Function(String key, String value);
