@@ -169,7 +169,7 @@ class ChatTile extends StatelessWidget {
           const SizedBox(height: 4.0),
           Text(
             translate(
-                '${translate('last_updated')} ${chat.createdAt.day}/${chat.createdAt.month}/${chat.createdAt.year}'),
+                '${translate('last_updated')} ${chat.lastModified.day}/${chat.lastModified.month}/${chat.lastModified.year}'),
             style: Theme.of(context).textTheme.labelSmall,
           ),
         ],
