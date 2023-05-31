@@ -56,7 +56,7 @@ class TemperatureSliderButton extends StatelessWidget {
                       return Slider(
                         value: value,
                         min: 0.1,
-                        max: 2,
+                        max: 1.5,
                         activeColor: Colors.blueGrey.shade100,
                         // for step size of 0.05
                         onChangeEnd: (double value) {

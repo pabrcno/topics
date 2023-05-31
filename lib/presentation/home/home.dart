@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:topics/presentation/about/about.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 import 'package:topics/services/auth/auth_service.dart';
 
@@ -23,7 +24,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const AboutPage(),
+                ),
+              );
+            },
             icon: Image.asset(
               'assets/images/topics_dark_removebg.png',
               height: 35,

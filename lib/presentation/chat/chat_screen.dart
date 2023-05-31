@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/presentation/chat/widgets/chat_info.dart';
 import 'package:topics/presentation/chat/widgets/chat_input.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
 import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
@@ -55,6 +56,19 @@ class ChatScreen extends StatelessWidget {
             maxLines: 2,
           ),
           elevation: 1,
+          actions: [
+            IconButton(
+              icon: const Icon(Icons.info_outline),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ChatInfo(),
+                  ),
+                );
+              },
+            ),
+          ],
         ),
         body: Column(
           children: <Widget>[
