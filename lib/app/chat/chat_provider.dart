@@ -1,4 +1,4 @@
-import 'dart:developer';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:topics/domain/core/enums.dart';
@@ -134,56 +134,84 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
+  StreamSubscription?
+      streamSubscription; // Declare the StreamSubscription variable
+
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
       final userHasMessages = await _decrementUserMessages();
       if (!userHasMessages) throw Exception('You ran out of messages');
 
       final message = Message(
-          id: const Uuid().v4(),
-          content: content,
-          sentAt: DateTime.now(),
-          chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
-          isUser: true,
-          role: EMessageRole.user);
+        id: const Uuid().v4(),
+        content: content,
+        sentAt: DateTime.now(),
+        chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+        isUser: true,
+        role: EMessageRole.user,
+      );
 
       messages.add(message);
-      log('CHAT TEMPERATURE${currentChat?.temperature}');
+
       await _chatRepository.createMessage(message);
 
       notifyListeners();
-      _chatApi
+      streamSubscription = _chatApi
           .createChatCompletionStream(messages, currentChat?.temperature)
-          .listen((event) async {
-        await errorCommander.run(() async {
-          if (!isLoading) setLoading(true);
+          .listen(
+        (event) async {
+          await errorCommander.run(() async {
+            if (!isLoading) setLoading(true);
 
-          messageBuffer = messageBuffer + event.content;
-        });
-      }, onDone: () async {
-        final answer = Message(
-          id: const Uuid().v4(),
-          content: messageBuffer,
-          sentAt: DateTime.now(),
-          chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
-          isUser: false,
-          role: EMessageRole.assistant,
-        );
+            messageBuffer = messageBuffer + event.content;
+          });
+        },
+        onDone: () async {
+          final answer = Message(
+            id: const Uuid().v4(),
+            content: messageBuffer,
+            sentAt: DateTime.now(),
+            chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+            isUser: false,
+            role: EMessageRole.assistant,
+          );
 
-        messages.add(answer);
-        messageBuffer = '';
+          messages.add(answer);
+          messageBuffer = '';
 
-        notifyListeners();
-        setLoading(false);
+          streamSubscription?.cancel();
+          streamSubscription = null;
+          notifyListeners();
+          setLoading(false);
 
-        await Future.wait([
-          _chatRepository.createMessage(answer),
-        ]);
-      }, onError: (e) {
-        setLoading(false);
-        throw Exception('Error while receiving message: $e');
-      });
+          await Future.wait([
+            _chatRepository.createMessage(answer),
+          ]);
+        },
+        onError: (e) {
+          setLoading(false);
+          throw Exception('Error while receiving message: $e');
+        },
+      );
     });
+  }
+
+  void stopStream() {
+    streamSubscription?.cancel();
+    streamSubscription = null; // Cancel the stream subscription if it exists
+    messages.add(
+      Message(
+        id: const Uuid().v4(),
+        content: messageBuffer,
+        sentAt: DateTime.now(),
+        chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+        isUser: false,
+        role: EMessageRole.system,
+      ),
+    );
+    messageBuffer = '';
+    setLoading(false);
+    notifyListeners();
   }
 
   Future<void> createChat(String? initialMessage, Topic topic) async {

@@ -53,10 +53,12 @@ class ChatInput extends StatelessWidget {
             ),
             IconButton(
               iconSize: 30,
-              icon: provider.isLoading || provider.messageBuffer.isNotEmpty
-                  ? const CircularProgressIndicator(strokeWidth: 2)
+              icon: provider.streamSubscription != null
+                  ? const Icon(Icons.stop)
                   : const Icon(Icons.send),
-              onPressed: provider.isLoading ? null : onSend,
+              onPressed: provider.streamSubscription != null
+                  ? provider.stopStream
+                  : onSend,
             ),
           ],
         );
