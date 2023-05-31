@@ -59,6 +59,7 @@ dependencies:
   google_mlkit_text_recognition: ^0.6.0
   package_info: ^2.0.2
   flutter_translate: ^4.0.4
+  firebase_app_check: ^0.1.4+2
 
 dev_dependencies:
   flutter_test:
