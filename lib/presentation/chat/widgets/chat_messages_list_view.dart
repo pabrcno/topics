@@ -32,23 +32,30 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
     });
   }
 
+  scrollToBottom(provider) {
+    bool scrollCondition =
+        provider.messages.isNotEmpty && provider.messages.length > 1;
+    Future.delayed(const Duration(milliseconds: 100)).then((_) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (scrollCondition) {
+          // Scroll the ListView to the bottom
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.fastEaseInToSlowEaseOut,
+          );
+        }
+      });
+    });
+  }
   // Rest of your code...
 
   @override
   Widget build(BuildContext context) {
     return Consumer<ChatProvider>(
       builder: (context, provider, child) {
-        Future.delayed(const Duration(milliseconds: 100)).then((_) {
-          if (scrollController.hasClients &&
-              provider.messages.isNotEmpty &&
-              scrollController.positions.isNotEmpty) {
-            scrollController.animateTo(
-              scrollController.position.maxScrollExtent,
-              duration: const Duration(milliseconds: 300),
-              curve: Curves.fastEaseInToSlowEaseOut,
-            );
-          }
-        });
+        scrollToBottom(provider);
+
         return provider.isLoading && provider.messages.isEmpty
             ? const Center(
                 child: CircularProgressIndicator(),
@@ -60,14 +67,7 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
                 itemBuilder: (context, index) {
                   // Check if there is a new message or an incoming message
                   if (index == provider.messages.length) {
-                    WidgetsBinding.instance.addPostFrameCallback((_) {
-                      if (scrollController.hasClients) {
-                        scrollController.jumpTo(
-                          scrollController.position.maxScrollExtent,
-                        );
-                      }
-                    });
-
+                    scrollToBottom(provider);
                     return ChatMessageTile(
                       message: Message(
                         content: provider.messageBuffer,

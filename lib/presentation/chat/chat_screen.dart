@@ -13,7 +13,7 @@ import 'widgets/tools/suggested_prompt_selector.dart';
 
 class ChatScreen extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
-  final ScrollController _scrollController = ScrollController();
+
   final FocusNode _focusNode = FocusNode();
   final Chat chat;
   final bool isNew;
@@ -25,20 +25,7 @@ class ChatScreen extends StatelessWidget {
       _textController.clear();
       await Provider.of<ChatProvider>(context, listen: false)
           .sendMessage(messageText);
-      _scrollToBottom(_scrollController);
     }
-  }
-
-  void _scrollToBottom(ScrollController scrollController) {
-    scrollController.animateTo(
-      scrollController.position.maxScrollExtent,
-      duration: const Duration(milliseconds: 100),
-      curve: Curves.easeOut,
-    );
-  }
-
-  double _contextWidth(BuildContext context) {
-    return MediaQuery.of(context).size.width;
   }
 
   @override
@@ -63,7 +50,7 @@ class ChatScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ChatInfo(),
+                    builder: (context) => const ChatInfo(),
                   ),
                 );
               },
