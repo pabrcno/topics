@@ -49,6 +49,9 @@ class ChatProvider with ChangeNotifier {
           currentChat!.id,
         );
 
+        fetchedMessages.sort(
+          (a, b) => a.sentAt.compareTo(b.sentAt),
+        );
         messages = fetchedMessages;
         setLoading(false);
         notifyListeners();
