@@ -86,8 +86,26 @@ class TopicCard extends StatelessWidget {
                       },
                       onSelected: (String value) {
                         if (value == 'delete') {
-                          _showDialog(context,
-                              Text(translate('are_you_sure_delete_topic')));
+                          _showDialog(
+                            context,
+                            SizedBox(
+                              height: 100,
+                              child: Column(children: [
+                                Text(translate("confirm_delete_topic")),
+                                const SizedBox(
+                                  height: 10,
+                                ),
+                                TextButton(
+                                    onPressed: () {
+                                      Provider.of<ChatProvider>(context,
+                                              listen: false)
+                                          .deleteTopic(topic);
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: Text(translate("delete")))
+                              ]),
+                            ),
+                          );
                         } else if (value == 'changeTitle') {
                           TextEditingController titleController =
                               TextEditingController();

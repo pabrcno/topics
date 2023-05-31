@@ -3,7 +3,6 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '../../app/chat/chat_provider.dart';
 import '../../services/storage_service.dart';
@@ -88,18 +87,18 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    OutlinedButton(
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            Theme.of(context).colorScheme.secondary),
-                      ),
-                      onPressed: () async => launchUrl(
-                          Uri.parse(
-                            'https://platform.openai.com/account/api-keys',
-                          ),
-                          mode: LaunchMode.externalApplication),
-                      child: Text(translate('get_api_key')),
-                    ),
+                    // OutlinedButton(
+                    //   style: ButtonStyle(
+                    //     foregroundColor: MaterialStateProperty.all<Color>(
+                    //         Theme.of(context).colorScheme.secondary),
+                    //   ),
+                    //   onPressed: () async => launchUrl(
+                    //       Uri.parse(
+                    //         'https://platform.openai.com/account/api-keys',
+                    //       ),
+                    //       mode: LaunchMode.externalApplication),
+                    //   child: Text(translate('get_api_key')),
+                    // ),
                     OutlinedButton(
                       onPressed: () {
                         _saveApiKey();
