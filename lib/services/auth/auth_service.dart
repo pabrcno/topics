@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:topics/services/auth/user_credential_dto.dart';
+import 'package:topics/services/storage_service.dart';
 
 import '../../../domain/models/auth/app_user_credential.dart';
 import '../../../domain/models/user/app_user.dart';
@@ -55,11 +56,12 @@ class AuthService implements IAuthService {
           subscription: ESubscriptions.basic, // default subscription
           messageCount: 0, // default message count
           createdAt: DateTime.now(),
+          openAiApiKey: '',
         );
 
         await userRepository.createUser(user);
       }
-
+      await storageServiceProvider.saveApiKey(user.openAiApiKey);
       return UserCredentialDTO.fromFirebaseUser(userCredential.user!)
           .toDomain();
     });

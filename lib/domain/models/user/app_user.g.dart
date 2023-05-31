@@ -15,6 +15,7 @@ _$_AppUser _$$_AppUserFromJson(Map<String, dynamic> json) => _$_AppUser(
       subscription: $enumDecode(_$ESubscriptionsEnumMap, json['subscription']),
       messageCount: json['messageCount'] as int,
       createdAt: DateTime.parse(json['createdAt'] as String),
+      openAiApiKey: json['openAiApiKey'] as String,
     );
 
 Map<String, dynamic> _$$_AppUserToJson(_$_AppUser instance) =>
@@ -27,6 +28,7 @@ Map<String, dynamic> _$$_AppUserToJson(_$_AppUser instance) =>
       'subscription': _$ESubscriptionsEnumMap[instance.subscription]!,
       'messageCount': instance.messageCount,
       'createdAt': instance.createdAt.toIso8601String(),
+      'openAiApiKey': instance.openAiApiKey,
     };
 
 const _$ESubscriptionsEnumMap = {

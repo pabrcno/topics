@@ -28,6 +28,7 @@ mixin _$AppUser {
   ESubscriptions get subscription => throw _privateConstructorUsedError;
   int get messageCount => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
+  String get openAiApiKey => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -47,7 +48,8 @@ abstract class $AppUserCopyWith<$Res> {
       bool emailVerified,
       ESubscriptions subscription,
       int messageCount,
-      DateTime createdAt});
+      DateTime createdAt,
+      String openAiApiKey});
 }
 
 /// @nodoc
@@ -71,6 +73,7 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
     Object? subscription = null,
     Object? messageCount = null,
     Object? createdAt = null,
+    Object? openAiApiKey = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -105,6 +108,10 @@ class _$AppUserCopyWithImpl<$Res, $Val extends AppUser>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      openAiApiKey: null == openAiApiKey
+          ? _value.openAiApiKey
+          : openAiApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -124,7 +131,8 @@ abstract class _$$_AppUserCopyWith<$Res> implements $AppUserCopyWith<$Res> {
       bool emailVerified,
       ESubscriptions subscription,
       int messageCount,
-      DateTime createdAt});
+      DateTime createdAt,
+      String openAiApiKey});
 }
 
 /// @nodoc
@@ -145,6 +153,7 @@ class __$$_AppUserCopyWithImpl<$Res>
     Object? subscription = null,
     Object? messageCount = null,
     Object? createdAt = null,
+    Object? openAiApiKey = null,
   }) {
     return _then(_$_AppUser(
       uid: null == uid
@@ -179,6 +188,10 @@ class __$$_AppUserCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
+      openAiApiKey: null == openAiApiKey
+          ? _value.openAiApiKey
+          : openAiApiKey // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -194,7 +207,8 @@ class _$_AppUser implements _AppUser {
       required this.emailVerified,
       required this.subscription,
       required this.messageCount,
-      required this.createdAt});
+      required this.createdAt,
+      required this.openAiApiKey});
 
   factory _$_AppUser.fromJson(Map<String, dynamic> json) =>
       _$$_AppUserFromJson(json);
@@ -215,10 +229,12 @@ class _$_AppUser implements _AppUser {
   final int messageCount;
   @override
   final DateTime createdAt;
+  @override
+  final String openAiApiKey;
 
   @override
   String toString() {
-    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, photoURL: $photoURL, emailVerified: $emailVerified, subscription: $subscription, messageCount: $messageCount, createdAt: $createdAt)';
+    return 'AppUser(uid: $uid, email: $email, displayName: $displayName, photoURL: $photoURL, emailVerified: $emailVerified, subscription: $subscription, messageCount: $messageCount, createdAt: $createdAt, openAiApiKey: $openAiApiKey)';
   }
 
   @override
@@ -239,13 +255,24 @@ class _$_AppUser implements _AppUser {
             (identical(other.messageCount, messageCount) ||
                 other.messageCount == messageCount) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt));
+                other.createdAt == createdAt) &&
+            (identical(other.openAiApiKey, openAiApiKey) ||
+                other.openAiApiKey == openAiApiKey));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, uid, email, displayName,
-      photoURL, emailVerified, subscription, messageCount, createdAt);
+  int get hashCode => Object.hash(
+      runtimeType,
+      uid,
+      email,
+      displayName,
+      photoURL,
+      emailVerified,
+      subscription,
+      messageCount,
+      createdAt,
+      openAiApiKey);
 
   @JsonKey(ignore: true)
   @override
@@ -270,7 +297,8 @@ abstract class _AppUser implements AppUser {
       required final bool emailVerified,
       required final ESubscriptions subscription,
       required final int messageCount,
-      required final DateTime createdAt}) = _$_AppUser;
+      required final DateTime createdAt,
+      required final String openAiApiKey}) = _$_AppUser;
 
   factory _AppUser.fromJson(Map<String, dynamic> json) = _$_AppUser.fromJson;
 
@@ -290,6 +318,8 @@ abstract class _AppUser implements AppUser {
   int get messageCount;
   @override
   DateTime get createdAt;
+  @override
+  String get openAiApiKey;
   @override
   @JsonKey(ignore: true)
   _$$_AppUserCopyWith<_$_AppUser> get copyWith =>

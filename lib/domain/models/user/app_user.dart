@@ -20,6 +20,8 @@ class AppUser with _$AppUser {
     required ESubscriptions subscription,
     required int messageCount,
     required DateTime createdAt,
+    // TODO: THIS IS A TEMPORARY PARAMETER FOR BETA TESTERS IT SHOULD BE REMOVED IN THE FUTURE
+    required String openAiApiKey,
   }) = _AppUser;
 
   factory AppUser.fromJson(Map<String, dynamic> json) =>
