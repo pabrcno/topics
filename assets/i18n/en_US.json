@@ -29,7 +29,7 @@
   "api_key_set_successfully": "OpenAI API Key set successfully",
   "sign_out": "Sign out",
   "created": "Created:",
-  "last_updated": "Last updated: %day%-%month%-%year%",
+  "last_updated": "Last updated: ",
   "privacy_policy_title": "Privacy Policy for Topics",
   "last_updated_date": "Last updated: 5/28/2023",
   "scan_text": "Scan Text",

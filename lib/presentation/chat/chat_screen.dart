@@ -60,7 +60,6 @@ class ChatScreen extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: ChatMessagesListView(
-                scrollController: _scrollController,
                 chat: chat,
                 isNew: isNew,
               ),

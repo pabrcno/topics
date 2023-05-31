@@ -18,7 +18,14 @@ import '../../presentation/chat/chat_screen.dart';
 import '../../services/exception_handling_service.dart';
 
 class ChatProvider with ChangeNotifier {
-  List<Message> messages = [];
+  List<Message> _messages = [];
+  List<Message> get messages => _messages;
+
+  set messages(List<Message> val) {
+    _messages = val;
+    notifyListeners();
+  }
+
   final IChatApi _chatApi;
   final IChatRepository _chatRepository;
   final IUserRepository _userRepository;
@@ -52,9 +59,8 @@ class ChatProvider with ChangeNotifier {
         fetchedMessages.sort(
           (a, b) => a.sentAt.compareTo(b.sentAt),
         );
-        messages = fetchedMessages;
+        messages = fetchedMessages; // Use the setter here
         setLoading(false);
-        notifyListeners();
       }
     });
   }
@@ -97,9 +103,11 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  String messageBuffer = '';
-  void updateMessageBuffer(String newValue) {
-    messageBuffer += newValue;
+  String _messageBuffer = '';
+  String get messageBuffer => _messageBuffer;
+
+  set messageBuffer(String value) {
+    _messageBuffer = value;
     notifyListeners();
   }
 
@@ -150,7 +158,7 @@ class ChatProvider with ChangeNotifier {
         await errorCommander.run(() async {
           if (!isLoading) setLoading(true);
 
-          updateMessageBuffer(event.content);
+          messageBuffer = messageBuffer + event.content;
         });
       }, onDone: () async {
         final answer = Message(
