@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "199942357204",
+    "firebase_url": "https://topics-860b1-default-rtdb.firebaseio.com",
     "project_id": "topics-860b1",
     "storage_bucket": "topics-860b1.appspot.com"
   },
@@ -13,6 +14,14 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "199942357204-3sn4hj43mltvldaj9v0ipsa6lrgbju28.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sequencetech.topics",
+            "certificate_hash": "7a2a435b1c19ed5459f759e669926ecdf920f162"
+          }
+        },
         {
           "client_id": "199942357204-65lfq11ofb02j3g633g639dqoj16tu15.apps.googleusercontent.com",
           "client_type": 1,
