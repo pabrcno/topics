@@ -139,9 +139,6 @@ class ChatProvider with ChangeNotifier {
 
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
-      final userHasMessages = await _decrementUserMessages();
-      if (!userHasMessages) throw Exception('You ran out of messages');
-
       final message = Message(
         id: const Uuid().v4(),
         content: content,
@@ -153,18 +150,18 @@ class ChatProvider with ChangeNotifier {
 
       messages.add(message);
 
-      await _chatRepository.createMessage(message);
-
       notifyListeners();
-      streamSubscription = _chatApi
-          .createChatCompletionStream(messages, currentChat?.temperature)
-          .listen(
-        (event) async {
-          await errorCommander.run(() async {
-            if (!isLoading) setLoading(true);
+      setLoading(true);
+      final userHasMessages = await _decrementUserMessages();
+      if (!userHasMessages) throw Exception('You ran out of messages');
 
-            messageBuffer = messageBuffer + event.content;
-          });
+      final stream = await _chatApi.createChatCompletionStream(
+          messages, currentChat?.temperature ?? 0.5);
+
+      streamSubscription = stream.listen(
+        (event) {
+          messageBuffer = messageBuffer + event.content;
+          setLoading(false);
         },
         onDone: () async {
           final answer = Message(
@@ -186,6 +183,7 @@ class ChatProvider with ChangeNotifier {
 
           await Future.wait([
             _chatRepository.createMessage(answer),
+            _chatRepository.createMessage(message)
           ]);
         },
         onError: (e) {

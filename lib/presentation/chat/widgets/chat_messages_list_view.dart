@@ -56,33 +56,29 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
       builder: (context, provider, child) {
         scrollToBottom(provider);
 
-        return provider.isLoading && provider.messages.isEmpty
-            ? const Center(
-                child: CircularProgressIndicator(),
-              )
-            : ListView.builder(
-                controller: scrollController,
-                itemCount: provider.messages.length +
-                    (provider.messageBuffer.isNotEmpty ? 1 : 0),
-                itemBuilder: (context, index) {
-                  // Check if there is a new message or an incoming message
-                  if (index == provider.messages.length) {
-                    scrollToBottom(provider);
-                    return ChatMessageTile(
-                      message: Message(
-                        content: provider.messageBuffer,
-                        id: 'new',
-                        chatId: provider.currentChat?.id ?? '',
-                        isUser: false,
-                        role: EMessageRole.assistant,
-                        sentAt: DateTime.now(),
-                      ),
-                    );
-                  } else {
-                    return ChatMessageTile(message: provider.messages[index]);
-                  }
-                },
+        return ListView.builder(
+          controller: scrollController,
+          itemCount: provider.messages.length +
+              (provider.messageBuffer.isNotEmpty ? 1 : 0),
+          itemBuilder: (context, index) {
+            // Check if there is a new message or an incoming message
+            if (index == provider.messages.length) {
+              scrollToBottom(provider);
+              return ChatMessageTile(
+                message: Message(
+                  content: provider.messageBuffer,
+                  id: 'new',
+                  chatId: provider.currentChat?.id ?? '',
+                  isUser: false,
+                  role: EMessageRole.assistant,
+                  sentAt: DateTime.now(),
+                ),
               );
+            } else {
+              return ChatMessageTile(message: provider.messages[index]);
+            }
+          },
+        );
       },
     );
   }

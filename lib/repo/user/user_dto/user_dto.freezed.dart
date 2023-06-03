@@ -24,7 +24,6 @@ mixin _$UserDTO {
   String get subscription => throw _privateConstructorUsedError;
   int get messageCount => throw _privateConstructorUsedError;
   DateTime get createdAt => throw _privateConstructorUsedError;
-  String get openAiApiKey => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $UserDTOCopyWith<UserDTO> get copyWith => throw _privateConstructorUsedError;
@@ -43,8 +42,7 @@ abstract class $UserDTOCopyWith<$Res> {
       bool emailVerified,
       String subscription,
       int messageCount,
-      DateTime createdAt,
-      String openAiApiKey});
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -68,7 +66,6 @@ class _$UserDTOCopyWithImpl<$Res, $Val extends UserDTO>
     Object? subscription = null,
     Object? messageCount = null,
     Object? createdAt = null,
-    Object? openAiApiKey = null,
   }) {
     return _then(_value.copyWith(
       uid: null == uid
@@ -103,10 +100,6 @@ class _$UserDTOCopyWithImpl<$Res, $Val extends UserDTO>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      openAiApiKey: null == openAiApiKey
-          ? _value.openAiApiKey
-          : openAiApiKey // ignore: cast_nullable_to_non_nullable
-              as String,
     ) as $Val);
   }
 }
@@ -126,8 +119,7 @@ abstract class _$$_UserDTOCopyWith<$Res> implements $UserDTOCopyWith<$Res> {
       bool emailVerified,
       String subscription,
       int messageCount,
-      DateTime createdAt,
-      String openAiApiKey});
+      DateTime createdAt});
 }
 
 /// @nodoc
@@ -148,7 +140,6 @@ class __$$_UserDTOCopyWithImpl<$Res>
     Object? subscription = null,
     Object? messageCount = null,
     Object? createdAt = null,
-    Object? openAiApiKey = null,
   }) {
     return _then(_$_UserDTO(
       uid: null == uid
@@ -183,10 +174,6 @@ class __$$_UserDTOCopyWithImpl<$Res>
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      openAiApiKey: null == openAiApiKey
-          ? _value.openAiApiKey
-          : openAiApiKey // ignore: cast_nullable_to_non_nullable
-              as String,
     ));
   }
 }
@@ -202,8 +189,7 @@ class _$_UserDTO extends _UserDTO {
       required this.emailVerified,
       required this.subscription,
       required this.messageCount,
-      required this.createdAt,
-      required this.openAiApiKey})
+      required this.createdAt})
       : super._();
 
   @override
@@ -222,12 +208,10 @@ class _$_UserDTO extends _UserDTO {
   final int messageCount;
   @override
   final DateTime createdAt;
-  @override
-  final String openAiApiKey;
 
   @override
   String toString() {
-    return 'UserDTO(uid: $uid, email: $email, displayName: $displayName, photoURL: $photoURL, emailVerified: $emailVerified, subscription: $subscription, messageCount: $messageCount, createdAt: $createdAt, openAiApiKey: $openAiApiKey)';
+    return 'UserDTO(uid: $uid, email: $email, displayName: $displayName, photoURL: $photoURL, emailVerified: $emailVerified, subscription: $subscription, messageCount: $messageCount, createdAt: $createdAt)';
   }
 
   @override
@@ -248,23 +232,12 @@ class _$_UserDTO extends _UserDTO {
             (identical(other.messageCount, messageCount) ||
                 other.messageCount == messageCount) &&
             (identical(other.createdAt, createdAt) ||
-                other.createdAt == createdAt) &&
-            (identical(other.openAiApiKey, openAiApiKey) ||
-                other.openAiApiKey == openAiApiKey));
+                other.createdAt == createdAt));
   }
 
   @override
-  int get hashCode => Object.hash(
-      runtimeType,
-      uid,
-      email,
-      displayName,
-      photoURL,
-      emailVerified,
-      subscription,
-      messageCount,
-      createdAt,
-      openAiApiKey);
+  int get hashCode => Object.hash(runtimeType, uid, email, displayName,
+      photoURL, emailVerified, subscription, messageCount, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -282,8 +255,7 @@ abstract class _UserDTO extends UserDTO {
       required final bool emailVerified,
       required final String subscription,
       required final int messageCount,
-      required final DateTime createdAt,
-      required final String openAiApiKey}) = _$_UserDTO;
+      required final DateTime createdAt}) = _$_UserDTO;
   const _UserDTO._() : super._();
 
   @override
@@ -302,8 +274,6 @@ abstract class _UserDTO extends UserDTO {
   int get messageCount;
   @override
   DateTime get createdAt;
-  @override
-  String get openAiApiKey;
   @override
   @JsonKey(ignore: true)
   _$$_UserDTOCopyWith<_$_UserDTO> get copyWith =>

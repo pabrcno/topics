@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:dart_openai/dart_openai.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class ErrorCommander {
@@ -41,8 +40,6 @@ class ErrorCommander {
       message = 'error_no_internet';
 
       // General case
-    } else if (error is MissingApiKeyException) {
-      message = 'error_missing_api_key';
     } else {
       message = '$error';
     }
