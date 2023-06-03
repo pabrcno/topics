@@ -46,7 +46,7 @@ dependencies:
   image_cropper: ^4.0.1
   shared_preferences: ^2.1.1
   url_launcher: ^6.1.11
-  dart_openai: ^1.9.92
+
   freezed: ^2.3.4
   freezed_annotation: ^2.2.0
   json_annotation: ^4.8.1
@@ -60,6 +60,9 @@ dependencies:
   package_info: ^2.0.2
   flutter_translate: ^4.0.4
   firebase_app_check: ^0.1.4+2
+  web_socket_channel: ^2.4.0
+  http: ^0.13.6
+  flutter_dotenv: ^5.1.0
 
 dev_dependencies:
   flutter_test:
@@ -91,6 +94,7 @@ flutter:
     - assets/images/topics_dark_removebg.png
     - assets/images/logo_with_label_1-removebg-preview.png
     - assets/i18n/
+    - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

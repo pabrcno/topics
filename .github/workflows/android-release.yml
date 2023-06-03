@@ -30,7 +30,7 @@ jobs:
           echo "storeFile=/tmp/my-release-key.jks" >> $GITHUB_ENV
 
       - name: Set Google Client ID
-        run: echo "GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}" > .env
+        run: echo "CHAT_URL=${{ secrets.CHAT_URL }}" > .env
 
       - name: Get version from pubspec
         id: version
@@ -43,7 +43,7 @@ jobs:
           flutter test
           flutter build appbundle --release --no-tree-shake-icons
         env:
-          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          CHAT_URL: ${{ secrets.CHAT_URL }}
 
       - name: Create Release
         id: create_release

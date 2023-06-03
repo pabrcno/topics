@@ -5,15 +5,15 @@
 // @dart=2.19
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'dart:async' as _i4;
+import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:topics/domain/api/chat/i_chat_api.dart' as _i7;
-import 'package:topics/domain/models/chat/chat.dart' as _i5;
-import 'package:topics/domain/models/message/message.dart' as _i2;
+import 'package:topics/domain/models/chat/chat.dart' as _i4;
+import 'package:topics/domain/models/message/message.dart' as _i5;
 import 'package:topics/domain/models/topic/topic.dart' as _i6;
 import 'package:topics/domain/models/user/app_user.dart' as _i9;
-import 'package:topics/domain/repo/i_chat_repository.dart' as _i3;
+import 'package:topics/domain/repo/i_chat_repository.dart' as _i2;
 import 'package:topics/domain/repo/i_user_repository.dart' as _i8;
 
 // ignore_for_file: type=lint
@@ -27,154 +27,144 @@ import 'package:topics/domain/repo/i_user_repository.dart' as _i8;
 // ignore_for_file: camel_case_types
 // ignore_for_file: subtype_of_sealed_class
 
-class _FakeMessage_0 extends _i1.SmartFake implements _i2.Message {
-  _FakeMessage_0(
-    Object parent,
-    Invocation parentInvocation,
-  ) : super(
-          parent,
-          parentInvocation,
-        );
-}
-
 /// A class which mocks [IChatRepository].
 ///
 /// See the documentation for Mockito's code generation for more information.
-class MockIChatRepository extends _i1.Mock implements _i3.IChatRepository {
+class MockIChatRepository extends _i1.Mock implements _i2.IChatRepository {
   MockIChatRepository() {
     _i1.throwOnMissingStub(this);
   }
 
   @override
-  _i4.Future<void> createChat(_i5.Chat? chat) => (super.noSuchMethod(
+  _i3.Future<void> createChat(_i4.Chat? chat) => (super.noSuchMethod(
         Invocation.method(
           #createChat,
           [chat],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<void> updateChat(_i5.Chat? chat) => (super.noSuchMethod(
+  _i3.Future<void> updateChat(_i4.Chat? chat) => (super.noSuchMethod(
         Invocation.method(
           #updateChat,
           [chat],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<void> deleteChat(String? chatId) => (super.noSuchMethod(
+  _i3.Future<void> deleteChat(String? chatId) => (super.noSuchMethod(
         Invocation.method(
           #deleteChat,
           [chatId],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<_i5.Chat?> getChat(String? chatId) => (super.noSuchMethod(
+  _i3.Future<_i4.Chat?> getChat(String? chatId) => (super.noSuchMethod(
         Invocation.method(
           #getChat,
           [chatId],
         ),
-        returnValue: _i4.Future<_i5.Chat?>.value(),
-      ) as _i4.Future<_i5.Chat?>);
+        returnValue: _i3.Future<_i4.Chat?>.value(),
+      ) as _i3.Future<_i4.Chat?>);
   @override
-  _i4.Future<List<_i5.Chat>> getChats(String? topicId) => (super.noSuchMethod(
+  _i3.Future<List<_i4.Chat>> getChats(String? topicId) => (super.noSuchMethod(
         Invocation.method(
           #getChats,
           [topicId],
         ),
-        returnValue: _i4.Future<List<_i5.Chat>>.value(<_i5.Chat>[]),
-      ) as _i4.Future<List<_i5.Chat>>);
+        returnValue: _i3.Future<List<_i4.Chat>>.value(<_i4.Chat>[]),
+      ) as _i3.Future<List<_i4.Chat>>);
   @override
-  _i4.Future<void> createMessage(_i2.Message? message) => (super.noSuchMethod(
+  _i3.Future<void> createMessage(_i5.Message? message) => (super.noSuchMethod(
         Invocation.method(
           #createMessage,
           [message],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<void> updateMessage(_i2.Message? message) => (super.noSuchMethod(
+  _i3.Future<void> updateMessage(_i5.Message? message) => (super.noSuchMethod(
         Invocation.method(
           #updateMessage,
           [message],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<void> deleteMessage(String? messageId) => (super.noSuchMethod(
+  _i3.Future<void> deleteMessage(String? messageId) => (super.noSuchMethod(
         Invocation.method(
           #deleteMessage,
           [messageId],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<_i2.Message?> getMessage(String? messageId) => (super.noSuchMethod(
+  _i3.Future<_i5.Message?> getMessage(String? messageId) => (super.noSuchMethod(
         Invocation.method(
           #getMessage,
           [messageId],
         ),
-        returnValue: _i4.Future<_i2.Message?>.value(),
-      ) as _i4.Future<_i2.Message?>);
+        returnValue: _i3.Future<_i5.Message?>.value(),
+      ) as _i3.Future<_i5.Message?>);
   @override
-  _i4.Future<List<_i2.Message>> getMessages(String? chatId) =>
+  _i3.Future<List<_i5.Message>> getMessages(String? chatId) =>
       (super.noSuchMethod(
         Invocation.method(
           #getMessages,
           [chatId],
         ),
-        returnValue: _i4.Future<List<_i2.Message>>.value(<_i2.Message>[]),
-      ) as _i4.Future<List<_i2.Message>>);
+        returnValue: _i3.Future<List<_i5.Message>>.value(<_i5.Message>[]),
+      ) as _i3.Future<List<_i5.Message>>);
   @override
-  _i4.Future<void> createTopic(_i6.Topic? topic) => (super.noSuchMethod(
+  _i3.Future<void> createTopic(_i6.Topic? topic) => (super.noSuchMethod(
         Invocation.method(
           #createTopic,
           [topic],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<void> updateTopic(_i6.Topic? topic) => (super.noSuchMethod(
+  _i3.Future<void> updateTopic(_i6.Topic? topic) => (super.noSuchMethod(
         Invocation.method(
           #updateTopic,
           [topic],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<void> deleteTopic(String? topicId) => (super.noSuchMethod(
+  _i3.Future<void> deleteTopic(String? topicId) => (super.noSuchMethod(
         Invocation.method(
           #deleteTopic,
           [topicId],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<_i6.Topic?> getTopic(String? topicId) => (super.noSuchMethod(
+  _i3.Future<_i6.Topic?> getTopic(String? topicId) => (super.noSuchMethod(
         Invocation.method(
           #getTopic,
           [topicId],
         ),
-        returnValue: _i4.Future<_i6.Topic?>.value(),
-      ) as _i4.Future<_i6.Topic?>);
+        returnValue: _i3.Future<_i6.Topic?>.value(),
+      ) as _i3.Future<_i6.Topic?>);
   @override
-  _i4.Future<List<_i6.Topic>> getTopics(String? userId) => (super.noSuchMethod(
+  _i3.Future<List<_i6.Topic>> getTopics(String? userId) => (super.noSuchMethod(
         Invocation.method(
           #getTopics,
           [userId],
         ),
-        returnValue: _i4.Future<List<_i6.Topic>>.value(<_i6.Topic>[]),
-      ) as _i4.Future<List<_i6.Topic>>);
+        returnValue: _i3.Future<List<_i6.Topic>>.value(<_i6.Topic>[]),
+      ) as _i3.Future<List<_i6.Topic>>);
 }
 
 /// A class which mocks [IChatApi].
@@ -186,32 +176,8 @@ class MockIChatApi extends _i1.Mock implements _i7.IChatApi {
   }
 
   @override
-  _i4.Future<_i2.Message> createChatCompletion(
-    List<_i2.Message>? messages,
-    String? chatId,
-  ) =>
-      (super.noSuchMethod(
-        Invocation.method(
-          #createChatCompletion,
-          [
-            messages,
-            chatId,
-          ],
-        ),
-        returnValue: _i4.Future<_i2.Message>.value(_FakeMessage_0(
-          this,
-          Invocation.method(
-            #createChatCompletion,
-            [
-              messages,
-              chatId,
-            ],
-          ),
-        )),
-      ) as _i4.Future<_i2.Message>);
-  @override
-  _i4.Stream<_i2.Message> createChatCompletionStream(
-    List<_i2.Message>? messages,
+  _i3.Future<_i3.Stream<_i5.Message>> createChatCompletionStream(
+    List<_i5.Message>? messages,
     double? temperature,
   ) =>
       (super.noSuchMethod(
@@ -222,8 +188,9 @@ class MockIChatApi extends _i1.Mock implements _i7.IChatApi {
             temperature,
           ],
         ),
-        returnValue: _i4.Stream<_i2.Message>.empty(),
-      ) as _i4.Stream<_i2.Message>);
+        returnValue: _i3.Future<_i3.Stream<_i5.Message>>.value(
+            _i3.Stream<_i5.Message>.empty()),
+      ) as _i3.Future<_i3.Stream<_i5.Message>>);
 }
 
 /// A class which mocks [IUserRepository].
@@ -235,24 +202,24 @@ class MockIUserRepository extends _i1.Mock implements _i8.IUserRepository {
   }
 
   @override
-  _i4.Future<void> createUser(_i9.AppUser? user) => (super.noSuchMethod(
+  _i3.Future<void> createUser(_i9.AppUser? user) => (super.noSuchMethod(
         Invocation.method(
           #createUser,
           [user],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
   @override
-  _i4.Future<_i9.AppUser?> getUser(String? uid) => (super.noSuchMethod(
+  _i3.Future<_i9.AppUser?> getUser(String? uid) => (super.noSuchMethod(
         Invocation.method(
           #getUser,
           [uid],
         ),
-        returnValue: _i4.Future<_i9.AppUser?>.value(),
-      ) as _i4.Future<_i9.AppUser?>);
+        returnValue: _i3.Future<_i9.AppUser?>.value(),
+      ) as _i3.Future<_i9.AppUser?>);
   @override
-  _i4.Future<void> reduceMessages(
+  _i3.Future<void> reduceMessages(
     String? uid,
     int? decrement,
   ) =>
@@ -264,7 +231,7 @@ class MockIUserRepository extends _i1.Mock implements _i8.IUserRepository {
             decrement,
           ],
         ),
-        returnValue: _i4.Future<void>.value(),
-        returnValueForMissingStub: _i4.Future<void>.value(),
-      ) as _i4.Future<void>);
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
 }

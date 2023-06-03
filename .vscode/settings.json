@@ -1,4 +1,24 @@
 {
-  "cSpell.words": ["appainter", "openai", "prefs", "removebg"],
-  "java.configuration.updateBuildConfiguration": "interactive"
+  "cSpell.words": ["appainter", "dotenv", "openai", "prefs", "removebg"],
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#7ce114",
+    "activityBar.background": "#7ce114",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#1581ea",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "commandCenter.border": "#15202b99",
+    "sash.hoverBorder": "#7ce114",
+    "statusBar.background": "#62b210",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#48830c",
+    "statusBarItem.remoteBackground": "#62b210",
+    "statusBarItem.remoteForeground": "#15202b",
+    "titleBar.activeBackground": "#62b210",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#62b21099",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "#62b210"
 }

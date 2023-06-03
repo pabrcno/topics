@@ -5,7 +5,6 @@ import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
 import '../../app/chat/chat_provider.dart';
-import '../../services/storage_service.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({Key? key}) : super(key: key);
@@ -25,7 +24,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   void _logout() {
     var chatProvider = Provider.of<ChatProvider>(context, listen: false);
     chatProvider.clearChatStates();
-    storageServiceProvider.clearApiKey();
+
     AuthService().signOut();
 
     Navigator.of(context).pop();

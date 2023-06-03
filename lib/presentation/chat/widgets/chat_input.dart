@@ -28,7 +28,8 @@ class ChatInput extends StatelessWidget {
         return Row(
           children: [
             Container(
-              padding: const EdgeInsets.only(left: 10, right: 10, bottom: 30),
+              padding: const EdgeInsets.only(
+                  left: 10, right: 10, bottom: 30, top: 5),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minWidth: _contextWidth(context) - 75,
@@ -42,6 +43,7 @@ class ChatInput extends StatelessWidget {
                   child: TextField(
                     keyboardType: TextInputType.multiline,
                     maxLines: null,
+                    minLines: 2,
                     focusNode: _focusNode,
                     controller: _textController,
                     decoration: InputDecoration.collapsed(
@@ -53,9 +55,14 @@ class ChatInput extends StatelessWidget {
             ),
             IconButton(
               iconSize: 30,
-              icon: provider.streamSubscription != null
-                  ? const Icon(Icons.stop)
-                  : const Icon(Icons.send),
+              icon: provider.isLoading
+                  ? const CircularProgressIndicator(color: Colors.grey)
+                  : provider.streamSubscription != null
+                      ? Icon(
+                          Icons.stop,
+                          color: Colors.yellow.shade900,
+                        )
+                      : const Icon(Icons.send),
               onPressed: provider.streamSubscription != null
                   ? provider.stopStream
                   : onSend,

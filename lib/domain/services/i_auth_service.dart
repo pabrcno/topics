@@ -6,4 +6,5 @@ abstract class IAuthService {
   Future<void> signOut();
   AppUserCredential? getCurrentUser();
   StreamBuilder<AppUserCredential?> handleAuthState();
+  Future<String?> getUserToken();
 }
