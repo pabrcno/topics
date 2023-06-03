@@ -16,10 +16,9 @@ class ChatApi implements IChatApi {
   Future<Stream<Message>> createChatCompletionStream(
       List<Message> messages, double temperature) async {
     final chatUrl = dotenv.env['CHAT_URL']!;
-
-    // final uri = Uri.parse(chatUrl);
     //LOCAL 10.0.2.2:8080
-    final uri = Uri.parse('ws://10.0.2.2:8080/ws');
+    final uri = Uri.parse(chatUrl);
+
     final channel = WebSocketChannel.connect(uri);
     String jsonMessage = json.encode(MessageRequest(
             userToken: await _authService.getUserToken() ?? '',
