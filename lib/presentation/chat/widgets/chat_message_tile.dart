@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
-
+import 'package:topics/presentation/chat/widgets/message_share_button.dart';
 import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
+
+// Don't forget to import your MessageShareButton
 
 class ChatMessageTile extends StatelessWidget {
   final Message message;
 
-  const ChatMessageTile({super.key, required this.message});
+  const ChatMessageTile({Key? key, required this.message}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -43,13 +45,22 @@ class ChatMessageTile extends StatelessWidget {
             style: const TextStyle(color: Colors.white, fontSize: 16),
           ),
           const SizedBox(height: 5),
-          Text(
-            '${message.sentAt.hour}:${message.sentAt.minute}',
-            style: const TextStyle(
-              color: Colors.white70,
-              fontSize: 12,
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '${message.sentAt.hour}:${message.sentAt.minute}',
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize: 12,
+                  ),
+                ),
+                MessageShareButton(message: message.content),
+              ],
             ),
-          ),
+          )
         ],
       ),
     );
