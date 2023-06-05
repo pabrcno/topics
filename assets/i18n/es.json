@@ -6,7 +6,7 @@
   "go_to_chat": "Ir al chat >",
 
   "no_topics_available": "Crea un nuevo Topic para organizar tus chats!",
-
+  "confirm_delete": "¿Estás seguro de que quieres eliminar este chat?",
   "delete": "Eliminar",
   "change_title": "Cambiar título",
   "confirm_delete_topic": "¿Estás seguro de que quieres eliminar este tema?",
