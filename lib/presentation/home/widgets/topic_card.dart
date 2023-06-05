@@ -28,11 +28,16 @@ class TopicCard extends StatelessWidget {
           ),
           actions: [
             TextButton(
-              child: Text(translate('cancel')),
+              style: const ButtonStyle(
+                  foregroundColor: MaterialStatePropertyAll(Colors.red),
+                  textStyle: MaterialStatePropertyAll(
+                    TextStyle(color: Colors.red),
+                  )),
               onPressed: () {
                 Navigator.of(context).pop();
               },
-            ),
+              child: Text(translate('cancel')),
+            )
           ],
         );
       },
@@ -113,11 +118,11 @@ class TopicCard extends StatelessWidget {
                             context,
                             Column(
                               children: [
-                                Text(translate('change_title_of_topic')),
+                                Text(translate('change_title')),
                                 TextField(
                                   controller: titleController,
                                   decoration: InputDecoration(
-                                      hintText: translate('new_title')),
+                                      hintText: translate('new_title_hint')),
                                 ),
                                 TextButton(
                                   child: Text(translate('change')),
