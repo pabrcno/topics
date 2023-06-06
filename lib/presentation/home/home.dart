@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
-import 'package:topics/presentation/about/about.dart';
+import 'package:topics/presentation/audio/audio_screen.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
 import 'package:topics/services/auth/auth_service.dart';
 
@@ -28,7 +28,7 @@ class HomePage extends StatelessWidget {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const AboutPage(),
+                  builder: (context) => const AudioScreen(),
                 ),
               );
             },

@@ -64,6 +64,11 @@ dependencies:
   http: ^0.13.6
   flutter_dotenv: ^5.1.0
   share: ^2.0.4
+  flutter_sound: ^9.2.13
+  path: ^1.8.3
+  file_picker: ^5.3.1
+  flutter_archive: ^5.0.0
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:
