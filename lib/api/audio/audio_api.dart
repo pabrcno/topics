@@ -1,6 +1,7 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+
+import 'package:flutter_archive/flutter_archive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,18 +14,16 @@ class AudioApi implements IAudioApi {
       'https://6af2-2800-2261-4000-52b-a9e3-ed38-1053-d84a.ngrok-free.app/v1/unmix_youtube';
 
   @override
-  Stream<String> processAndUploadFile(String path) async* {
+  Future<List<String>> processAndUploadFile(String path) async {
     var request = http.MultipartRequest('POST', Uri.parse(fileUrl));
     request.files.add(await http.MultipartFile.fromPath('audio', path));
     var res = await request.send();
     var response = await http.Response.fromStream(res);
-    await for (var filePath in _processResponse(response)) {
-      yield filePath;
-    }
+    return _processResponse(response);
   }
 
   @override
-  Stream<String> processAndUploadYoutubeUrl(String youtubeUrl) async* {
+  Future<List<String>> processAndUploadYoutubeUrl(String youtubeUrl) async {
     var response = await http.post(
       Uri.parse(this.youtubeUrl),
       headers: <String, String>{
@@ -34,36 +33,52 @@ class AudioApi implements IAudioApi {
         'url': youtubeUrl,
       }),
     );
-    await for (var filePath in _processResponse(response)) {
-      yield filePath;
-    }
+    return _processResponse(response);
   }
 
-  Stream<String> _processResponse(http.Response response) async* {
+  Future<List<String>> _processResponse(http.Response response) async {
     if (response.statusCode == 200) {
-      var responseData = jsonDecode(response.body);
-      var fileNames = responseData['files'] as List<String>;
-      await for (var filePath in _downloadFiles(fileNames)) {
-        yield filePath;
-      }
+      print('Uploaded!');
+      // Process the response and extract audio files
+      return await _processAndExtractResponse(response);
     } else {
-      throw Exception('Failed to upload.');
+      print('Failed to upload.');
+      return [];
     }
   }
 
-  Stream<String> _downloadFiles(List<String> fileNames) async* {
+  Future<List<String>> _processAndExtractResponse(
+      http.Response response) async {
+    // Download the ZIP file
+    var bytes = response.bodyBytes;
+
+    // Get the temporary directory to save the ZIP file
     var tempDir = await getTemporaryDirectory();
-    for (var filename in fileNames) {
-      var response = await http
-          .get(Uri.parse('https://your-server-url.com/download/$filename'));
-      if (response.statusCode == 200) {
-        var downloadPath = '${tempDir.path}/$filename';
-        var file = File(downloadPath);
-        await file.writeAsBytes(response.bodyBytes);
-        yield downloadPath;
-      } else {
-        throw Exception('Failed to download file: $filename');
-      }
-    }
+    var zipFilePath = '${tempDir.path}/audio_separated.zip';
+    var file = File(zipFilePath);
+    await file.writeAsBytes(bytes);
+
+    print('ZIP file saved to $zipFilePath');
+
+    // Extract the ZIP file
+    var outputDirPath = '${tempDir.path}/audio_separated';
+    var outputDir = Directory(outputDirPath);
+    await ZipFile.extractToDirectory(
+      zipFile: file,
+      destinationDir: outputDir,
+    );
+
+    print('ZIP file extracted to $outputDirPath');
+
+    // Get the paths of the separated audio files
+    var separatedAudioPaths = outputDir
+        .listSync(recursive: true)
+        .whereType<File>()
+        .map((entity) => entity.path)
+        .toList();
+
+    print('Separated audio paths: $separatedAudioPaths');
+
+    return separatedAudioPaths;
   }
 }
