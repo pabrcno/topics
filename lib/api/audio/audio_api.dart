@@ -9,9 +9,9 @@ import '../../domain/api/audio/i_audio_api.dart';
 
 class AudioApi implements IAudioApi {
   final String fileUrl =
-      'https://6af2-2800-2261-4000-52b-a9e3-ed38-1053-d84a.ngrok-free.app/v1/unmix';
+      'https://5194-2800-2261-4000-52b-c813-4a51-ca03-da30.sa.ngrok.io/v1/unmix';
   final String youtubeUrl =
-      'https://6af2-2800-2261-4000-52b-a9e3-ed38-1053-d84a.ngrok-free.app/v1/unmix_youtube';
+      'https://5194-2800-2261-4000-52b-c813-4a51-ca03-da30.sa.ngrok.io/v1/unmix_youtube';
 
   @override
   Future<List<String>> processAndUploadFile(String path) async {
@@ -43,6 +43,7 @@ class AudioApi implements IAudioApi {
       return await _processAndExtractResponse(response);
     } else {
       print('Failed to upload.');
+
       return [];
     }
   }
