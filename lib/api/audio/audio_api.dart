@@ -2,19 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter_archive/flutter_archive.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:http/http.dart' as http;
 
 import '../../domain/api/audio/i_audio_api.dart';
 
 class AudioApi implements IAudioApi {
-  final String fileUrl =
-      'https://5194-2800-2261-4000-52b-c813-4a51-ca03-da30.sa.ngrok.io/v1/unmix';
-  final String youtubeUrl =
-      'https://5194-2800-2261-4000-52b-c813-4a51-ca03-da30.sa.ngrok.io/v1/unmix_youtube';
+  final audioUrl = dotenv.env['AUDIO_URL']!;
 
   @override
   Future<List<String>> processAndUploadFile(String path) async {
+    final String fileUrl = '$audioUrl/v1/unmix';
     var request = http.MultipartRequest('POST', Uri.parse(fileUrl));
     request.files.add(await http.MultipartFile.fromPath('audio', path));
     var res = await request.send();
@@ -24,8 +23,10 @@ class AudioApi implements IAudioApi {
 
   @override
   Future<List<String>> processAndUploadYoutubeUrl(String youtubeUrl) async {
+    final String youtubeUrl = '$audioUrl/v1/unmix_youtube';
+
     var response = await http.post(
-      Uri.parse(this.youtubeUrl),
+      Uri.parse(youtubeUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
