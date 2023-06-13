@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:topics/domain/core/enums.dart';
@@ -162,8 +163,9 @@ class ChatProvider with ChangeNotifier {
       streamSubscription = stream.listen(
         (event) {
           messageBuffer = messageBuffer + event.content;
-          Vibration.vibrate(duration: 50);
-
+          if (Platform.isAndroid || Platform.isIOS) {
+            Vibration.vibrate(duration: 50);
+          }
           setLoading(false);
         },
         onDone: () async {
