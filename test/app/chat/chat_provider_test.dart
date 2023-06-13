@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
@@ -12,6 +13,7 @@ import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/api/chat/i_chat_api.dart';
 import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/domain/services/i_auth_service.dart';
+import 'package:topics/firebase_options.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
 @GenerateMocks([IChatRepository, IChatApi, IUserRepository])
@@ -53,8 +55,9 @@ void main() {
   late MockAuthService mockAuthService;
   late MockIUserRepository mockUserRepository;
 
-  setUp(() {
+  setUp(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
+
     // Initialize Mock classes
     mockChatApi = MockIChatApi();
     mockChatRepository = MockIChatRepository();
