@@ -20,6 +20,7 @@ class AudioProvider with ChangeNotifier {
   final Map<String, Duration> _audioProgress = {};
   final List<String> _processedFiles = [];
   final urlController = TextEditingController();
+  // chat provider
 
   // provide getters to expose the private fields to the UI.
   bool get isRecording => _isRecording;
@@ -125,7 +126,7 @@ class AudioProvider with ChangeNotifier {
   }
 
   Future<void> processAndUploadYoutubeUrl() async {
-    isProcessing = true;
+    // isProcessing = true;
     final processed =
         await _audioApi.processAndUploadYoutubeUrl(urlController.text);
     audioPaths.addAll(processed);

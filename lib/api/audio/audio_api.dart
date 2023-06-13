@@ -14,26 +14,30 @@ class AudioApi implements IAudioApi {
   @override
   Future<List<String>> processAndUploadFile(String path) async {
     final String fileUrl = '$audioUrl/v1/unmix';
-    var request = http.MultipartRequest('POST', Uri.parse(fileUrl));
+    var request = http.MultipartRequest('POST', Uri.parse(fileUrl))
+      ..fields['chatId'] = 'cebf6376-dbbb-48cb-b4b7-43702069cb60';
     request.files.add(await http.MultipartFile.fromPath('audio', path));
     var res = await request.send();
     var response = await http.Response.fromStream(res);
+    print(response.body);
     return _processResponse(response);
   }
 
   @override
   Future<List<String>> processAndUploadYoutubeUrl(String youtubeUrl) async {
-    final String youtubeUrl = '$audioUrl/v1/unmix_youtube';
+    final String apiUrl = '$audioUrl/v1/unmix_youtube';
 
     var response = await http.post(
-      Uri.parse(youtubeUrl),
+      Uri.parse(apiUrl),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
       body: jsonEncode(<String, String>{
         'url': youtubeUrl,
+        'chatId': 'cebf6376-dbbb-48cb-b4b7-43702069cb60'
       }),
     );
+    print(response.body);
     return _processResponse(response);
   }
 
