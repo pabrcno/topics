@@ -158,11 +158,13 @@ class ChatProvider with ChangeNotifier {
 
       final stream = await _chatApi.createChatCompletionStream(
           messages, currentChat?.temperature ?? 0.5);
-
+      final hasVibrator = await Vibration.hasVibrator();
       streamSubscription = stream.listen(
         (event) {
           messageBuffer = messageBuffer + event.content;
-          Vibration.vibrate(duration: 50);
+          if (hasVibrator != null && hasVibrator) {
+            Vibration.vibrate(duration: 50);
+          }
           setLoading(false);
         },
         onDone: () async {
