@@ -7,6 +7,7 @@ import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/domain/services/i_auth_service.dart';
 import 'package:uuid/uuid.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../domain/api/chat/i_chat_api.dart';
 import '../../domain/models/chat/chat.dart';
@@ -161,6 +162,7 @@ class ChatProvider with ChangeNotifier {
       streamSubscription = stream.listen(
         (event) {
           messageBuffer = messageBuffer + event.content;
+          Vibration.vibrate(duration: 50);
           setLoading(false);
         },
         onDone: () async {

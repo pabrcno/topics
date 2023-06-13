@@ -64,6 +64,8 @@ dependencies:
   http: ^0.13.6
   flutter_dotenv: ^5.1.0
   share: ^2.0.4
+  vibration: ^1.7.5
+  firebase_crashlytics: ^3.3.2
 
 dev_dependencies:
   flutter_test:

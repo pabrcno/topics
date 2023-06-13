@@ -1,7 +1,7 @@
-import 'dart:developer';
 import 'dart:io';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 class ErrorCommander {
   static Future<void> Function(String)? _showSnackbar;
@@ -13,7 +13,7 @@ class ErrorCommander {
   }
 
   void _logger(dynamic error) {
-    log('Error occurred: ${error.toString()}');
+    FirebaseCrashlytics.instance.recordError(error, StackTrace.current);
   }
 
   void _handleError(dynamic error) {

@@ -59,12 +59,9 @@ class _OCRInputState extends State<OCRInput> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return IconButton(
       onPressed: _openCamera,
-      child: Text(
-        translate('scan_text'),
-        style: TextStyle(color: Colors.blueGrey.shade100),
-      ),
+      icon: const Icon(Icons.camera_alt),
     );
   }
 }

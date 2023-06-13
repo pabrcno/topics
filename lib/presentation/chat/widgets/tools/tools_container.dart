@@ -17,7 +17,6 @@ class ToolsContainer extends StatelessWidget {
             return Container(
               decoration: BoxDecoration(
                 border: Border.all(width: .5, color: Colors.grey.shade900),
-                color: Theme.of(context).colorScheme.secondaryContainer,
               ),
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: widgetList[index],

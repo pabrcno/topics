@@ -16,11 +16,8 @@ class TemperatureSliderButton extends StatelessWidget {
     _temperatureController.value =
         provider.currentChat?.temperature ?? _temperatureController.value;
 
-    return TextButton(
-      child: Text(
-        translate('temperature'),
-        style: TextStyle(color: Colors.blueGrey.shade100),
-      ),
+    return IconButton(
+      icon: const Icon(Icons.thermostat_outlined),
       onPressed: () {
         showModalBottomSheet(
           context: context,

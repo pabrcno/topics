@@ -69,15 +69,15 @@ class ChatScreen extends StatelessWidget {
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
               child: ToolsContainer(
                 widgetList: [
+                  OCRInput(onOcrResult: (result) {
+                    _textController.text = result;
+                  }),
+                  TemperatureSliderButton(),
                   SuggestedPromptSelector(
                     onSelect: (key, value) {
                       _textController.text = value;
                     },
                   ),
-                  OCRInput(onOcrResult: (result) {
-                    _textController.text = result;
-                  }),
-                  TemperatureSliderButton()
                 ],
               ),
             ),
