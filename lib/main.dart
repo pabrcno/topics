@@ -34,9 +34,9 @@ void main() async {
   );
 
   // Activating App Check
-  await FirebaseAppCheck.instance.activate(
-    androidProvider: AndroidProvider.playIntegrity,
-  );
+  // await FirebaseAppCheck.instance.activate(
+  //   androidProvider: AndroidProvider.playIntegrity,
+  // );
 
   await dotenv.load(fileName: ".env");
   var localizationDelegate = await setupLocalizationDelegate();
