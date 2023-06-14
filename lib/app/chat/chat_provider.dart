@@ -165,7 +165,10 @@ class ChatProvider with ChangeNotifier {
       if (!userHasMessages) throw Exception('You ran out of messages');
 
       final stream = await _chatApi.createChatCompletionStream(
-          messages, currentChat?.temperature ?? 0.5);
+          messages
+              .where((message) => message.role != EMessageRole.imageAssistant)
+              .toList(),
+          currentChat?.temperature ?? 0.5);
       final hasAmplitudeControl =
           await Vibration.hasAmplitudeControl() ?? false;
       streamSubscription = stream.listen(
