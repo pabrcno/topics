@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
@@ -12,6 +13,7 @@ import 'package:vibration/vibration.dart';
 
 import '../../domain/api/chat/i_chat_api.dart';
 import '../../domain/models/chat/chat.dart';
+import '../../domain/models/image_generation_request/image_generation_request.dart';
 import '../../domain/models/topic/topic.dart';
 import '../../main.dart';
 
@@ -35,6 +37,7 @@ class ChatProvider with ChangeNotifier {
   final IAuthService authServiceProvider;
   bool _isLoading = false;
 
+  IImageGenerationApi _imageGenerationApi;
   Chat? currentChat;
   Topic? currentTopic;
   List<Topic> topics = [];
@@ -44,10 +47,12 @@ class ChatProvider with ChangeNotifier {
     required IChatApi chatApi,
     required IChatRepository chatRepository,
     required IUserRepository userRepository,
+    required IImageGenerationApi imageGenerationApi,
     required this.authServiceProvider,
   })  : _chatApi = chatApi,
         _chatRepository = chatRepository,
         _userRepository = userRepository,
+        _imageGenerationApi = imageGenerationApi,
         super();
 
   Future<void> fetchMessages() async {
@@ -61,6 +66,8 @@ class ChatProvider with ChangeNotifier {
         fetchedMessages.sort(
           (a, b) => a.sentAt.compareTo(b.sentAt),
         );
+
+        print(fetchedMessages.length);
         messages = fetchedMessages; // Use the setter here
         setLoading(false);
       }
@@ -113,7 +120,7 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<bool> _decrementUserMessages() async {
+  Future<bool> _decrementUserMessages({int decrementValue = 1}) async {
     return await _userRepository
         .getUser(authServiceProvider.getCurrentUser()?.uid ?? '')
         .then((user) async {
@@ -126,12 +133,12 @@ class ChatProvider with ChangeNotifier {
             sentAt: DateTime.now(),
             isUser: false,
             role: EMessageRole.system));
+        setLoading(false);
         notifyListeners();
-
         return false;
       }
       await _userRepository.reduceMessages(
-          authServiceProvider.getCurrentUser()?.uid ?? '', 1);
+          authServiceProvider.getCurrentUser()?.uid ?? '', decrementValue);
       return true;
     });
   }
@@ -159,12 +166,13 @@ class ChatProvider with ChangeNotifier {
 
       final stream = await _chatApi.createChatCompletionStream(
           messages, currentChat?.temperature ?? 0.5);
-
+      final hasAmplitudeControl =
+          await Vibration.hasAmplitudeControl() ?? false;
       streamSubscription = stream.listen(
-        (event) {
+        (event) async {
           messageBuffer = messageBuffer + event.content;
-          if (Platform.isAndroid || Platform.isIOS) {
-            Vibration.vibrate(duration: 50);
+          if (hasAmplitudeControl) {
+            Vibration.vibrate(amplitude: 20, duration: 10);
           }
           setLoading(false);
         },
@@ -367,6 +375,64 @@ class ChatProvider with ChangeNotifier {
     currentChat = currentChat?.copyWith(temperature: chatTemperature);
     await _chatRepository.updateChat(currentChat!);
     notifyListeners();
+  }
+
+  Future<void> sendImageGenerationRequest({
+    required String prompt,
+    required double weight,
+    required int height,
+    required int width,
+    required int steps,
+  }) async {
+    await errorCommander.run(() async {
+      if (currentChat == null) return;
+      setLoading(true);
+      // Create a new ImageGenerationRequest object
+      final newImageGenerationRequest = ImageGenerationRequest(
+        prompt: prompt,
+        weight: weight,
+        height: height,
+        width: width,
+        steps: steps,
+        chatId: currentChat!.id,
+      );
+      final userMessage = Message(
+        id: const Uuid().v4(),
+        content: prompt,
+        sentAt: DateTime.now(),
+        chatId: currentChat!.id,
+        isUser: true,
+        role: EMessageRole.user,
+      );
+      messages.add(userMessage);
+      notifyListeners();
+      await _chatRepository.createMessage(userMessage);
+      final userHasMessages =
+          await _decrementUserMessages(decrementValue: (steps ~/ 20).toInt());
+
+      // Send this new image generation request to your backend for storage
+      if (!userHasMessages) {
+        setLoading(false);
+        return;
+      }
+      final hasAmplitudeControl =
+          await Vibration.hasAmplitudeControl() ?? false;
+      final imageMessages =
+          await _imageGenerationApi.generateImage(newImageGenerationRequest);
+      messages.addAll(imageMessages);
+      await Future.wait(imageMessages
+          .map((message) => _chatRepository.createMessage(message)));
+
+      setLoading(false);
+
+      notifyListeners();
+      if (hasAmplitudeControl) {
+        Vibration.vibrate(duration: 500, amplitude: 20);
+      }
+    }, onError: (e) {
+      setLoading(false);
+      throw Exception('Error while sending image generation request: $e');
+    });
   }
 
   void clearChatStates() {

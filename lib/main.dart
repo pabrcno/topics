@@ -16,6 +16,7 @@ import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
 import 'api/chat/chat_api.dart';
+import 'api/image_generation/image_generation_api.dart';
 import 'app/chat/chat_provider.dart';
 import 'firebase_options.dart';
 
@@ -33,6 +34,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterError;
   // Activating App Check
@@ -54,6 +56,7 @@ void main() async {
             create: (context) => ChatProvider(
               chatRepository: FirestoreChatRepository(),
               userRepository: FirestoreUserRepository(),
+              imageGenerationApi: ImageGenerationApi(),
               authServiceProvider: authService,
               chatApi: ChatApi(authService),
             ),

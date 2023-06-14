@@ -29,4 +29,5 @@ const _$EMessageRoleEnumMap = {
   EMessageRole.system: 'system',
   EMessageRole.user: 'user',
   EMessageRole.assistant: 'assistant',
+  EMessageRole.imageAssistant: 'imageAssistant',
 };

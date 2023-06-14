@@ -1,1 +1,1 @@
-enum EMessageRole { system, user, assistant }
+enum EMessageRole { system, user, assistant, imageAssistant }

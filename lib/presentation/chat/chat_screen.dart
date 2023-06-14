@@ -12,22 +12,11 @@ import 'widgets/tools/ocr_input.dart';
 import 'widgets/tools/suggested_prompt_selector.dart';
 
 class ChatScreen extends StatelessWidget {
-  final TextEditingController _textController = TextEditingController();
-
   final FocusNode _focusNode = FocusNode();
   final Chat chat;
   final bool isNew;
   ChatScreen({super.key, required this.chat, this.isNew = false});
-
-  void _sendMessage(BuildContext context) async {
-    final messageText = _textController.text;
-    if (messageText.isNotEmpty) {
-      _textController.clear();
-      await Provider.of<ChatProvider>(context, listen: false)
-          .sendMessage(messageText);
-    }
-  }
-
+  final TextEditingController _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -84,7 +73,6 @@ class ChatScreen extends StatelessWidget {
             ChatInput(
               textController: _textController,
               focusNode: _focusNode,
-              onSend: () => _sendMessage(context),
             ),
           ],
         ),

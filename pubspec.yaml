@@ -66,6 +66,10 @@ dependencies:
   share: ^2.0.4
   vibration: ^1.7.5
   firebase_crashlytics: ^3.3.2
+  cloud_functions: ^4.3.3
+  transparent_image: ^2.0.1
+  flutter_cache_manager: ^3.3.0
+  image_gallery_saver: ^2.0.2
 
 dev_dependencies:
   flutter_test:
