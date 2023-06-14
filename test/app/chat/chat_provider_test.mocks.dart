@@ -9,7 +9,11 @@ import 'dart:async' as _i3;
 
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:topics/domain/api/chat/i_chat_api.dart' as _i7;
+import 'package:topics/domain/api/image_generation/i_image_generation_api.dart'
+    as _i10;
 import 'package:topics/domain/models/chat/chat.dart' as _i4;
+import 'package:topics/domain/models/image_generation_request/image_generation_request.dart'
+    as _i11;
 import 'package:topics/domain/models/message/message.dart' as _i5;
 import 'package:topics/domain/models/topic/topic.dart' as _i6;
 import 'package:topics/domain/models/user/app_user.dart' as _i9;
@@ -234,4 +238,25 @@ class MockIUserRepository extends _i1.Mock implements _i8.IUserRepository {
         returnValue: _i3.Future<void>.value(),
         returnValueForMissingStub: _i3.Future<void>.value(),
       ) as _i3.Future<void>);
+}
+
+/// A class which mocks [IImageGenerationApi].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockIImageGenerationApi extends _i1.Mock
+    implements _i10.IImageGenerationApi {
+  MockIImageGenerationApi() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i3.Future<List<_i5.Message>> generateImage(
+          _i11.ImageGenerationRequest? requestBody) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #generateImage,
+          [requestBody],
+        ),
+        returnValue: _i3.Future<List<_i5.Message>>.value(<_i5.Message>[]),
+      ) as _i3.Future<List<_i5.Message>>);
 }

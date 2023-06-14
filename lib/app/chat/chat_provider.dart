@@ -166,12 +166,12 @@ class ChatProvider with ChangeNotifier {
 
       final stream = await _chatApi.createChatCompletionStream(
           messages, currentChat?.temperature ?? 0.5);
-      final hasAmplitudeControl =
-          await Vibration.hasAmplitudeControl() ?? false;
+      final bool platformAllowsVibration = Platform.isAndroid || Platform.isIOS;
+
       streamSubscription = stream.listen(
         (event) async {
           messageBuffer = messageBuffer + event.content;
-          if (hasAmplitudeControl) {
+          if (platformAllowsVibration) {
             Vibration.vibrate(amplitude: 20, duration: 10);
           }
           setLoading(false);
