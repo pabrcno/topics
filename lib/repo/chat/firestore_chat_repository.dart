@@ -139,4 +139,17 @@ class FirestoreChatRepository implements IChatRepository {
           .toList();
     }).first;
   }
+
+  @override
+  Future<List<Chat>> getUserChats(String userId) {
+    return _firebaseFirestore
+        .collection('chats')
+        .where('userId', isEqualTo: userId)
+        .snapshots()
+        .map((querySnapshot) {
+      return querySnapshot.docs
+          .map((doc) => Chat.fromJson(doc.data()))
+          .toList();
+    }).first;
+  }
 }

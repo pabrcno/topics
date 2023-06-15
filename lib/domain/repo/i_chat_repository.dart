@@ -20,4 +20,6 @@ abstract class IChatRepository {
   Future<void> deleteTopic(String topicId);
   Future<Topic?> getTopic(String topicId);
   Future<List<Topic>> getTopics(String userId);
+
+  Future<List<Chat>> getUserChats(String userId);
 }

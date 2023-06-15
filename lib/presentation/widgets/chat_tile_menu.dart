@@ -7,12 +7,10 @@ import '../../../domain/models/chat/chat.dart';
 
 class ChatTileMenu extends StatelessWidget {
   final Chat chat;
-  final VoidCallback onDelete;
 
   const ChatTileMenu({
     Key? key,
     required this.chat,
-    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -53,7 +51,9 @@ class ChatTileMenu extends StatelessWidget {
                   TextButton(
                     child: Text(translate('confirm')),
                     onPressed: () {
-                      onDelete();
+                      Provider.of<ChatProvider>(context, listen: false)
+                          .deleteChat(chat);
+
                       Navigator.of(context).pop();
                     },
                   ),

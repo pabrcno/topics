@@ -5,7 +5,7 @@
   "empty_topic_error": "Puedes almacenar chats relacionados en temas. ¡Elige uno bueno!",
   "go_to_chat": "Ir al chat >",
 
-  "no_topics_available": "Crea un nuevo Topic para organizar tus chats!",
+  "no_topics_available": "Crea un nuevo Topic para organizar tus chats",
   "confirm_delete": "¿Estás seguro de que quieres eliminar este chat?",
   "delete": "Eliminar",
   "change_title": "Cambiar título",
@@ -102,5 +102,7 @@
   "drag_slider_description": "Arrastra el control deslizante para establecer el valor de temperatura entre 0.1 y 2.",
   "higher_temperature_description": "Valores de temperatura más altos generan respuestas más aleatorias y diversas.",
   "permissions_info": "Permisos",
-  "camera_permission_note": "Asegúrate de conceder permisos de cámara para que la herramienta OCR funcione correctamente."
+  "camera_permission_note": "Asegúrate de conceder permisos de cámara para que la herramienta OCR funcione correctamente.",
+  "messages_left": "Mensajes Restantes",
+  "no_chats": "Crea un nuevo chat para interactuar con la IA"
 }

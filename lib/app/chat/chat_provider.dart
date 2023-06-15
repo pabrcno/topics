@@ -43,6 +43,9 @@ class ChatProvider with ChangeNotifier {
   List<Topic> topics = [];
   List<Chat> currentTopicChats = [];
   bool _isImageMode = false;
+  List<Chat> userChats = [];
+
+  int userMessageCount = 0;
   ChatProvider({
     required IChatApi chatApi,
     required IChatRepository chatRepository,
@@ -62,6 +65,29 @@ class ChatProvider with ChangeNotifier {
 
   bool get isImageMode => _isImageMode;
 
+  Future<void> fetchMessagesCount() async {
+    await errorCommander.run(() async {
+      setLoading(true);
+
+      String userId = authServiceProvider.getCurrentUser()!.uid;
+      final user = await _userRepository.getUser(userId);
+
+      userMessageCount = user?.messageCount ?? 0;
+
+      setLoading(false);
+    });
+  }
+
+  Future<void> fetchUserChats() {
+    return errorCommander.run(() async {
+      setLoading(true);
+      userChats = await _chatRepository.getUserChats(
+        authServiceProvider.getCurrentUser()!.uid,
+      );
+      setLoading(false);
+    });
+  }
+
   Future<void> fetchMessages() async {
     await errorCommander.run(() async {
       if (currentChat?.id != null) {
@@ -74,7 +100,6 @@ class ChatProvider with ChangeNotifier {
           (a, b) => a.sentAt.compareTo(b.sentAt),
         );
 
-        print(fetchedMessages.length);
         messages = fetchedMessages; // Use the setter here
         setLoading(false);
       }
@@ -131,6 +156,7 @@ class ChatProvider with ChangeNotifier {
     return await _userRepository
         .getUser(authServiceProvider.getCurrentUser()?.uid ?? '')
         .then((user) async {
+      userMessageCount = user?.messageCount ?? 0;
       if (user == null || user.messageCount <= 0) {
         messages.add(Message(
             id: 'warning',
@@ -175,7 +201,7 @@ class ChatProvider with ChangeNotifier {
           messages
               .where((message) => message.role != EMessageRole.imageAssistant)
               .toList(),
-          currentChat?.temperature ?? 0.5);
+          currentChat?.temperature ?? 0.7);
 
       final bool platformAllowsVibration = Platform.isAndroid || Platform.isIOS;
 
@@ -236,7 +262,7 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> createChat(String? initialMessage, Topic topic) async {
+  Future<void> createChat(Topic? topic) async {
     await errorCommander.run(() async {
       // Ensure we have an API key before proceeding
 
@@ -248,12 +274,13 @@ class ChatProvider with ChangeNotifier {
       // Create a new Chat object
       final newChat = Chat(
         id: newChatId,
-        userId: topic.userId, // replace with actual userId
-        topicId: topic.id, // replace with actual topicId
+        userId: authServiceProvider
+            .getCurrentUser()!
+            .uid, // replace with actual userId
+        topicId: topic?.id ?? '', // replace with actual topicId
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),
-        summary: initialMessage ??
-            'New chat', // using the initial message as a summary
+        summary: 'New chat', // using the initial message as a summary
       );
       currentChat = newChat;
 
@@ -271,10 +298,6 @@ class ChatProvider with ChangeNotifier {
       // Send this new chat to your backend for storage
 
       await _chatRepository.createChat(newChat).then((value) {
-        if (initialMessage != null) {
-          sendMessage(initialMessage);
-          return;
-        }
         setLoading(false);
       });
     });
@@ -311,7 +334,7 @@ class ChatProvider with ChangeNotifier {
       await _chatRepository.createTopic(newTopic);
 
       // Now create a new Chat associated with this topic
-      await createChat(null, newTopic);
+      await createChat(newTopic);
 
       // Update the current topic
       currentTopic = newTopic;
@@ -342,6 +365,8 @@ class ChatProvider with ChangeNotifier {
 
       // Remove the chat from the chats list
       currentTopicChats.remove(chat);
+
+      userChats.remove(chat);
 
       setLoading(false);
     });

@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/presentation/home/widgets/topic_card.dart';
+import 'package:topics/presentation/home/widgets/topic_tile.dart';
 
 import '../../../app/chat/chat_provider.dart';
 
-class TopicGrid extends StatefulWidget {
-  const TopicGrid({Key? key}) : super(key: key);
+class TopicList extends StatefulWidget {
+  const TopicList({Key? key}) : super(key: key);
 
   @override
-  _TopicGridState createState() => _TopicGridState();
+  _TopicListState createState() => _TopicListState();
 }
 
-class _TopicGridState extends State<TopicGrid> {
+class _TopicListState extends State<TopicList> {
   Future<void> _refreshTopics() async {
     await Provider.of<ChatProvider>(context, listen: false).fetchTopics();
   }
@@ -36,17 +36,23 @@ class _TopicGridState extends State<TopicGrid> {
           return Center(child: Text(translate('no_topics_available')));
         } else {
           return RefreshIndicator(
-            onRefresh: _refreshTopics,
-            child: GridView.count(
-              crossAxisCount: 2,
-              padding: const EdgeInsets.only(top: 10),
-              children: topics
-                  .map((topic) => TopicCard(
-                        topic: topic,
-                      ))
-                  .toList(),
-            ),
-          );
+              onRefresh: _refreshTopics,
+              child: Container(
+                decoration: BoxDecoration(color: Colors.blueGrey.shade900),
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(top: 20),
+                  separatorBuilder: (BuildContext context, int index) {
+                    return Divider(
+                      thickness: .8,
+                      color: Colors.grey.shade900,
+                    );
+                  },
+                  itemCount: topics.length,
+                  itemBuilder: (context, index) {
+                    return TopicTile(topic: topics[index]);
+                  },
+                ),
+              ));
         }
       },
     );

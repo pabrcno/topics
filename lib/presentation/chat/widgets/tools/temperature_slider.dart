@@ -8,7 +8,7 @@ class TemperatureSliderButton extends StatelessWidget {
   TemperatureSliderButton({Key? key}) : super(key: key);
 
   final ValueNotifier<double> _temperatureController =
-      ValueNotifier<double>(0.5);
+      ValueNotifier<double>(0.7);
 
   @override
   Widget build(BuildContext context) {
