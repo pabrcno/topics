@@ -1,4 +1,4 @@
-package com.example.topics
+package com.sequencetech.topics
 
 import io.flutter.embedding.android.FlutterActivity
 

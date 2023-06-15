@@ -59,7 +59,7 @@
               "client_id": "199942357204-fefi2a3t2si8u8u29cadu2eqaaavumao.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.topics.RunnerTests"
+                "bundle_id": "com.sequencetech.topics.RunnerTests"
               }
             }
           ]

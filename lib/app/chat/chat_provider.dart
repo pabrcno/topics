@@ -81,9 +81,13 @@ class ChatProvider with ChangeNotifier {
   Future<void> fetchUserChats() {
     return errorCommander.run(() async {
       setLoading(true);
-      userChats = await _chatRepository.getUserChats(
+      final fetched = await _chatRepository.getUserChats(
         authServiceProvider.getCurrentUser()!.uid,
       );
+      fetched.sort(
+        (a, b) => a.lastModified.compareTo(b.lastModified),
+      );
+      userChats = fetched;
       setLoading(false);
     });
   }
@@ -109,9 +113,15 @@ class ChatProvider with ChangeNotifier {
   Future<void> fetchTopics([String? userId]) async {
     await errorCommander.run(() async {
       setLoading(true);
-      topics = await _chatRepository.getTopics(
+      final fetched = await _chatRepository.getTopics(
         userId ?? authServiceProvider.getCurrentUser()!.uid,
       );
+
+      fetched.sort(
+        (a, b) => a.lastModified.compareTo(b.lastModified),
+      );
+
+      topics = fetched;
       setLoading(false);
     });
   }
@@ -120,9 +130,15 @@ class ChatProvider with ChangeNotifier {
     await errorCommander.run(() async {
       setLoading(true);
 
-      currentTopicChats = await _chatRepository.getChats(
+      final fetched = await _chatRepository.getChats(
         topicId,
       );
+
+      fetched.sort(
+        (a, b) => a.lastModified.compareTo(b.lastModified),
+      );
+
+      currentTopicChats = fetched;
       setLoading(false);
     });
   }

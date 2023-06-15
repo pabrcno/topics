@@ -67,9 +67,11 @@ class DefaultFirebaseOptions {
     messagingSenderId: '199942357204',
     projectId: 'topics-860b1',
     storageBucket: 'topics-860b1.appspot.com',
-    androidClientId: '199942357204-65lfq11ofb02j3g633g639dqoj16tu15.apps.googleusercontent.com',
-    iosClientId: '199942357204-lhjpjtm9l974lm55od73v1ja63dgki0m.apps.googleusercontent.com',
-    iosBundleId: 'com.example.topics',
+    androidClientId:
+        '199942357204-65lfq11ofb02j3g633g639dqoj16tu15.apps.googleusercontent.com',
+    iosClientId:
+        '199942357204-lhjpjtm9l974lm55od73v1ja63dgki0m.apps.googleusercontent.com',
+    iosBundleId: 'com.sequencetech.topics',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -78,8 +80,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '199942357204',
     projectId: 'topics-860b1',
     storageBucket: 'topics-860b1.appspot.com',
-    androidClientId: '199942357204-65lfq11ofb02j3g633g639dqoj16tu15.apps.googleusercontent.com',
-    iosClientId: '199942357204-fefi2a3t2si8u8u29cadu2eqaaavumao.apps.googleusercontent.com',
-    iosBundleId: 'com.example.topics.RunnerTests',
+    androidClientId:
+        '199942357204-65lfq11ofb02j3g633g639dqoj16tu15.apps.googleusercontent.com',
+    iosClientId:
+        '199942357204-fefi2a3t2si8u8u29cadu2eqaaavumao.apps.googleusercontent.com',
+    iosBundleId: 'com.sequencetech.topics.RunnerTests',
   );
 }

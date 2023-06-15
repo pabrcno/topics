@@ -7,6 +7,7 @@ import 'package:topics/services/auth/auth_service.dart';
 
 import '../../app/chat/chat_provider.dart';
 import '../config/configurations.dart';
+import '../store/store_page.dart';
 import '../widgets/chats_list.dart';
 import 'widgets/topic_list.dart';
 
@@ -21,6 +22,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   static const List<Destination> allDestinations = <Destination>[
     Destination(0, 'Chats', Icons.chat),
     Destination(1, 'Topics', Icons.topic),
+    Destination(2, 'Store', Icons.store), // This line is new
   ];
   PageController pageController = PageController(initialPage: 0);
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
@@ -119,15 +121,21 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 });
               },
               children: allDestinations.map((Destination destination) {
-                final int index = destination.index;
-                return index == 0
-                    ? ChatsList(
-                        chats: chatProvider.userChats,
-                        onRefresh: () async {
-                          await chatProvider.fetchUserChats();
-                        },
-                      )
-                    : const TopicList();
+                switch (destination.index) {
+                  case 0:
+                    return ChatsList(
+                      chats: chatProvider.userChats,
+                      onRefresh: () async {
+                        await chatProvider.fetchUserChats();
+                      },
+                    );
+                  case 1:
+                    return const TopicList();
+                  case 2:
+                    return const StorePage();
+                  default:
+                    return Container(); // or some kind of default page
+                }
               }).toList(),
             ),
             Positioned(

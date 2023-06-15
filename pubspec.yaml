@@ -71,6 +71,8 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   image_gallery_saver: ^2.0.2
   flutter_markdown: ^0.6.15
+  pay: ^1.1.1
+  change_app_package_name: ^1.1.0
 
 dev_dependencies:
   flutter_test:
