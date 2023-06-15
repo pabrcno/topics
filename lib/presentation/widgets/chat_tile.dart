@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/presentation/topic/widgets/chat_tile_menu.dart';
 
 import '../../../app/chat/chat_provider.dart';
 import '../../../domain/models/chat/chat.dart';
-import '../../chat/chat_screen.dart';
+
+import '../chat/chat_screen.dart';
+import 'chat_tile_menu.dart';
 
 class ChatTile extends StatelessWidget {
   final Chat chat;
-  final VoidCallback onDelete;
 
   const ChatTile({
     Key? key,
     required this.chat,
-    required this.onDelete,
   }) : super(key: key);
 
   @override
@@ -31,7 +30,9 @@ class ChatTile extends StatelessWidget {
                 overflow: TextOverflow.ellipsis,
               ),
             ),
-            ChatTileMenu(chat: chat, onDelete: onDelete),
+            ChatTileMenu(
+              chat: chat,
+            ),
           ],
         ),
       ),
@@ -57,6 +58,7 @@ class ChatTile extends StatelessWidget {
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => ChatScreen(),
+            // Set fullscreenDialog to true
           ),
         );
       },

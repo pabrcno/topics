@@ -43,6 +43,7 @@ class ChatProvider with ChangeNotifier {
   List<Topic> topics = [];
   List<Chat> currentTopicChats = [];
   bool _isImageMode = false;
+  List<Chat> userChats = [];
   ChatProvider({
     required IChatApi chatApi,
     required IChatRepository chatRepository,
@@ -61,6 +62,16 @@ class ChatProvider with ChangeNotifier {
   }
 
   bool get isImageMode => _isImageMode;
+
+  Future<void> fetchUserChats() {
+    return errorCommander.run(() async {
+      setLoading(true);
+      userChats = await _chatRepository.getUserChats(
+        authServiceProvider.getCurrentUser()!.uid,
+      );
+      setLoading(false);
+    });
+  }
 
   Future<void> fetchMessages() async {
     await errorCommander.run(() async {
