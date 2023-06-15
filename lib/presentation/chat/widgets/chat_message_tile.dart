@@ -70,7 +70,7 @@ class ChatMessageTile extends StatelessWidget {
                     // adjust duration according to your needs
                   ))
               : Padding(
-                  padding: EdgeInsets.all(10),
+                  padding: EdgeInsets.all(18),
                   child: MarkdownBody(
                     fitContent: false,
                     selectable: true,
