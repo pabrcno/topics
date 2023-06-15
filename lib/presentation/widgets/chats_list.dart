@@ -18,22 +18,26 @@ class ChatsList extends StatelessWidget {
   Widget build(BuildContext context) {
     return RefreshIndicator(
       onRefresh: onRefresh ?? () async {},
-      child: ListView.separated(
-        itemCount: chats.length,
-        padding: const EdgeInsets.only(top: 20),
-        separatorBuilder: (BuildContext context, int index) {
-          return Divider(
-            thickness: .8,
-            color: Colors.grey.shade800,
-          );
-        },
-        itemBuilder: (context, index) {
-          final chat = chats[index];
-          return ChatTile(
-            chat: chat,
-          );
-        },
-      ),
+      child: chats.isEmpty
+          ? const Center(
+              child: Text('Create a new chat to interact with the AI'),
+            )
+          : ListView.separated(
+              itemCount: chats.length,
+              padding: const EdgeInsets.only(top: 20),
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
+                  thickness: .8,
+                  color: Colors.grey.shade800,
+                );
+              },
+              itemBuilder: (context, index) {
+                final chat = chats[index];
+                return ChatTile(
+                  chat: chat,
+                );
+              },
+            ),
     );
   }
 }

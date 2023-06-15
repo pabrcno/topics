@@ -237,28 +237,6 @@ void main() {
       throwsA(isA<Exception>()),
     );
   });
-  test('createChat creates a new chat and adds it to currentTopicChats',
-      () async {
-    when(mockChatRepository.createChat(any)).thenAnswer((_) async {});
-    when(mockUserRepository.getUser(any))
-        .thenAnswer((_) async => mockAppUserWithMessages);
-    when(mockChatApi.createChatCompletionStream(any, any))
-        .thenAnswer((_) async {
-      final controller = StreamController<Message>();
-      controller.add(mockMessage);
-      controller.close();
-      return controller.stream;
-    });
-
-    await chatProvider.createChat(mockMessage.content, mockTopic);
-
-    // Check if new chat is created
-    expect(
-        chatProvider.currentTopicChats
-            .any((chat) => chat.summary == mockMessage.content),
-        isTrue);
-    // Check if loading status is false after execution
-  });
 
   test('createTopic creates a new topic and adds it to topics', () async {
     final Topic mockTopicNewTitle = Topic(

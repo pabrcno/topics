@@ -5,7 +5,7 @@
   "empty_topic_error": "Your can store related chats on Topics. Choose a good one!",
   "go_to_chat": "Go to Chat >",
 
-  "no_topics_available": "Create a new Topic to organize your chats!.",
+  "no_topics_available": "Create a new Topic to organize your chats",
 
   "delete": "Delete",
   "change_title": "Change Title",
@@ -104,5 +104,6 @@
   "permissions_info": "Permissions",
   "higher_temperature_description": "Higher temperature values result in more random and diverse responses.",
   "camera_permission_note": "Make sure to grant camera permissions for the OCR tool to work properly.",
-  "messages_left": "Messages left"
+  "messages_left": "Messages left",
+  "no_chats": "Create a new chat to interact with the AI"
 }

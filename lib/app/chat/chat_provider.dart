@@ -366,6 +366,8 @@ class ChatProvider with ChangeNotifier {
       // Remove the chat from the chats list
       currentTopicChats.remove(chat);
 
+      userChats.remove(chat);
+
       setLoading(false);
     });
   }
