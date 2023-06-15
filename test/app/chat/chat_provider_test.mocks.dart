@@ -169,6 +169,15 @@ class MockIChatRepository extends _i1.Mock implements _i2.IChatRepository {
         ),
         returnValue: _i3.Future<List<_i6.Topic>>.value(<_i6.Topic>[]),
       ) as _i3.Future<List<_i6.Topic>>);
+  @override
+  _i3.Future<List<_i4.Chat>> getUserChats(String? userId) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #getUserChats,
+          [userId],
+        ),
+        returnValue: _i3.Future<List<_i4.Chat>>.value(<_i4.Chat>[]),
+      ) as _i3.Future<List<_i4.Chat>>);
 }
 
 /// A class which mocks [IChatApi].

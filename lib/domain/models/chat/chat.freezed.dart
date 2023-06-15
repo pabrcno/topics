@@ -178,7 +178,7 @@ class _$_Chat implements _Chat {
       required this.createdAt,
       required this.lastModified,
       required this.summary,
-      this.temperature = 0.5});
+      this.temperature = 0.7});
 
   factory _$_Chat.fromJson(Map<String, dynamic> json) => _$$_ChatFromJson(json);
 

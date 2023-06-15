@@ -12,7 +12,7 @@ class Chat with _$Chat {
     required DateTime createdAt,
     required DateTime lastModified,
     required String summary,
-    @Default(0.5) double temperature,
+    @Default(0.7) double temperature,
   }) = _Chat;
 
   factory Chat.fromJson(Map<String, Object?> json) => _$ChatFromJson(json);

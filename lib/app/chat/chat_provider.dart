@@ -201,7 +201,7 @@ class ChatProvider with ChangeNotifier {
           messages
               .where((message) => message.role != EMessageRole.imageAssistant)
               .toList(),
-          currentChat?.temperature ?? 0.5);
+          currentChat?.temperature ?? 0.7);
 
       final bool platformAllowsVibration = Platform.isAndroid || Platform.isIOS;
 
