@@ -70,6 +70,7 @@ dependencies:
   transparent_image: ^2.0.1
   flutter_cache_manager: ^3.3.0
   image_gallery_saver: ^2.0.2
+  flutter_markdown: ^0.6.15
 
 dev_dependencies:
   flutter_test:

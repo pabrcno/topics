@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:topics/presentation/chat/widgets/message_share_button.dart';
 import 'package:topics/services/exception_handling_service.dart';
@@ -19,23 +20,21 @@ class ChatMessageTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
-          horizontal: message.role == EMessageRole.imageAssistant ? 0 : 5,
-          vertical: message.role == EMessageRole.imageAssistant ? 0 : 10),
+      width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
         color: () {
           switch (message.role) {
             case EMessageRole.user:
-              return Colors.grey.shade900;
+              return Theme.of(context).colorScheme.surface;
 
             case EMessageRole.assistant:
-              return Colors.black;
+              return Colors.black26;
 
             case EMessageRole.system:
               return Colors.grey;
 
             case EMessageRole.imageAssistant:
-              return Colors.black;
+              return Colors.transparent;
             default:
               return Colors
                   .grey; // default color in case none of the roles match
@@ -70,14 +69,19 @@ class ChatMessageTile extends StatelessWidget {
                     fadeInDuration: const Duration(seconds: 1),
                     // adjust duration according to your needs
                   ))
-              : SelectableText(
-                  message.content,
-                  style: const TextStyle(color: Colors.white, fontSize: 18),
-                ),
-          const SizedBox(height: 5),
-          SizedBox(
-            width: MediaQuery.of(context).size.width,
+              : Padding(
+                  padding: EdgeInsets.all(10),
+                  child: MarkdownBody(
+                    fitContent: false,
+                    selectable: true,
+                    data: message.content,
+                  )),
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 5,
+            ),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(

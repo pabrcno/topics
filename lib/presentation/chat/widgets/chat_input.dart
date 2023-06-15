@@ -21,34 +21,8 @@ class ChatInput extends StatefulWidget {
 }
 
 class _ChatInputState extends State<ChatInput> {
-  bool _isImageMode = false;
-
   double _contextWidth(BuildContext context) {
     return MediaQuery.of(context).size.width;
-  }
-
-  void _sendMessage(BuildContext context) async {
-    final messageText = widget._textController.text;
-    if (messageText.isNotEmpty) {
-      widget._textController.clear();
-
-      if (_isImageMode) {
-        await Provider.of<ChatProvider>(context, listen: false)
-            .sendImageGenerationRequest(
-          prompt: messageText,
-          weight: 0.5,
-          height: 512,
-          width: 512,
-          steps: 75,
-        );
-        setState(() {
-          _isImageMode = false;
-        });
-        return;
-      }
-      await Provider.of<ChatProvider>(context, listen: false)
-          .sendMessage(messageText);
-    }
   }
 
   @override
@@ -58,26 +32,26 @@ class _ChatInputState extends State<ChatInput> {
         return Row(
           children: [
             IconButton(
-              icon: Icon(Icons.image),
-              color: _isImageMode
+              icon: const Icon(Icons.image),
+              color: provider.isImageMode
                   ? Theme.of(context).colorScheme.primary
                   : Colors.grey,
               onPressed: () {
-                setState(() {
-                  _isImageMode = !_isImageMode;
-                });
+                provider.isImageMode = !provider.isImageMode;
               },
             ),
             Container(
               padding: const EdgeInsets.only(
-                  left: 10, right: 10, bottom: 30, top: 5),
+                left: 10,
+                right: 10,
+              ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minWidth: _contextWidth(context) -
                       120, // adjusted width for new IconButton
                   maxWidth: _contextWidth(context) -
                       120, // adjusted width for new IconButton
-                  minHeight: 50.0,
+                  minHeight: 20.0,
                   maxHeight: 200,
                 ),
                 child: SingleChildScrollView(
@@ -108,7 +82,23 @@ class _ChatInputState extends State<ChatInput> {
                       : const Icon(Icons.send),
               onPressed: provider.streamSubscription != null
                   ? provider.stopStream
-                  : () => _sendMessage(context),
+                  : () {
+                      final messageText = widget._textController.text;
+                      if (messageText.isEmpty) return;
+                      if (!provider.isImageMode) {
+                        provider.sendMessage(messageText);
+                        widget._textController.clear();
+                        return;
+                      }
+                      provider.sendImageGenerationRequest(
+                        prompt: messageText,
+                        weight: 0.5,
+                        height: 512,
+                        width: 512,
+                        steps: 75,
+                      );
+                      widget._textController.clear();
+                    },
             ),
           ],
         );

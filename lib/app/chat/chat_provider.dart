@@ -42,7 +42,7 @@ class ChatProvider with ChangeNotifier {
   Topic? currentTopic;
   List<Topic> topics = [];
   List<Chat> currentTopicChats = [];
-
+  bool _isImageMode = false;
   ChatProvider({
     required IChatApi chatApi,
     required IChatRepository chatRepository,
@@ -54,6 +54,13 @@ class ChatProvider with ChangeNotifier {
         _userRepository = userRepository,
         _imageGenerationApi = imageGenerationApi,
         super();
+
+  set isImageMode(bool value) {
+    _isImageMode = value;
+    notifyListeners();
+  }
+
+  bool get isImageMode => _isImageMode;
 
   Future<void> fetchMessages() async {
     await errorCommander.run(() async {
