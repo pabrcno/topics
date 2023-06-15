@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:provider/provider.dart';
 import 'package:topics/presentation/topic/widgets/chat_tile_menu.dart';
 
+import '../../../app/chat/chat_provider.dart';
 import '../../../domain/models/chat/chat.dart';
 import '../../chat/chat_screen.dart';
 
@@ -14,31 +16,6 @@ class ChatTile extends StatelessWidget {
     required this.chat,
     required this.onDelete,
   }) : super(key: key);
-
-  void _showDialog(BuildContext context, Widget content) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.3),
-              child: content,
-            ),
-          ),
-          actions: [
-            TextButton(
-              child: Text(translate('cancel')),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +51,12 @@ class ChatTile extends StatelessWidget {
         ],
       ),
       onTap: () {
-        Navigator.push(
-          context,
+        final provider = Provider.of<ChatProvider>(context, listen: false);
+        provider.currentChat = chat;
+        provider.fetchMessages();
+        Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ChatScreen(
-              chat: chat,
-            ),
+            builder: (context) => ChatScreen(),
           ),
         );
       },

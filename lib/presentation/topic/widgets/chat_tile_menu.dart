@@ -15,36 +15,6 @@ class ChatTileMenu extends StatelessWidget {
     required this.onDelete,
   }) : super(key: key);
 
-  void _showDialog(BuildContext context, Widget content) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: SingleChildScrollView(
-            child: ConstrainedBox(
-              constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.3),
-              child: content,
-            ),
-          ),
-          actions: [
-            TextButton(
-              style: const ButtonStyle(
-                  foregroundColor: MaterialStatePropertyAll(Colors.red),
-                  textStyle: MaterialStatePropertyAll(
-                    TextStyle(color: Colors.red),
-                  )),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(translate('cancel')),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return PopupMenuButton(
@@ -60,7 +30,7 @@ class ChatTileMenu extends StatelessWidget {
           ),
         ];
       },
-      onSelected: (value) {
+      onSelected: (value) async {
         if (value == 'delete') {
           showDialog(
             context: context,
@@ -92,29 +62,36 @@ class ChatTileMenu extends StatelessWidget {
             },
           );
         } else if (value == 'changeSummary') {
-          TextEditingController summaryController = TextEditingController();
-          _showDialog(
-            context,
-            Column(
-              children: [
-                Text(translate('change_summary_chat')),
-                TextField(
-                  controller: summaryController,
-                  decoration:
-                      InputDecoration(hintText: translate('new_summary')),
-                ),
-                TextButton(
-                  child: Text(translate('change')),
-                  onPressed: () {
-                    Provider.of<ChatProvider>(context, listen: false)
-                        .modifyChatSummary(
-                            chat.copyWith(summary: summaryController.text));
-                    Navigator.of(context).pop();
+          String? newSummary = await showDialog<String>(
+            context: context,
+            builder: (BuildContext context) {
+              String tempSummary = '';
+              return AlertDialog(
+                title: const Text('Change Summary'),
+                content: TextField(
+                  onChanged: (value) {
+                    tempSummary = value;
                   },
+                  decoration:
+                      const InputDecoration(hintText: "Enter new summary"),
                 ),
-              ],
-            ),
+                actions: <Widget>[
+                  TextButton(
+                    onPressed: () {
+                      Navigator.pop(context, tempSummary);
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              );
+            },
           );
+
+          if (newSummary != null) {
+            Chat chatWithNewSummary = chat.copyWith(summary: newSummary);
+            Provider.of<ChatProvider>(context, listen: false)
+                .modifyChatSummary(chatWithNewSummary);
+          }
         }
       },
     );

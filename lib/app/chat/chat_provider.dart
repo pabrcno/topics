@@ -264,10 +264,7 @@ class ChatProvider with ChangeNotifier {
         Navigator.push(
           navigatorKey.currentState!.context,
           MaterialPageRoute(
-            builder: (context) => ChatScreen(
-              chat: newChat,
-              isNew: true,
-            ), // your chat screen widget
+            builder: (context) => ChatScreen(), // your chat screen widget
           ),
         );
       }
@@ -377,6 +374,8 @@ class ChatProvider with ChangeNotifier {
       final chatIndex = currentTopicChats
           .indexWhere((chat) => chat.id == chatWithNewTitle.id);
       currentTopicChats[chatIndex] = chatWithNewTitle;
+      currentChat = chatWithNewTitle;
+
       setLoading(false);
     });
   }

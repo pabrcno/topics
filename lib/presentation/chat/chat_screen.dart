@@ -13,23 +13,55 @@ import 'widgets/tools/suggested_prompt_selector.dart';
 
 class ChatScreen extends StatelessWidget {
   final FocusNode _focusNode = FocusNode();
-  final Chat chat;
+
   final bool isNew;
-  ChatScreen({super.key, required this.chat, this.isNew = false});
+  ChatScreen({super.key, this.isNew = false});
   final TextEditingController _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addPostFrameCallback((_) async {
-      await Provider.of<ChatProvider>(context, listen: false).fetchMessages();
-    });
-
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
-          title: Text(
-            chat.summary,
-            maxLines: 2,
+          title: GestureDetector(
+            onTap: () async {
+              String? newSummary = await showDialog<String>(
+                context: context,
+                builder: (BuildContext context) {
+                  String tempSummary = '';
+                  return AlertDialog(
+                    title: const Text('Change Summary'),
+                    content: TextField(
+                      onChanged: (value) {
+                        tempSummary = value;
+                      },
+                      decoration:
+                          const InputDecoration(hintText: "Enter new summary"),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context, tempSummary);
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  );
+                },
+              );
+
+              if (newSummary != null) {
+                Chat? chatWithNewSummary =
+                    provider.currentChat?.copyWith(summary: newSummary);
+                if (chatWithNewSummary != null) {
+                  await provider.modifyChatSummary(chatWithNewSummary);
+                }
+              }
+            },
+            child: Text(
+              provider.currentChat!.summary,
+              maxLines: 2,
+            ),
           ),
           elevation: 1,
           actions: [
@@ -49,10 +81,7 @@ class ChatScreen extends StatelessWidget {
         body: Column(
           children: <Widget>[
             Expanded(
-              child: ChatMessagesListView(
-                chat: chat,
-                isNew: isNew,
-              ),
+              child: ChatMessagesListView(),
             ),
             Disabled(
               disabled: provider.messageBuffer.isNotEmpty || provider.isLoading,
