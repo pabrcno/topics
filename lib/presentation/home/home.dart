@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
   late final List<AnimationController> destinationFaders;
   int selectedIndex = 0;
-  bool isChipVisible = true;
+  bool isChipVisible = false;
 
   AnimationController buildFaderController() {
     final AnimationController controller = AnimationController(
@@ -86,8 +86,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 );
               },
               icon: Image.asset(
-                'assets/images/topics_dark_removebg.png',
-                height: 35,
+                'assets/images/topics_light_removebg.png',
               ),
             ),
             actions: [
@@ -136,16 +135,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 bottom: 10,
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
-                  child: GestureDetector(
-                    onTap: () {
+                  child: ElevatedButton.icon(
+                    icon: const Icon(Icons.message_outlined),
+                    onPressed: () {
                       setState(() {
                         isChipVisible = !isChipVisible;
                       });
                     },
-                    child: Chip(
-                      label: Text(
-                          '${isChipVisible ? translate('messages_left') + ':' : ''} ${chatProvider.userMessageCount}'),
-                    ),
+                    label: Text(
+                        '${isChipVisible ? translate('messages_left') + ':' : ''} ${chatProvider.userMessageCount}'),
                   ),
                 )),
           ]),

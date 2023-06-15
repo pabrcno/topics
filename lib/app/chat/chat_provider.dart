@@ -284,8 +284,10 @@ class ChatProvider with ChangeNotifier {
       );
       currentChat = newChat;
 
-      currentTopicChats.add(newChat);
+      messages = [];
 
+      currentTopicChats.add(newChat);
+      userChats.add(newChat);
       currentTopic = topic;
       if (navigatorKey.currentState != null) {
         Navigator.push(
@@ -399,6 +401,11 @@ class ChatProvider with ChangeNotifier {
       final chatIndex = currentTopicChats
           .indexWhere((chat) => chat.id == chatWithNewTitle.id);
       currentTopicChats[chatIndex] = chatWithNewTitle;
+
+      final userChatIndex =
+          userChats.indexWhere((chat) => chat.id == chatWithNewTitle.id);
+
+      userChats[userChatIndex] = chatWithNewTitle;
       currentChat = chatWithNewTitle;
 
       setLoading(false);

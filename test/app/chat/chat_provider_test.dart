@@ -1,10 +1,9 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
-import 'package:topics/api/image_generation/image_generation_api.dart';
+
 import 'package:topics/app/chat/chat_provider.dart';
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/models/auth/app_user_credential.dart';
@@ -15,7 +14,7 @@ import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/api/chat/i_chat_api.dart';
 import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/domain/services/i_auth_service.dart';
-import 'package:topics/firebase_options.dart';
+
 import 'package:topics/services/exception_handling_service.dart';
 
 @GenerateMocks(

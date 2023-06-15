@@ -36,23 +36,20 @@ class _TopicListState extends State<TopicList> {
           return Center(child: Text(translate('no_topics_available')));
         } else {
           return RefreshIndicator(
-              onRefresh: _refreshTopics,
-              child: Container(
-                decoration: BoxDecoration(color: Colors.blueGrey.shade900),
-                child: ListView.separated(
-                  padding: const EdgeInsets.only(top: 20),
-                  separatorBuilder: (BuildContext context, int index) {
-                    return Divider(
-                      thickness: .8,
-                      color: Colors.grey.shade900,
-                    );
-                  },
-                  itemCount: topics.length,
-                  itemBuilder: (context, index) {
-                    return TopicTile(topic: topics[index]);
-                  },
-                ),
-              ));
+            onRefresh: _refreshTopics,
+            child: ListView.separated(
+              separatorBuilder: (BuildContext context, int index) {
+                return Divider(
+                  thickness: .8,
+                  color: Colors.grey.shade900,
+                );
+              },
+              itemCount: topics.length,
+              itemBuilder: (context, index) {
+                return TopicTile(topic: topics[index]);
+              },
+            ),
+          );
         }
       },
     );

@@ -24,7 +24,6 @@ class ChatsList extends StatelessWidget {
             )
           : ListView.separated(
               itemCount: chats.length,
-              padding: const EdgeInsets.only(top: 20),
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
                   thickness: .8,

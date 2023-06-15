@@ -99,7 +99,7 @@ flutter:
 
   assets:
     - assets/appainter_theme.json
-    - assets/images/topics_dark_removebg.png
+    - assets/images/topics_light_removebg.png
     - assets/images/logo_with_label_1-removebg-preview.png
     - assets/i18n/
     - .env
