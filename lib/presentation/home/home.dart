@@ -22,7 +22,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     Destination(0, 'Chats', Icons.chat),
     Destination(1, 'Topics', Icons.topic),
   ];
-
+  PageController pageController = PageController(initialPage: 0);
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
   late final List<AnimationController> destinationFaders;
   int selectedIndex = 0;
@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     for (final AnimationController controller in destinationFaders) {
       controller.dispose();
     }
+    pageController.dispose();
     super.dispose();
   }
 
@@ -108,23 +109,23 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ],
           ),
-          body: Stack(
+          body: PageView(
+            controller: pageController,
+            onPageChanged: (int index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
             children: allDestinations.map((Destination destination) {
               final int index = destination.index;
-              final bool isActive = index == selectedIndex;
-              return Offstage(
-                offstage: !isActive,
-                child: TickerMode(
-                    enabled: isActive,
-                    child: index == 0
-                        ? ChatsList(
-                            chats: chatProvider.userChats,
-                            onRefresh: () async {
-                              await chatProvider.fetchUserChats();
-                            },
-                          )
-                        : const TopicList()),
-              );
+              return index == 0
+                  ? ChatsList(
+                      chats: chatProvider.userChats,
+                      onRefresh: () async {
+                        await chatProvider.fetchUserChats();
+                      },
+                    )
+                  : const TopicList();
             }).toList(),
           ),
           floatingActionButton: FloatingActionButton(
@@ -143,6 +144,11 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               setState(() {
                 selectedIndex = index;
               });
+              if (pageController.hasClients) {
+                pageController.animateToPage(index,
+                    duration: const Duration(milliseconds: 100),
+                    curve: Curves.easeIn);
+              }
             },
             destinations: allDestinations.map((Destination destination) {
               return NavigationDestination(

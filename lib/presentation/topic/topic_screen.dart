@@ -16,12 +16,6 @@ class TopicScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void createNewChat() async {
-      final chatProvider = Provider.of<ChatProvider>(context, listen: false);
-
-      await chatProvider.createChat(null, topic);
-    }
-
     return Consumer<ChatProvider>(
         builder: (context, provider, child) => Scaffold(
               appBar: CustomAppBar(
@@ -42,7 +36,7 @@ class TopicScreen extends StatelessWidget {
                 },
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: createNewChat,
+                onPressed: () => provider.createChat(null, topic),
                 child: const Icon(Icons.messenger_outline),
               ),
             ));
