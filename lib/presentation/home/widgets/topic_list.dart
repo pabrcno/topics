@@ -38,8 +38,7 @@ class _TopicListState extends State<TopicList> {
           return RefreshIndicator(
               onRefresh: _refreshTopics,
               child: Container(
-                decoration: BoxDecoration(
-                    color: Theme.of(context).colorScheme.secondaryContainer),
+                decoration: BoxDecoration(color: Colors.blueGrey.shade900),
                 child: ListView.separated(
                   padding: const EdgeInsets.only(top: 20),
                   separatorBuilder: (BuildContext context, int index) {

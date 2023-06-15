@@ -103,5 +103,6 @@
   "drag_slider_description": "Drag the slider to set the temperature value between 0.1 and 1.5.",
   "permissions_info": "Permissions",
   "higher_temperature_description": "Higher temperature values result in more random and diverse responses.",
-  "camera_permission_note": "Make sure to grant camera permissions for the OCR tool to work properly."
+  "camera_permission_note": "Make sure to grant camera permissions for the OCR tool to work properly.",
+  "messages_left": "Messages left"
 }

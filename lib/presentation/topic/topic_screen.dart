@@ -36,7 +36,7 @@ class TopicScreen extends StatelessWidget {
                 },
               ),
               floatingActionButton: FloatingActionButton(
-                onPressed: () => provider.createChat(null, topic),
+                onPressed: () => provider.createChat(topic),
                 child: const Icon(Icons.messenger_outline),
               ),
             ));

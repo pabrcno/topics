@@ -26,6 +26,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
   late final List<AnimationController> destinationFaders;
   int selectedIndex = 0;
+  bool isChipVisible = true;
 
   AnimationController buildFaderController() {
     final AnimationController controller = AnimationController(
@@ -56,6 +57,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ChatProvider>(context, listen: false).fetchUserChats();
       Provider.of<ChatProvider>(context, listen: false).fetchTopics();
+      Provider.of<ChatProvider>(context, listen: false).fetchMessagesCount();
     });
   }
 
@@ -109,34 +111,59 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
               ),
             ],
           ),
-          body: PageView(
-            controller: pageController,
-            onPageChanged: (int index) {
-              setState(() {
-                selectedIndex = index;
-              });
-            },
-            children: allDestinations.map((Destination destination) {
-              final int index = destination.index;
-              return index == 0
-                  ? ChatsList(
-                      chats: chatProvider.userChats,
-                      onRefresh: () async {
-                        await chatProvider.fetchUserChats();
-                      },
-                    )
-                  : const TopicList();
-            }).toList(),
-          ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () => showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return const TopicModal();
+          body: Stack(children: [
+            PageView(
+              controller: pageController,
+              onPageChanged: (int index) {
+                setState(() {
+                  selectedIndex = index;
+                });
               },
+              children: allDestinations.map((Destination destination) {
+                final int index = destination.index;
+                return index == 0
+                    ? ChatsList(
+                        chats: chatProvider.userChats,
+                        onRefresh: () async {
+                          await chatProvider.fetchUserChats();
+                        },
+                      )
+                    : const TopicList();
+              }).toList(),
             ),
+            Positioned(
+                left: 0,
+                bottom: 10,
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        isChipVisible = !isChipVisible;
+                      });
+                    },
+                    child: Chip(
+                      label: Text(
+                          '${isChipVisible ? translate('messages_left') + ':' : ''} ${chatProvider.userMessageCount}'),
+                    ),
+                  ),
+                )),
+          ]),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              if (selectedIndex == 0) {
+                chatProvider.createChat(null);
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return const TopicModal();
+                  },
+                );
+              }
+            },
             tooltip: translate('add_topic'),
-            child: const Icon(Icons.add),
+            child: Icon(selectedIndex == 0 ? Icons.chat : Icons.topic),
           ),
           bottomNavigationBar: NavigationBar(
             selectedIndex: selectedIndex,

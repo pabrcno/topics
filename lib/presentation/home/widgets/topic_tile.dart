@@ -19,7 +19,7 @@ class TopicTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Icon(
+      leading: const Icon(
         Icons.topic_outlined,
       ),
       title: Padding(

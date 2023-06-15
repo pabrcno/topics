@@ -102,5 +102,6 @@
   "drag_slider_description": "Arrastra el control deslizante para establecer el valor de temperatura entre 0.1 y 2.",
   "higher_temperature_description": "Valores de temperatura más altos generan respuestas más aleatorias y diversas.",
   "permissions_info": "Permisos",
-  "camera_permission_note": "Asegúrate de conceder permisos de cámara para que la herramienta OCR funcione correctamente."
+  "camera_permission_note": "Asegúrate de conceder permisos de cámara para que la herramienta OCR funcione correctamente.",
+  "messages_left": "Mensajes Restantes"
 }
