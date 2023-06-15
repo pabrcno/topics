@@ -5,7 +5,7 @@ import 'package:topics/presentation/home/widgets/topic_modal.dart';
 import 'package:topics/services/auth/auth_service.dart';
 
 import '../config/configurations.dart';
-import 'widgets/topic_grid.dart';
+import 'widgets/topic_list.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -54,7 +54,7 @@ class HomePage extends StatelessWidget {
                   )))
         ],
       ),
-      body: const TopicGrid(),
+      body: const TopicList(),
       floatingActionButton: FloatingActionButton(
         onPressed: () => _openModal(context),
         tooltip: translate('add_topic'),

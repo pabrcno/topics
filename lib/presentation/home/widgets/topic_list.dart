@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/presentation/home/widgets/topic_card.dart';
+import 'package:topics/presentation/home/widgets/topic_tile.dart';
 
 import '../../../app/chat/chat_provider.dart';
 
-class TopicGrid extends StatefulWidget {
-  const TopicGrid({Key? key}) : super(key: key);
+class TopicList extends StatefulWidget {
+  const TopicList({Key? key}) : super(key: key);
 
   @override
-  _TopicGridState createState() => _TopicGridState();
+  _TopicListState createState() => _TopicListState();
 }
 
-class _TopicGridState extends State<TopicGrid> {
+class _TopicListState extends State<TopicList> {
   Future<void> _refreshTopics() async {
     await Provider.of<ChatProvider>(context, listen: false).fetchTopics();
   }
@@ -37,14 +37,12 @@ class _TopicGridState extends State<TopicGrid> {
         } else {
           return RefreshIndicator(
             onRefresh: _refreshTopics,
-            child: GridView.count(
-              crossAxisCount: 2,
+            child: ListView.builder(
               padding: const EdgeInsets.only(top: 10),
-              children: topics
-                  .map((topic) => TopicCard(
-                        topic: topic,
-                      ))
-                  .toList(),
+              itemCount: topics.length,
+              itemBuilder: (context, index) {
+                return TopicTile(topic: topics[index]);
+              },
             ),
           );
         }
