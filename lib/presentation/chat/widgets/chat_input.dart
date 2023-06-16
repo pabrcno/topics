@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/presentation/chat/widgets/speech_input.dart';
 
 import '../../../app/chat/chat_provider.dart';
 
@@ -41,18 +42,15 @@ class _ChatInputState extends State<ChatInput> {
               },
             ),
             Container(
-              padding: const EdgeInsets.only(
-                left: 10,
-                right: 10,
-              ),
+              margin: const EdgeInsets.all(10),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
                   minWidth: _contextWidth(context) -
-                      120, // adjusted width for new IconButton
+                      150, // adjusted width for new IconButton
                   maxWidth: _contextWidth(context) -
-                      120, // adjusted width for new IconButton
+                      150, // adjusted width for new IconButton
                   minHeight: 20.0,
-                  maxHeight: 200,
+                  maxHeight: 280,
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,
@@ -70,36 +68,54 @@ class _ChatInputState extends State<ChatInput> {
                 ),
               ),
             ),
-            IconButton(
-              iconSize: 30,
-              icon: provider.isLoading
-                  ? const CircularProgressIndicator(color: Colors.grey)
-                  : provider.streamSubscription != null
-                      ? Icon(
-                          Icons.stop,
-                          color: Colors.yellow.shade900,
-                        )
-                      : const Icon(Icons.send),
-              onPressed: provider.streamSubscription != null
-                  ? provider.stopStream
-                  : () {
-                      final messageText = widget._textController.text;
-                      if (messageText.isEmpty) return;
-                      if (!provider.isImageMode) {
-                        provider.sendMessage(messageText);
-                        widget._textController.clear();
-                        return;
-                      }
-                      provider.sendImageGenerationRequest(
-                        prompt: messageText,
-                        weight: 0.5,
-                        height: 512,
-                        width: 512,
-                        steps: 75,
-                      );
-                      widget._textController.clear();
-                    },
+            SpeechInput(
+              controller: widget._textController,
             ),
+            const SizedBox(width: 5),
+            provider.isLoading
+                ? SizedBox(
+                    height: 20.0,
+                    child: CircularProgressIndicator(
+                      color: Colors.grey.shade600,
+                      strokeWidth: 1,
+                    ),
+                  )
+                : Material(
+                    color: provider.streamSubscription != null
+                        ? Colors.yellow.shade900
+                        : Theme.of(context).colorScheme.primary,
+                    borderRadius: BorderRadius.circular(50),
+                    child: InkWell(
+                      onTap: provider.streamSubscription != null
+                          ? provider.stopStream
+                          : () {
+                              final messageText = widget._textController.text;
+                              if (messageText.isEmpty) return;
+                              if (!provider.isImageMode) {
+                                provider.sendMessage(messageText);
+                                widget._textController.clear();
+                                return;
+                              }
+                              provider.sendImageGenerationRequest(
+                                prompt: messageText,
+                                weight: 0.5,
+                                height: 512,
+                                width: 512,
+                                steps: 75,
+                              );
+                              widget._textController.clear();
+                            },
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: provider.streamSubscription != null
+                            ? Icon(Icons.stop,
+                                color: Theme.of(context).colorScheme.background)
+                            : Icon(Icons.send,
+                                color:
+                                    Theme.of(context).colorScheme.background),
+                      ),
+                    ),
+                  ),
           ],
         );
       },

@@ -13,7 +13,7 @@ class MessageShareButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IconButton(
-        iconSize: 20,
+        iconSize: 15,
         onPressed: () => {shareMessage()},
         icon: const Icon(Icons.share));
   }

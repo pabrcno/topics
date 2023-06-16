@@ -19,7 +19,7 @@ class ChatTileMenu extends StatelessWidget {
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text(translate('delete')),
-          content: Text(translate('confirm_delete_chat')),
+          content: Text(translate('confirm_delete_topic')),
           actions: [
             TextButton(
               style: const ButtonStyle(
@@ -29,17 +29,11 @@ class ChatTileMenu extends StatelessWidget {
                 ),
               ),
               onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: Text(translate('cancel')),
-            ),
-            TextButton(
-              onPressed: () {
                 Provider.of<ChatProvider>(context, listen: false)
                     .deleteChat(chat);
                 Navigator.of(context).pop();
               },
-              child: Text(translate('confirm')),
+              child: Text(translate('delete')),
             ),
           ],
         );
@@ -48,24 +42,23 @@ class ChatTileMenu extends StatelessWidget {
   }
 
   void _showChangeSummaryDialog(BuildContext context) {
-    TextEditingController summaryController = TextEditingController();
+    TextEditingController titleController = TextEditingController();
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text(translate('change_summary')),
+          title: Text(translate('change_title')),
           content: TextField(
-            controller: summaryController,
-            decoration:
-                InputDecoration(hintText: translate('new_summary_hint')),
+            controller: titleController,
+            decoration: InputDecoration(hintText: translate('new_title_hint')),
           ),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Provider.of<ChatProvider>(context, listen: false)
                     .modifyChatSummary(
-                  chat.copyWith(summary: summaryController.text),
+                  chat.copyWith(summary: titleController.text),
                 );
                 Navigator.of(context).pop();
               },
@@ -85,27 +78,30 @@ class ChatTileMenu extends StatelessWidget {
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.delete),
-                  title: Text(translate('delete')),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _showDeleteDialog(context);
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.edit),
-                  title: Text(translate('change_summary')),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _showChangeSummaryDialog(context);
-                  },
-                ),
-              ],
-            );
+            return Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: const Icon(Icons.edit),
+                      title: Text(translate('change_title')),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _showChangeSummaryDialog(context);
+                      },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.delete),
+                      title: Text(translate('delete')),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _showDeleteDialog(context);
+                      },
+                    ),
+                  ],
+                ));
           },
         );
       },

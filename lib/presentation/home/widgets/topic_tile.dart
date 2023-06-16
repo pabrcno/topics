@@ -19,19 +19,23 @@ class TopicTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(
-        Icons.topic_outlined,
-      ),
       title: Padding(
         padding: const EdgeInsets.only(bottom: 30),
         child: Row(
           children: [
             Expanded(
-              child: Text(
-                topic.title,
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-              ),
+              child: Row(children: [
+                Text(
+                  topic.title,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const SizedBox(width: 10.0),
+                const Icon(
+                  Icons.topic_outlined,
+                )
+              ]),
             ),
             TopicTileMenu(
               topic: topic,

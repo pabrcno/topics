@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 
 import 'package:google_mlkit_text_recognition/google_mlkit_text_recognition.dart';
@@ -30,11 +32,11 @@ class _OCRInputState extends State<OCRInput> {
         uiSettings: [
           AndroidUiSettings(
               toolbarTitle: 'Select your text',
-              toolbarColor: Colors.grey.shade800,
-              backgroundColor: Colors.grey.shade800,
-              cropFrameColor: Colors.lightBlue,
-              toolbarWidgetColor: Colors.white,
-              activeControlsWidgetColor: Colors.lightBlue,
+              toolbarColor: Theme.of(context).colorScheme.background,
+              backgroundColor: Theme.of(context).colorScheme.background,
+              cropFrameColor: Theme.of(context).colorScheme.primary,
+              toolbarWidgetColor: Theme.of(context).colorScheme.primary,
+              activeControlsWidgetColor: Theme.of(context).colorScheme.primary,
               initAspectRatio: CropAspectRatioPreset.original,
               lockAspectRatio: false),
           IOSUiSettings(
@@ -59,9 +61,19 @@ class _OCRInputState extends State<OCRInput> {
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      onPressed: _openCamera,
-      icon: const Icon(Icons.camera_alt),
+    return Material(
+      color: Theme.of(context).colorScheme.secondary,
+      borderRadius: BorderRadius.circular(100),
+      child: InkWell(
+        onTap: _openCamera,
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Icon(
+            Icons.camera_alt,
+            color: Theme.of(context).colorScheme.background,
+          ),
+        ),
+      ),
     );
   }
 }

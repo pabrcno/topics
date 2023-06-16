@@ -7,21 +7,21 @@ class ToolsContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-        width: MediaQuery.of(context).size.width,
-        height: 40,
-        child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: widgetList.length,
-          itemBuilder: (context, index) {
-            return Container(
-              decoration: BoxDecoration(
-                border: Border.all(width: .5, color: Colors.grey.shade900),
+    return Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 5),
+        child: SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: 40,
+            child: ListView.separated(
+              separatorBuilder: (context, index) => const VerticalDivider(
+                color: Colors.transparent,
+                width: 10,
               ),
-              padding: const EdgeInsets.symmetric(horizontal: 16.0),
-              child: widgetList[index],
-            );
-          },
-        ));
+              scrollDirection: Axis.horizontal,
+              itemCount: widgetList.length,
+              itemBuilder: (context, index) {
+                return widgetList[index];
+              },
+            )));
   }
 }

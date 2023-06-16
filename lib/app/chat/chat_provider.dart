@@ -420,8 +420,9 @@ class ChatProvider with ChangeNotifier {
 
       final userChatIndex =
           userChats.indexWhere((chat) => chat.id == chatWithNewTitle.id);
-
-      userChats[userChatIndex] = chatWithNewTitle;
+      if (userChatIndex != -1) {
+        userChats[userChatIndex] = chatWithNewTitle;
+      }
       currentChat = chatWithNewTitle;
 
       setLoading(false);

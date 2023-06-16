@@ -155,22 +155,24 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   ),
                 )),
           ]),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              if (selectedIndex == 0) {
-                chatProvider.createChat(null);
-              } else {
-                showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return const TopicModal();
+          floatingActionButton: selectedIndex != 2
+              ? FloatingActionButton(
+                  onPressed: () {
+                    if (selectedIndex == 0) {
+                      chatProvider.createChat(null);
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const TopicModal();
+                        },
+                      );
+                    }
                   },
-                );
-              }
-            },
-            tooltip: translate('add_topic'),
-            child: Icon(selectedIndex == 0 ? Icons.chat : Icons.topic),
-          ),
+                  tooltip: translate('add_topic'),
+                  child: Icon(selectedIndex == 0 ? Icons.chat : Icons.topic),
+                )
+              : null,
           bottomNavigationBar: NavigationBar(
             selectedIndex: selectedIndex,
             onDestinationSelected: (int index) {

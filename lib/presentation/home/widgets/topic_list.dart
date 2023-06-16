@@ -41,7 +41,7 @@ class _TopicListState extends State<TopicList> {
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
                   thickness: .8,
-                  color: Colors.grey.shade900,
+                  color: Colors.grey.shade100,
                 );
               },
               itemCount: topics.length,

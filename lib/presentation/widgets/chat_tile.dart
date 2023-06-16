@@ -28,6 +28,7 @@ class ChatTile extends StatelessWidget {
                 chat.summary,
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
             ),
             ChatTileMenu(

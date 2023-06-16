@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
@@ -10,40 +9,50 @@ import 'package:transparent_image/transparent_image.dart';
 import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
 
-// Don't forget to import your MessageShareButton
-
 class ChatMessageTile extends StatelessWidget {
   final Message message;
+  final String userImage;
+  final String userName;
 
-  const ChatMessageTile({Key? key, required this.message}) : super(key: key);
+  const ChatMessageTile({
+    Key? key,
+    required this.message,
+    required this.userImage,
+    required this.userName,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: () {
-          switch (message.role) {
-            case EMessageRole.user:
-              return Theme.of(context).colorScheme.surfaceVariant;
-
-            case EMessageRole.assistant:
-              return Theme.of(context).colorScheme.surface;
-
-            case EMessageRole.system:
-              return Colors.grey;
-
-            case EMessageRole.imageAssistant:
-              return Colors.transparent;
-            default:
-              return Colors
-                  .grey; // default color in case none of the roles match
-          }
-        }(),
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Padding(
+            padding: const EdgeInsets.only(
+              left: 5,
+              right: 5,
+            ),
+            child: message.role == EMessageRole.user
+                ? Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      CircleAvatar(
+                        backgroundImage: NetworkImage(userImage),
+                        radius: 12,
+                      ),
+                      MessageShareButton(message: message.content),
+                    ],
+                  )
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Image.asset('assets/images/topics_light_removebg.png',
+                          height: 25),
+                      MessageShareButton(message: message.content),
+                    ],
+                  ),
+          ),
           message.role == EMessageRole.imageAssistant
               ? InkWell(
                   onDoubleTap: () async {
@@ -70,30 +79,31 @@ class ChatMessageTile extends StatelessWidget {
                     // adjust duration according to your needs
                   ))
               : Padding(
-                  padding: EdgeInsets.all(18),
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: MarkdownBody(
                     fitContent: false,
                     selectable: true,
                     data: message.content,
-                  )),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 5,
-            ),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '${message.sentAt.hour}:${message.sentAt.minute}',
-                  style: const TextStyle(
-                    color: Colors.white70,
-                    fontSize: 12,
+                    styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
+                        .copyWith(
+                      p: const TextStyle(
+                        fontSize: 16,
+                      ),
+                      codeblockDecoration: BoxDecoration(
+                        color: Colors.black,
+                        borderRadius: BorderRadius.circular(2.0),
+                      ),
+                      codeblockPadding: const EdgeInsets.all(8.0),
+                      code: const TextStyle(
+                        color: Colors.white,
+                        backgroundColor: Colors.black,
+                      ),
+                    ),
                   ),
                 ),
-                MessageShareButton(message: message.content),
-              ],
-            ),
+          Divider(
+            color: Colors.grey[100],
+            thickness: 0.5,
           )
         ],
       ),

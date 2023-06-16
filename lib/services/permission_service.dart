@@ -37,6 +37,19 @@ class PermissionService {
     var permissionStatus = await permission.status;
     return permissionStatus == PermissionStatus.granted;
   }
+
+  Future<bool> requestMicrophonePermission(
+      {Function? onPermissionDenied}) async {
+    var granted = await _requestPermission(Permission.microphone);
+    if (!granted) {
+      onPermissionDenied?.call();
+    }
+    return granted;
+  }
+
+  Future<bool> hasMicrophonePermission() async {
+    return hasPermission(Permission.microphone);
+  }
 }
 
 final permissionServiceProvider = PermissionService();

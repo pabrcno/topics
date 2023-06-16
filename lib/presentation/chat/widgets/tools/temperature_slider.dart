@@ -16,70 +16,79 @@ class TemperatureSliderButton extends StatelessWidget {
     _temperatureController.value =
         provider.currentChat?.temperature ?? _temperatureController.value;
 
-    return IconButton(
-      icon: const Icon(Icons.thermostat_outlined),
-      onPressed: () {
-        showModalBottomSheet(
-          context: context,
-          builder: (BuildContext context) {
-            return Container(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        translate('consistency'),
-                        style: const TextStyle(
-                          color: Colors.grey,
-                        ),
+    return Material(
+        color: Theme.of(context).colorScheme.tertiary,
+        borderRadius: BorderRadius.circular(30.0),
+        child: InkWell(
+          onTap: () {
+            showModalBottomSheet(
+              context: context,
+              builder: (BuildContext context) {
+                return Container(
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: <Widget>[
+                      const SizedBox(
+                        height: 20,
                       ),
-                      Text(
-                        translate('diversity'),
-                        style: const TextStyle(
-                          color: Colors.grey,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            translate('consistency'),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.error,
+                            ),
+                          ),
+                          Text(
+                            translate('diversity'),
+                            style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                            ),
+                          ),
+                        ],
+                      ),
+                      ValueListenableBuilder<double>(
+                        valueListenable: _temperatureController,
+                        builder: (context, value, child) {
+                          return Slider(
+                            value: value,
+                            min: 0.1,
+                            max: 1.5,
+                            activeColor: Theme.of(context).colorScheme.tertiary,
+                            // for step size of 0.05
+                            onChangeEnd: (double value) {
+                              provider.setCurrentChatTemperature(value);
+                            },
+                            onChanged: (double value) {
+                              _temperatureController.value = value;
+                            },
+                          );
+                        },
+                      ),
+                      ValueListenableBuilder<double>(
+                        valueListenable: _temperatureController,
+                        builder: (context, value, child) {
+                          return Text(
+                            value.toStringAsFixed(2),
+                            style: const TextStyle(fontSize: 16),
+                          );
+                        },
                       ),
                     ],
                   ),
-                  ValueListenableBuilder<double>(
-                    valueListenable: _temperatureController,
-                    builder: (context, value, child) {
-                      return Slider(
-                        value: value,
-                        min: 0.1,
-                        max: 1.5,
-                        activeColor: Colors.blueGrey.shade100,
-                        // for step size of 0.05
-                        onChangeEnd: (double value) {
-                          provider.setCurrentChatTemperature(value);
-                        },
-                        onChanged: (double value) {
-                          _temperatureController.value = value;
-                        },
-                      );
-                    },
-                  ),
-                  ValueListenableBuilder<double>(
-                    valueListenable: _temperatureController,
-                    builder: (context, value, child) {
-                      return Text(
-                        value.toStringAsFixed(2),
-                        style: const TextStyle(fontSize: 16),
-                      );
-                    },
-                  ),
-                ],
-              ),
+                );
+              },
             );
           },
-        );
-      },
-    );
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.thermostat,
+              color: Theme.of(context).colorScheme.background,
+            ),
+          ),
+        ));
   }
 }

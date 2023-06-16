@@ -23,6 +23,7 @@ class ChatScreen extends StatelessWidget {
       builder: (context, provider, child) => Scaffold(
         resizeToAvoidBottomInset: true,
         appBar: AppBar(
+          elevation: 0,
           title: GestureDetector(
             onTap: () async {
               String? newSummary = await showDialog<String>(
@@ -58,12 +59,19 @@ class ChatScreen extends StatelessWidget {
                 }
               }
             },
-            child: Text(
-              provider.currentChat!.summary,
-              maxLines: 2,
-            ),
+            child: Row(children: [
+              Expanded(
+                  child: Text(
+                provider.currentChat!.summary,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              )),
+              const Icon(
+                Icons.edit,
+                size: 20,
+              )
+            ]),
           ),
-          elevation: 1,
           actions: [
             IconButton(
               icon: const Icon(Icons.info_outline),
@@ -91,11 +99,11 @@ class ChatScreen extends StatelessWidget {
                     _textController.text = result;
                   }),
                   TemperatureSliderButton(),
-                  SuggestedPromptSelector(
-                    onSelect: (key, value) {
-                      _textController.text = value;
-                    },
-                  ),
+                  // SuggestedPromptSelector(
+                  //   onSelect: (key, value) {
+                  //     _textController.text = value;
+                  //   },
+                  // ),
                 ],
               ),
             ),
