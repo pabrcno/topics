@@ -4,6 +4,7 @@ import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:topics/presentation/chat/widgets/message_share_button.dart';
+import 'package:topics/presentation/chat/widgets/tts_button.dart';
 import 'package:topics/services/exception_handling_service.dart';
 import 'package:transparent_image/transparent_image.dart';
 import '../../../domain/core/enums.dart';
@@ -76,7 +77,6 @@ class ChatMessageTile extends StatelessWidget {
                     fit: BoxFit.cover,
                     width: double.infinity,
                     fadeInDuration: const Duration(seconds: 1),
-                    // adjust duration according to your needs
                   ))
               : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -101,6 +101,13 @@ class ChatMessageTile extends StatelessWidget {
                     ),
                   ),
                 ),
+          Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 5),
+              child: EMessageRole.imageAssistant != message.role
+                  ? Align(
+                      alignment: Alignment.bottomRight,
+                      child: TTSButton(text: message.content))
+                  : const SizedBox()),
           Divider(
             color: Colors.grey[100],
             thickness: 0.5,

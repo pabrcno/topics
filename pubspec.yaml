@@ -74,6 +74,8 @@ dependencies:
   pay: ^1.1.1
   change_app_package_name: ^1.1.0
   speech_to_text: ^6.1.1
+  flutter_tts: ^3.7.0
+  google_mlkit_language_id: ^0.7.0
 
 dev_dependencies:
   flutter_test:
