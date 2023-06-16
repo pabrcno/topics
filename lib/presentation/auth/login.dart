@@ -28,7 +28,7 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Image.asset(
-              'assets/images/logo_with_label_1-removebg-preview.png',
+              'assets/images/topics_light_removebg.png',
               width: 300,
             ),
             SignInButton(
