@@ -78,27 +78,30 @@ class TopicTileMenu extends StatelessWidget {
         showModalBottomSheet(
           context: context,
           builder: (BuildContext context) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                ListTile(
-                  leading: const Icon(Icons.delete),
-                  title: Text(translate('delete')),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _showDeleteDialog(context);
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(Icons.edit),
-                  title: Text(translate('change_title')),
-                  onTap: () {
-                    Navigator.of(context).pop();
-                    _showChangeTitleDialog(context);
-                  },
-                ),
-              ],
-            );
+            return Padding(
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ListTile(
+                      leading: const Icon(Icons.edit),
+                      title: Text(translate('change_title')),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _showChangeTitleDialog(context);
+                      },
+                    ),
+                    const Divider(),
+                    ListTile(
+                      leading: const Icon(Icons.delete),
+                      title: Text(translate('delete')),
+                      onTap: () {
+                        Navigator.of(context).pop();
+                        _showDeleteDialog(context);
+                      },
+                    ),
+                  ],
+                ));
           },
         );
       },
