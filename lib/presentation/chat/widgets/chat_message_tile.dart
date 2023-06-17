@@ -50,7 +50,17 @@ class ChatMessageTile extends StatelessWidget {
                     children: [
                       Image.asset('assets/images/topics_light_removebg.png',
                           height: 25),
-                      MessageShareButton(message: message.content),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 5),
+                            child: EMessageRole.imageAssistant != message.role
+                                ? TTSButton(text: message.content)
+                                : const SizedBox(),
+                          ),
+                          MessageShareButton(message: message.content),
+                        ],
+                      )
                     ],
                   ),
           ),
@@ -101,13 +111,6 @@ class ChatMessageTile extends StatelessWidget {
                     ),
                   ),
                 ),
-          Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 5),
-              child: EMessageRole.imageAssistant != message.role
-                  ? Align(
-                      alignment: Alignment.bottomRight,
-                      child: TTSButton(text: message.content))
-                  : const SizedBox()),
           Divider(
             color: Colors.grey[100],
             thickness: 0.5,

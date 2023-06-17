@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
@@ -37,6 +38,8 @@ class ChatProvider with ChangeNotifier {
   final IAuthService authServiceProvider;
   bool _isLoading = false;
 
+  bool _hasChatBeenCreated = false;
+
   IImageGenerationApi _imageGenerationApi;
   Chat? currentChat;
   Topic? currentTopic;
@@ -56,6 +59,13 @@ class ChatProvider with ChangeNotifier {
         _chatRepository = chatRepository,
         _userRepository = userRepository,
         _imageGenerationApi = imageGenerationApi,
+        currentChat = Chat(
+            createdAt: DateTime.now(),
+            id: const Uuid().v4(),
+            summary: translate('new_chat'),
+            topicId: '',
+            userId: authServiceProvider.getCurrentUser()?.uid ?? '',
+            lastModified: DateTime.now()),
         super();
 
   set isImageMode(bool value) {
@@ -85,7 +95,7 @@ class ChatProvider with ChangeNotifier {
         authServiceProvider.getCurrentUser()!.uid,
       );
       fetched.sort(
-        (a, b) => a.lastModified.compareTo(b.lastModified),
+        (a, b) => b.lastModified.compareTo(a.lastModified),
       );
       userChats = fetched;
       setLoading(false);
@@ -197,6 +207,10 @@ class ChatProvider with ChangeNotifier {
 
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
+      if (!_hasChatBeenCreated) {
+        await _chatRepository.createChat(currentChat!);
+        _hasChatBeenCreated = true;
+      }
       final message = Message(
         id: const Uuid().v4(),
         content: content,
@@ -278,6 +292,31 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> clearChat() async {
+    setLoading(true);
+    // Define a unique id for the new chat
+    final newChatId = const Uuid().v4();
+
+    // Create a new Chat object
+    final newChat = Chat(
+      id: newChatId,
+      userId: authServiceProvider
+          .getCurrentUser()!
+          .uid, // replace with actual userId
+      topicId: currentTopic?.id ?? '', // replace with actual topicId
+      createdAt: DateTime.now(),
+      lastModified: DateTime.now(),
+      summary: translate('new_chat'), // using the initial message as a summary
+    );
+    currentChat = newChat;
+
+    messages = [];
+
+    messages.clear();
+    setLoading(false);
+    ;
+  }
+
   Future<void> createChat(Topic? topic) async {
     await errorCommander.run(() async {
       // Ensure we have an API key before proceeding
@@ -296,7 +335,8 @@ class ChatProvider with ChangeNotifier {
         topicId: topic?.id ?? '', // replace with actual topicId
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),
-        summary: 'New chat', // using the initial message as a summary
+        summary:
+            translate('new_chat'), // using the initial message as a summary
       );
       currentChat = newChat;
 
@@ -410,6 +450,11 @@ class ChatProvider with ChangeNotifier {
     await errorCommander.run(() async {
       setLoading(true);
 
+      if (!_hasChatBeenCreated) {
+        await _chatRepository.createChat(chatWithNewTitle);
+        _hasChatBeenCreated = true;
+      }
+
       // Modify the chat summary in the repository
       await _chatRepository.updateChat(chatWithNewTitle);
 
@@ -444,6 +489,9 @@ class ChatProvider with ChangeNotifier {
     required int steps,
   }) async {
     await errorCommander.run(() async {
+      if (!_hasChatBeenCreated) {
+        await createChat(null);
+      }
       if (currentChat == null) return;
       setLoading(true);
       // Create a new ImageGenerationRequest object

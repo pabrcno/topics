@@ -4,7 +4,6 @@ import 'package:topics/services/auth/auth_service.dart';
 
 import '../../../app/chat/chat_provider.dart';
 import '../../../domain/core/enums.dart';
-
 import '../../../domain/models/message/message.dart';
 import 'chat_message_tile.dart';
 
@@ -33,33 +32,47 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
           }
         });
 
-        return ListView.builder(
-          controller: _scrollController,
-          itemCount: provider.messages.length +
-              (provider.messageBuffer.isNotEmpty ? 1 : 0),
-          itemBuilder: (context, index) {
-            // Check if there is a new message or an incoming message
-            if (index == provider.messages.length) {
-              return ChatMessageTile(
-                userImage: user?.photoURL ?? '',
-                userName: user?.displayName ?? '',
-                message: Message(
-                  content: provider.messageBuffer,
-                  id: 'new',
-                  chatId: provider.currentChat?.id ?? '',
-                  isUser: false,
-                  role: EMessageRole.assistant,
-                  sentAt: DateTime.now(),
-                ),
-              );
-            } else {
-              return ChatMessageTile(
-                  message: provider.messages[index],
+        if (provider.messages.isEmpty && provider.messageBuffer.isEmpty) {
+          return const Center(
+            child: Opacity(
+                opacity: 0.2,
+                child: SizedBox(
+                  height: 150,
+                  child: Image(
+                    image: AssetImage(
+                        'assets/images/topics_light_removebg.png'), // path to your logo image
+                  ),
+                )),
+          );
+        } else {
+          return ListView.builder(
+            controller: _scrollController,
+            itemCount: provider.messages.length +
+                (provider.messageBuffer.isNotEmpty ? 1 : 0),
+            itemBuilder: (context, index) {
+              // Check if there is a new message or an incoming message
+              if (index == provider.messages.length) {
+                return ChatMessageTile(
                   userImage: user?.photoURL ?? '',
-                  userName: user?.displayName ?? '');
-            }
-          },
-        );
+                  userName: user?.displayName ?? '',
+                  message: Message(
+                    content: provider.messageBuffer,
+                    id: 'new',
+                    chatId: provider.currentChat?.id ?? '',
+                    isUser: false,
+                    role: EMessageRole.assistant,
+                    sentAt: DateTime.now(),
+                  ),
+                );
+              } else {
+                return ChatMessageTile(
+                    message: provider.messages[index],
+                    userImage: user?.photoURL ?? '',
+                    userName: user?.displayName ?? '');
+              }
+            },
+          );
+        }
       },
     );
   }

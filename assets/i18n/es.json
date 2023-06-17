@@ -104,5 +104,6 @@
   "permissions_info": "Permisos",
   "camera_permission_note": "Asegúrate de conceder permisos de cámara para que la herramienta OCR funcione correctamente.",
   "messages_left": "Mensajes Restantes",
-  "no_chats": "Crea un nuevo chat para interactuar con la IA"
+  "no_chats": "Crea un nuevo chat para interactuar con la IA",
+  "new_chat": "Nuevo Chat"
 }

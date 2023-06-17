@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/presentation/about/about.dart';
+import 'package:topics/presentation/chat/widgets/chat_app_bar.dart';
+import 'package:topics/presentation/chat/widgets/chat_body.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
-import 'package:topics/services/auth/auth_service.dart';
 
 import '../../app/chat/chat_provider.dart';
+
+import '../about/about.dart';
 import '../config/configurations.dart';
 import '../store/store_page.dart';
 import '../widgets/chats_list.dart';
@@ -20,9 +22,10 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Chats', Icons.chat),
-    Destination(1, 'Topics', Icons.topic),
-    Destination(2, 'Store', Icons.store), // This line is new
+    Destination(0, 'Chat', Icons.chat),
+    Destination(1, 'Chats', Icons.history),
+    Destination(2, 'Topics', Icons.topic),
+    Destination(3, 'Store', Icons.store), // This line is new
   ];
   PageController pageController = PageController(initialPage: 0);
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
@@ -77,88 +80,74 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return Consumer<ChatProvider>(
       builder: (context, chatProvider, _) {
         return Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AboutPage(),
-                  ),
-                );
-              },
-              icon: Image.asset(
-                'assets/images/topics_light_removebg.png',
-              ),
-            ),
-            actions: [
-              InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const ConfigurationsPage(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      AuthService().getCurrentUser()?.photoURL ?? '',
-                    ),
-                  ),
-                ),
-              ),
-            ],
-          ),
-          body: Stack(children: [
-            PageView(
-              controller: pageController,
-              onPageChanged: (int index) {
-                setState(() {
-                  selectedIndex = index;
-                });
-              },
-              children: allDestinations.map((Destination destination) {
-                switch (destination.index) {
-                  case 0:
-                    return ChatsList(
-                      chats: chatProvider.userChats,
-                      onRefresh: () async {
-                        await chatProvider.fetchUserChats();
-                      },
-                    );
-                  case 1:
-                    return const TopicList();
-                  case 2:
-                    return const StorePage();
-                  default:
-                    return Container(); // or some kind of default page
-                }
-              }).toList(),
-            ),
-            Positioned(
-                left: 0,
-                bottom: 10,
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton.icon(
-                    icon: const Icon(Icons.message_outlined),
+          resizeToAvoidBottomInset: true,
+          appBar: selectedIndex == 0
+              ? const ChatAppBar()
+              : AppBar(
+                  leading: IconButton(
                     onPressed: () {
-                      setState(() {
-                        isChipVisible = !isChipVisible;
-                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AboutPage(),
+                        ),
+                      );
                     },
-                    label: Text(
-                        '${isChipVisible ? translate('messages_left') + ':' : ''} ${chatProvider.userMessageCount}'),
+                    icon: Image.asset(
+                      'assets/images/topics_light_removebg.png',
+                    ),
                   ),
-                )),
-          ]),
-          floatingActionButton: selectedIndex != 2
+                  actions: [
+                    Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Row(children: [
+                          const Icon(Icons.message_outlined),
+                          Text(' ${chatProvider.userMessageCount}'),
+                        ])),
+                    IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ConfigurationsPage(),
+                          ),
+                        );
+                      },
+                      icon: const Icon(Icons.settings),
+                    ),
+                  ],
+                ),
+          body: PageView(
+            controller: pageController,
+            onPageChanged: (int index) {
+              setState(() {
+                selectedIndex = index;
+              });
+            },
+            children: allDestinations.map((Destination destination) {
+              switch (destination.index) {
+                case 0:
+                  return ChatBody();
+                case 1:
+                  return ChatsList(
+                    chats: chatProvider.userChats,
+                    onRefresh: () async {
+                      await chatProvider.fetchUserChats();
+                    },
+                  );
+                case 2:
+                  return const TopicList();
+                case 3:
+                  return const StorePage();
+                default:
+                  return Container(); // or some kind of default page
+              }
+            }).toList(),
+          ),
+          floatingActionButton: selectedIndex != 3 && selectedIndex != 0
               ? FloatingActionButton(
                   onPressed: () {
-                    if (selectedIndex == 0) {
+                    if (selectedIndex == 1) {
                       chatProvider.createChat(null);
                     } else {
                       showDialog(
@@ -170,10 +159,12 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                     }
                   },
                   tooltip: translate('add_topic'),
-                  child: Icon(selectedIndex == 0 ? Icons.chat : Icons.topic),
+                  child: Icon(selectedIndex == 1 ? Icons.chat : Icons.topic),
                 )
               : null,
           bottomNavigationBar: NavigationBar(
+            height: 55,
+            elevation: 0,
             selectedIndex: selectedIndex,
             onDestinationSelected: (int index) {
               setState(() {
@@ -187,7 +178,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             },
             destinations: allDestinations.map((Destination destination) {
               return NavigationDestination(
-                icon: Icon(destination.icon),
+                icon: Icon(destination.icon, size: 20),
                 label: destination.title,
               );
             }).toList(),

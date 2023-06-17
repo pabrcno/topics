@@ -105,5 +105,6 @@
   "higher_temperature_description": "Higher temperature values result in more random and diverse responses.",
   "camera_permission_note": "Make sure to grant camera permissions for the OCR tool to work properly.",
   "messages_left": "Messages left",
-  "no_chats": "Create a new chat to interact with the AI"
+  "no_chats": "Create a new chat to interact with the AI",
+  "new_chat": "New Chat"
 }
