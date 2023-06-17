@@ -488,7 +488,8 @@ class ChatProvider with ChangeNotifier {
   }) async {
     await errorCommander.run(() async {
       if (!_hasChatBeenCreated) {
-        await createChat(null);
+        await _chatRepository.createChat(currentChat!);
+        _hasChatBeenCreated = true;
       }
       if (currentChat == null) return;
       setLoading(true);

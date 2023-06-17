@@ -101,7 +101,7 @@ class _ChatInputState extends State<ChatInput> {
                                 weight: 0.5,
                                 height: 512,
                                 width: 512,
-                                steps: 75,
+                                steps: 30,
                               );
                               widget._textController.clear();
                             },

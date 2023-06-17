@@ -10,80 +10,6 @@ class ImageGenerationTools extends StatefulWidget {
 }
 
 class _ImageGenerationToolsState extends State<ImageGenerationTools> {
-  final Map<String, List<String>> data = {
-    "Famous Artists": [
-      "Vincent Van Gogh",
-      "Pablo Picasso",
-      "Leonardo Da Vinci",
-      "Michelangelo",
-      "Claude Monet",
-      "Salvador Dali",
-      "Georgia O'Keeffe",
-      "Andy Warhol",
-      "Frida Kahlo",
-      "Jackson Pollock",
-      "Gustav Klimt",
-      "Edvard Munch",
-      "Mark Rothko",
-      "Caravaggio",
-      "Rembrandt"
-    ],
-    "Famous Photographers": [
-      "Ansel Adams",
-      "Richard Avedon",
-      "Henri Cartier-Bresson",
-      "Robert Capa",
-      "Dorothea Lange",
-      "Steve McCurry",
-      "Diane Arbus",
-      "Cindy Sherman",
-      "Vivian Maier",
-      "Sebastião Salgado"
-    ],
-    "Art Styles": [
-      "Impressionism",
-      "Cubism",
-      "Surrealism",
-      "Expressionism",
-      "Pop Art",
-      "Fauvism",
-      "Abstract Expressionism",
-      "Art Nouveau",
-      "Renaissance",
-      "Baroque",
-      "Hyperrealism",
-      "Romanticism"
-    ],
-    "General Art Keywords": [
-      "Landscape",
-      "Portrait",
-      "Still Life",
-      "Abstract",
-      "Nature",
-      "Urban",
-      "Macro",
-      "Black and White",
-      "Color",
-      "Texture",
-      "Epic",
-      "Minimalistic"
-    ],
-    "Stable Diffusion Prompts": [
-      "HD",
-      "High Resolution",
-      "4K",
-      "Colorful",
-      "Vivid",
-      "Realistic",
-      "Fantasy",
-      "Surreal",
-      "Detailed",
-      "Bright",
-      "Dark",
-      "Ethereal",
-      "Dreamlike"
-    ]
-  };
   bool _isVisible = false;
 
   Color getColor(int index) {
@@ -132,8 +58,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                                 padding: EdgeInsets.only(left: 12),
                                 child: Text(
                                   entry.key,
-                                  style:
-                                      Theme.of(context).textTheme.labelMedium,
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 )),
                             const SizedBox(height: 8),
                             SizedBox(
@@ -179,3 +104,208 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
     );
   }
 }
+
+final Map<String, List<String>> data = {
+  "🎨 Famous Artists": [
+    "Vincent Van Gogh",
+    "Pablo Picasso",
+    "Leonardo Da Vinci",
+    "Michelangelo",
+    "Claude Monet",
+    "Salvador Dali",
+    "Georgia O'Keeffe",
+    "Andy Warhol",
+    "Frida Kahlo",
+    "Jackson Pollock",
+    "Gustav Klimt",
+    "Edvard Munch",
+    "Mark Rothko",
+    "Caravaggio",
+    "Rembrandt"
+  ],
+  "📷 Famous Photographers": [
+    "Ansel Adams",
+    "Richard Avedon",
+    "Henri Cartier-Bresson",
+    "Robert Capa",
+    "Dorothea Lange",
+    "Steve McCurry",
+    "Diane Arbus",
+    "Cindy Sherman",
+    "Vivian Maier",
+    "Sebastião Salgado"
+  ],
+  "🖌️ Art Styles": [
+    "Impressionism",
+    "Cubism",
+    "Surrealism",
+    "Expressionism",
+    "Pop Art",
+    "Fauvism",
+    "Abstract Expressionism",
+    "Art Nouveau",
+    "Renaissance",
+    "Baroque",
+    "Hyperrealism",
+    "Romanticism"
+  ],
+  "🔍 General Art Keywords": [
+    "Landscape",
+    "Portrait",
+    "Still Life",
+    "Abstract",
+    "Nature",
+    "Urban",
+    "Macro",
+    "Black and White",
+    "Color",
+    "Texture",
+    "Epic",
+    "Minimalistic"
+  ],
+  "🌌 Stable Diffusion Prompts": [
+    "HD",
+    "High Resolution",
+    "4K",
+    "Colorful",
+    "Vivid",
+    "Realistic",
+    "Fantasy",
+    "Surreal",
+    "Detailed",
+    "Bright",
+    "Dark",
+    "Ethereal",
+    "Dreamlike"
+  ],
+  "🗿 Famous Sculptors": [
+    "Auguste Rodin",
+    "Donatello",
+    "Michelangelo",
+    "Henry Moore",
+    "Louise Bourgeois",
+    "Constantin Brâncuși",
+    "Gian Lorenzo Bernini",
+    "Barbara Hepworth",
+    "Jean Arp",
+    "Alberto Giacometti"
+  ],
+  "🏛️ Famous Architects": [
+    "Frank Lloyd Wright",
+    "Le Corbusier",
+    "Antoni Gaudí",
+    "Louis Sullivan",
+    "Mies van der Rohe",
+    "Zaha Hadid",
+    "I. M. Pei",
+    "Renzo Piano",
+    "Norman Foster",
+    "Rem Koolhaas"
+  ],
+  "🌈 Art Movements": [
+    "Dada",
+    "Minimalism",
+    "Conceptual Art",
+    "Constructivism",
+    "Symbolism",
+    "Post-Impressionism",
+    "Art Deco",
+    "Pointillism",
+    "Neo-Impressionism",
+    "Metaphysical painting",
+    "Precisionism"
+  ],
+  "🪵 Art Materials": [
+    "Oil",
+    "Acrylic",
+    "Watercolor",
+    "Pastel",
+    "Charcoal",
+    "Ink",
+    "Graphite",
+    "Digital",
+    "Wood",
+    "Metal",
+    "Stone",
+    "Ceramic",
+    "Glass",
+    "Fabric"
+  ],
+  "🖼️ Photography Types": [
+    "Portraiture",
+    "Landscape",
+    "Wildlife",
+    "Macro",
+    "Street",
+    "Documentary",
+    "Fashion",
+    "Food",
+    "Night",
+    "Aerial",
+    "Underwater",
+    "Architectural",
+    "Black and White",
+    "Color"
+  ],
+  "📸 Photography Techniques": [
+    "Long Exposure",
+    "High Dynamic Range",
+    "Panoramic",
+    "Time-lapse",
+    "Infrared",
+    "Bokeh",
+    "Tilt-shift",
+    "Double Exposure",
+    "Monochrome",
+    "Cross-processing",
+    "Vignette"
+  ],
+  "🇺🇸 American Themes": [
+    "Western",
+    "Native American",
+    "Pop Art",
+    "New York School",
+    "Regionalism",
+    "Abstract Expressionism",
+    "Harlem Renaissance",
+    "Statue of Liberty",
+    "Grand Canyon",
+    "Modernism"
+  ],
+  "🇪🇺 European Themes": [
+    "Renaissance",
+    "Impressionism",
+    "Baroque",
+    "Romanticism",
+    "Gothic",
+    "Cubism",
+    "Surrealism",
+    "Eiffel Tower",
+    "Colosseum",
+    "Neoclassicism"
+  ],
+  "🇮🇳 Indian Themes": [
+    "Mughal Painting",
+    "Miniature Painting",
+    "Madhubani Painting",
+    "Tanjore Painting",
+    "Bengal School of Art",
+    "Taj Mahal",
+    "Indian Folk Art",
+    "Bollywood",
+    "Raja Ravi Varma",
+    "Amrita Sher-Gil"
+  ],
+  "🇯🇵 Japanese Themes": [
+    "Ukiyo-e",
+    "Origami",
+    "Ikebana",
+    "Calligraphy",
+    "Anime",
+    "Manga",
+    "Hokusai",
+    "Yayoi Kusama",
+    "Mount Fuji",
+    "Samurai"
+  ]
+};
