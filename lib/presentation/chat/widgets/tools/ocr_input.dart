@@ -64,13 +64,16 @@ class _OCRInputState extends State<OCRInput> {
     return Material(
       color: Theme.of(context).colorScheme.secondary,
       borderRadius: BorderRadius.circular(100),
-      child: InkWell(
-        onTap: _openCamera,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Icon(
-            Icons.camera_alt,
-            color: Theme.of(context).colorScheme.background,
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+            padding: EdgeInsets.all(5)),
+        onPressed: _openCamera,
+        child: Text(
+          'OCR',
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onSecondary,
+            fontSize: 12,
           ),
         ),
       ),

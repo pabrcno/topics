@@ -110,7 +110,8 @@ class _ChatInputState extends State<ChatInput> {
                         child: provider.streamSubscription != null
                             ? Icon(Icons.stop,
                                 color: Theme.of(context).colorScheme.background)
-                            : Icon(Icons.send,
+                            : Icon(Icons.send_rounded,
+                                size: 20,
                                 color:
                                     Theme.of(context).colorScheme.background),
                       ),

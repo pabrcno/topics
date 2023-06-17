@@ -89,73 +89,93 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
   Color getColor(int index) {
     switch (index % 3) {
       case 0:
-        return Theme.of(context).colorScheme.primary;
-      case 1:
         return Theme.of(context).colorScheme.secondary;
-      default:
+      case 1:
         return Theme.of(context).colorScheme.tertiary;
+      default:
+        return Theme.of(context).colorScheme.primary;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Align(
-            alignment: Alignment.topLeft,
-            child: TextButton.icon(
-              label: Text(
-                "Image Generation Tools",
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              icon: Icon(
-                  _isVisible ? Icons.arrow_drop_down : Icons.arrow_drop_up),
-              onPressed: () {
-                setState(() {
-                  _isVisible = !_isVisible;
-                });
-              },
-            )),
-        if (_isVisible)
-          ...data.entries.map((entry) {
-            var index = data.keys.toList().indexOf(entry.key);
-            return Padding(
-                padding: const EdgeInsets.all(5),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      entry.key,
-                      style: Theme.of(context).textTheme.labelMedium,
-                    ),
-                    SizedBox(
-                        width: MediaQuery.of(context).size.width,
-                        height: 25,
-                        child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          itemCount: entry.value.length,
-                          itemBuilder: (BuildContext context, int i) {
-                            return Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: OutlinedButton(
-                                  style: OutlinedButton.styleFrom(
-                                    side: BorderSide(color: getColor(index)),
-                                  ),
-                                  onPressed: () {
-                                    widget.textController.text +=
-                                        " " + entry.value[i];
-                                  },
-                                  child: Text(entry.value[i],
-                                      style: TextStyle(
-                                          color: getColor(index),
-                                          fontSize: 10)),
-                                ));
-                          },
-                        )),
-                  ],
-                ));
-          }).toList(),
-      ],
+    return SingleChildScrollView(
+      child: ExpansionPanelList(
+        expansionCallback: (int index, bool isExpanded) {
+          setState(() {
+            _isVisible = !isExpanded;
+          });
+        },
+        children: [
+          ExpansionPanel(
+            canTapOnHeader: true,
+            headerBuilder: (BuildContext context, bool isExpanded) {
+              return ListTile(
+                title: Text(
+                  "Image Generation Tools",
+                  style: Theme.of(context).textTheme.titleSmall,
+                ),
+              );
+            },
+            body: SizedBox(
+                height: 280,
+                child: ListView.builder(
+                  itemCount: data.entries.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    var entry = data.entries.elementAt(index);
+                    return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                                padding: EdgeInsets.only(left: 12),
+                                child: Text(
+                                  entry.key,
+                                  style:
+                                      Theme.of(context).textTheme.labelMedium,
+                                )),
+                            const SizedBox(height: 8),
+                            SizedBox(
+                              height:
+                                  35, // Increase the height to accommodate buttons
+                              width: MediaQuery.of(context).size.width,
+                              child: ListView.separated(
+                                separatorBuilder:
+                                    (BuildContext context, int i) {
+                                  return const SizedBox(width: 12);
+                                },
+                                scrollDirection: Axis.horizontal,
+                                itemCount: entry.value.length,
+                                itemBuilder: (BuildContext context, int i) {
+                                  return Padding(
+                                    padding: const EdgeInsets.all(5.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          backgroundColor: getColor(index),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 12)),
+                                      onPressed: () {
+                                        widget.textController.text +=
+                                            " " + entry.value[i];
+                                      },
+                                      child: Text(entry.value[i],
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12)),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ));
+                  },
+                )),
+            isExpanded: _isVisible,
+          ),
+        ],
+      ),
     );
   }
 }

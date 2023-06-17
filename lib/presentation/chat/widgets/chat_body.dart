@@ -25,6 +25,10 @@ class ChatBody extends StatelessWidget {
           Expanded(
             child: ChatMessagesListView(),
           ),
+          ChatInput(
+            textController: _textController,
+            focusNode: _focusNode,
+          ),
           !provider.isImageMode
               ? Disabled(
                   disabled:
@@ -49,10 +53,6 @@ class ChatBody extends StatelessWidget {
                   child: ImageGenerationTools(
                     textController: _textController,
                   )),
-          ChatInput(
-            textController: _textController,
-            focusNode: _focusNode,
-          ),
         ],
       ),
     );

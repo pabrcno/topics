@@ -8,14 +8,14 @@ class ToolsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 5),
+        padding: const EdgeInsets.only(left: 5, bottom: 16),
         child: SizedBox(
             width: MediaQuery.of(context).size.width,
-            height: 40,
+            height: 25,
             child: ListView.separated(
               separatorBuilder: (context, index) => const VerticalDivider(
                 color: Colors.transparent,
-                width: 10,
+                width: 12,
               ),
               scrollDirection: Axis.horizontal,
               itemCount: widgetList.length,

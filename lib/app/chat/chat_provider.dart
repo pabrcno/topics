@@ -62,7 +62,7 @@ class ChatProvider with ChangeNotifier {
         currentChat = Chat(
             createdAt: DateTime.now(),
             id: const Uuid().v4(),
-            summary: translate('new_chat'),
+            summary: 'Chat',
             topicId: '',
             userId: authServiceProvider.getCurrentUser()?.uid ?? '',
             lastModified: DateTime.now()),
@@ -306,7 +306,7 @@ class ChatProvider with ChangeNotifier {
       topicId: currentTopic?.id ?? '', // replace with actual topicId
       createdAt: DateTime.now(),
       lastModified: DateTime.now(),
-      summary: translate('new_chat'), // using the initial message as a summary
+      summary: 'Chat', // using the initial message as a summary
     );
     currentChat = newChat;
 
@@ -314,7 +314,6 @@ class ChatProvider with ChangeNotifier {
 
     messages.clear();
     setLoading(false);
-    ;
   }
 
   Future<void> createChat(Topic? topic) async {
@@ -335,8 +334,7 @@ class ChatProvider with ChangeNotifier {
         topicId: topic?.id ?? '', // replace with actual topicId
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),
-        summary:
-            translate('new_chat'), // using the initial message as a summary
+        summary: 'Chat', // using the initial message as a summary
       );
       currentChat = newChat;
 
