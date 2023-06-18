@@ -35,7 +35,7 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
         if (provider.messages.isEmpty && provider.messageBuffer.isEmpty) {
           return const Center(
             child: Opacity(
-                opacity: 0.2,
+                opacity: 0.01,
                 child: SizedBox(
                   height: 150,
                   child: Image(
@@ -46,6 +46,7 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
           );
         } else {
           return ListView.builder(
+            padding: EdgeInsets.only(bottom: 20),
             controller: _scrollController,
             itemCount: provider.messages.length +
                 (provider.messageBuffer.isNotEmpty ? 1 : 0),

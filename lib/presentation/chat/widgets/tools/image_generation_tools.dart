@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 class ImageGenerationTools extends StatefulWidget {
   final TextEditingController textController;
 
-  ImageGenerationTools({required this.textController});
+  ImageGenerationTools({Key? key, required this.textController})
+      : super(key: key);
 
   @override
   _ImageGenerationToolsState createState() => _ImageGenerationToolsState();
@@ -34,17 +36,20 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
         },
         children: [
           ExpansionPanel(
+            backgroundColor: Theme.of(context).colorScheme.primary,
             canTapOnHeader: true,
             headerBuilder: (BuildContext context, bool isExpanded) {
               return ListTile(
                 title: Text(
-                  "Image Generation Tools",
-                  style: Theme.of(context).textTheme.titleSmall,
+                  translate('image_tools'),
+                  style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
                 ),
               );
             },
             body: SizedBox(
-                height: 280,
+                height: 180,
                 child: ListView.builder(
                   itemCount: data.entries.length,
                   itemBuilder: (BuildContext context, int index) {
@@ -55,10 +60,17 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                                padding: EdgeInsets.only(left: 12),
+                                padding: const EdgeInsets.only(left: 12),
                                 child: Text(
                                   entry.key,
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium!
+                                      .copyWith(
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .onPrimary,
+                                      ),
                                 )),
                             const SizedBox(height: 8),
                             SizedBox(
@@ -77,7 +89,9 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                                     padding: const EdgeInsets.all(5.0),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: getColor(index),
+                                          backgroundColor: Theme.of(context)
+                                              .colorScheme
+                                              .onPrimary,
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12)),
                                       onPressed: () {
@@ -86,7 +100,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                                       },
                                       child: Text(entry.value[i],
                                           style: TextStyle(
-                                              color: Colors.white,
+                                              color: getColor(index),
                                               fontSize: 12)),
                                     ),
                                   );
@@ -106,7 +120,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
 }
 
 final Map<String, List<String>> data = {
-  "🎨 Famous Artists": [
+  "Famous Artists": [
     "Vincent Van Gogh",
     "Pablo Picasso",
     "Leonardo Da Vinci",
@@ -123,7 +137,7 @@ final Map<String, List<String>> data = {
     "Caravaggio",
     "Rembrandt"
   ],
-  "📷 Famous Photographers": [
+  "Famous Photographers": [
     "Ansel Adams",
     "Richard Avedon",
     "Henri Cartier-Bresson",
@@ -135,7 +149,7 @@ final Map<String, List<String>> data = {
     "Vivian Maier",
     "Sebastião Salgado"
   ],
-  "🖌️ Art Styles": [
+  "Art Styles": [
     "Impressionism",
     "Cubism",
     "Surrealism",
@@ -149,7 +163,7 @@ final Map<String, List<String>> data = {
     "Hyperrealism",
     "Romanticism"
   ],
-  "🔍 General Art Keywords": [
+  "General Art Keywords": [
     "Landscape",
     "Portrait",
     "Still Life",
@@ -163,7 +177,7 @@ final Map<String, List<String>> data = {
     "Epic",
     "Minimalistic"
   ],
-  "🌌 Stable Diffusion Prompts": [
+  "Stable Diffusion Prompts": [
     "HD",
     "High Resolution",
     "4K",
@@ -178,7 +192,7 @@ final Map<String, List<String>> data = {
     "Ethereal",
     "Dreamlike"
   ],
-  "🗿 Famous Sculptors": [
+  "Famous Sculptors": [
     "Auguste Rodin",
     "Donatello",
     "Michelangelo",
@@ -190,7 +204,7 @@ final Map<String, List<String>> data = {
     "Jean Arp",
     "Alberto Giacometti"
   ],
-  "🏛️ Famous Architects": [
+  "Famous Architects": [
     "Frank Lloyd Wright",
     "Le Corbusier",
     "Antoni Gaudí",
@@ -202,7 +216,7 @@ final Map<String, List<String>> data = {
     "Norman Foster",
     "Rem Koolhaas"
   ],
-  "🌈 Art Movements": [
+  "Art Movements": [
     "Dada",
     "Minimalism",
     "Conceptual Art",
@@ -215,7 +229,7 @@ final Map<String, List<String>> data = {
     "Metaphysical painting",
     "Precisionism"
   ],
-  "🪵 Art Materials": [
+  "Art Materials": [
     "Oil",
     "Acrylic",
     "Watercolor",
@@ -231,7 +245,7 @@ final Map<String, List<String>> data = {
     "Glass",
     "Fabric"
   ],
-  "🖼️ Photography Types": [
+  "Photography Types": [
     "Portraiture",
     "Landscape",
     "Wildlife",
@@ -247,7 +261,7 @@ final Map<String, List<String>> data = {
     "Black and White",
     "Color"
   ],
-  "📸 Photography Techniques": [
+  "Photography Techniques": [
     "Long Exposure",
     "High Dynamic Range",
     "Panoramic",

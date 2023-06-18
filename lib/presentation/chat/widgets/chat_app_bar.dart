@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:provider/provider.dart';
 
 import '../../../app/chat/chat_provider.dart';
 import '../../../domain/models/chat/chat.dart';
-import '../../config/configurations.dart';
 
 class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
   const ChatAppBar({super.key});
@@ -65,34 +65,63 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
               )
             ]),
           ),
-          actions: [
-            IconButton(
-              onPressed: () {
-                chatProvider.clearChat();
-              },
-              icon: Icon(
-                Icons.cleaning_services_rounded,
-                color: Colors.yellow.shade900,
-              ),
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Row(children: [
-                  const Icon(Icons.message_outlined),
-                  Text(' ${chatProvider.userMessageCount}'),
-                ])),
-            IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const ConfigurationsPage(),
+          actions: chatProvider.messages.isNotEmpty
+              ? [
+                  IconButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: Text(translate('clear_chat')),
+                            content: Text(translate('clear_chat_description')),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () {
+                                  chatProvider.clearChat();
+                                  Navigator.pop(context); // Close the dialog
+                                },
+                                child: Text(translate('confirm')),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.cleaning_services_rounded,
+                    ),
                   ),
-                );
-              },
-              icon: const Icon(Icons.settings),
-            ),
-          ],
+                  IconButton(
+                    onPressed: () async {
+                      await showDialog<String>(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return SimpleDialog(
+                            title: Text(translate('add_to_topic')),
+                            children: chatProvider.topics.map((topic) {
+                              return SimpleDialogOption(
+                                  onPressed: () async {
+                                    chatProvider.changeChatTopicId(topic.id);
+                                    Navigator.pop(context, topic.title);
+                                  },
+                                  child: Column(children: [
+                                    ListTile(
+                                      leading: const Icon(Icons.topic_outlined),
+                                      title: Text(topic.title),
+                                      dense: true,
+                                    ),
+                                    const Divider()
+                                  ]));
+                            }).toList(),
+                          );
+                        },
+                      );
+                    },
+                    icon: const Icon(Icons.topic_outlined),
+                  )
+                ]
+              : null,
         );
       },
     );

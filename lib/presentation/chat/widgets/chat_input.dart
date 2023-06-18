@@ -33,6 +33,7 @@ class _ChatInputState extends State<ChatInput> {
         return Row(
           children: [
             IconButton(
+              iconSize: 28,
               icon: const Icon(Icons.image),
               color: provider.isImageMode
                   ? Theme.of(context).colorScheme.primary

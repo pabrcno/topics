@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
+
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/domain/models/message/message.dart';
@@ -40,7 +40,7 @@ class ChatProvider with ChangeNotifier {
 
   bool _hasChatBeenCreated = false;
 
-  IImageGenerationApi _imageGenerationApi;
+  final IImageGenerationApi _imageGenerationApi;
   Chat? currentChat;
   Topic? currentTopic;
   List<Topic> topics = [];
@@ -539,6 +539,13 @@ class ChatProvider with ChangeNotifier {
       setLoading(false);
       throw Exception('Error while sending image generation request: $e');
     });
+  }
+
+  Future<void> changeChatTopicId(String topicId) async {
+    if (currentChat == null) return;
+    currentChat = currentChat?.copyWith(topicId: topicId);
+    await _chatRepository.updateChat(currentChat!);
+    notifyListeners();
   }
 
   void clearChatStates() {

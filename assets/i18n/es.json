@@ -105,5 +105,11 @@
   "camera_permission_note": "Asegúrate de conceder permisos de cámara para que la herramienta OCR funcione correctamente.",
   "messages_left": "Mensajes Restantes",
   "no_chats": "Crea un nuevo chat para interactuar con la IA",
-  "new_chat": "Nuevo Chat"
+  "new_chat": "Nuevo Chat",
+  "prompt_builder": "Constructor de Prompts",
+  "image_tools": "Herramientas Generacion de Imagen",
+  "add_to_topic": "Agregar a Tema",
+  "clear_chat_description": "limpiar el chat eliminará todos los mensajes y reiniciará la conversación.",
+  "clear_chat": "Limpiar Chat",
+  "confirm": "Confirmar"
 }

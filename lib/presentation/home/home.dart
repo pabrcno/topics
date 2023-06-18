@@ -77,7 +77,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatProvider>(
+    return WillPopScope(onWillPop: () async {
+      return false;
+    }, child: Consumer<ChatProvider>(
       builder: (context, chatProvider, _) {
         return Scaffold(
           resizeToAvoidBottomInset: true,
@@ -185,7 +187,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
           ),
         );
       },
-    );
+    ));
   }
 }
 

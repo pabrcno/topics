@@ -6,14 +6,21 @@ import '../../app/chat/chat_provider.dart';
 
 class ChatScreen extends StatelessWidget {
   final bool isNew;
-  ChatScreen({super.key, this.isNew = false});
+
+  ChatScreen({Key? key, this.isNew = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<ChatProvider>(
-        builder: (context, provider, child) => Scaffold(
-            resizeToAvoidBottomInset: true,
-            appBar: const ChatAppBar(),
-            body: ChatBody()));
+    return WillPopScope(
+      onWillPop: () async {
+        Provider.of<ChatProvider>(context, listen: false).clearChat();
+        return true; // return true to allow the pop action to continue
+      },
+      child: Consumer<ChatProvider>(
+          builder: (context, provider, child) => Scaffold(
+              resizeToAvoidBottomInset: true,
+              appBar: const ChatAppBar(),
+              body: ChatBody())),
+    );
   }
 }

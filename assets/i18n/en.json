@@ -106,5 +106,11 @@
   "camera_permission_note": "Make sure to grant camera permissions for the OCR tool to work properly.",
   "messages_left": "Messages left",
   "no_chats": "Create a new chat to interact with the AI",
-  "new_chat": "New Chat"
+  "new_chat": "New Chat",
+  "prompt_builder": "Prompt Builder",
+  "image_tools": "Image Generation Tools",
+  "add_to_topic": "Add to Topic",
+  "clear_chat_description": "Are you sure you want to clear this chat?",
+  "clear_chat": "Clear Chat",
+  "confirm": "Confirmar"
 }

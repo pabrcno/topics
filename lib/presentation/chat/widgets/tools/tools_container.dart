@@ -8,7 +8,7 @@ class ToolsContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.only(left: 5, bottom: 16),
+        padding: const EdgeInsets.only(left: 5, bottom: 5),
         child: SizedBox(
             width: MediaQuery.of(context).size.width,
             height: 25,
