@@ -128,8 +128,10 @@ class _PromptBuilderToolsState extends State<PromptBuilderTools> {
                                           child: Text(
                                             translate(
                                                 entry.value[i]["title"] ?? ''),
-                                            style: const TextStyle(
-                                              color: Colors.white,
+                                            style: TextStyle(
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surface,
                                               fontSize: 12,
                                             ),
                                           ),

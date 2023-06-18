@@ -66,6 +66,7 @@ class ChatMessageTile extends StatelessWidget {
                     ],
                   ),
           ),
+          const SizedBox(height: 5),
           message.role == EMessageRole.imageAssistant
               ? InkWell(
                   onDoubleTap: () async {
@@ -113,10 +114,7 @@ class ChatMessageTile extends StatelessWidget {
                     ),
                   ),
                 ),
-          Divider(
-            color: Colors.grey[100],
-            thickness: 0.5,
-          )
+          const SizedBox(height: 20)
         ],
       ),
     );

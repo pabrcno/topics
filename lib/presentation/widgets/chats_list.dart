@@ -26,7 +26,7 @@ class ChatsList extends StatelessWidget {
               itemCount: chats.length,
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
-                  thickness: .8,
+                  thickness: .1,
                   color: Colors.grey.shade100,
                 );
               },

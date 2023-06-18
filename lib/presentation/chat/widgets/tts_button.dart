@@ -83,7 +83,7 @@ class _TTSButtonState extends State<TTSButton> {
       icon: Icon(isPlaying ? Icons.stop : Icons.volume_up,
           color: isPlaying
               ? Colors.yellow.shade900
-              : Theme.of(context).primaryColor),
+              : Theme.of(context).colorScheme.primary),
       tooltip: 'Click to speak',
       onPressed: isPlaying ? _stop : _speak,
     );

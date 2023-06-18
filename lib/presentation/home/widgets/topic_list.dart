@@ -40,7 +40,7 @@ class _TopicListState extends State<TopicList> {
             child: ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
                 return Divider(
-                  thickness: .8,
+                  thickness: .1,
                   color: Colors.grey.shade100,
                 );
               },

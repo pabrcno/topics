@@ -36,7 +36,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
         },
         children: [
           ExpansionPanel(
-            backgroundColor: Theme.of(context).colorScheme.primary,
+            backgroundColor: Theme.of(context).colorScheme.surfaceVariant,
             canTapOnHeader: true,
             headerBuilder: (BuildContext context, bool isExpanded) {
               return ListTile(
@@ -61,17 +61,10 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                           children: [
                             Padding(
                                 padding: const EdgeInsets.only(left: 12),
-                                child: Text(
-                                  entry.key,
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium!
-                                      .copyWith(
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .onPrimary,
-                                      ),
-                                )),
+                                child: Text(entry.key,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyMedium!)),
                             const SizedBox(height: 8),
                             SizedBox(
                               height:
@@ -89,9 +82,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                                     padding: const EdgeInsets.all(5.0),
                                     child: ElevatedButton(
                                       style: ElevatedButton.styleFrom(
-                                          backgroundColor: Theme.of(context)
-                                              .colorScheme
-                                              .onPrimary,
+                                          backgroundColor: getColor(index),
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 12)),
                                       onPressed: () {
@@ -100,8 +91,10 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                                       },
                                       child: Text(entry.value[i],
                                           style: TextStyle(
-                                              color: getColor(index),
-                                              fontSize: 12)),
+                                              fontSize: 12,
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .surfaceVariant)),
                                     ),
                                   );
                                 },
