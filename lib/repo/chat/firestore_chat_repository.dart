@@ -29,8 +29,9 @@ class FirestoreChatRepository implements IChatRepository {
   }
 
   @override
-  Future<Chat> getChat(String id) async {
+  Future<Chat?> getChat(String id) async {
     final doc = await _firebaseFirestore.collection('chats').doc(id).get();
+    if (!doc.exists) return null;
     return Chat.fromJson(doc.data() as Map<String, Object?>);
   }
 

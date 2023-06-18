@@ -207,9 +207,9 @@ class ChatProvider with ChangeNotifier {
 
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
-      if (!_hasChatBeenCreated) {
+      if (!userChats.contains(currentChat)) {
+        userChats.add(currentChat!);
         await _chatRepository.createChat(currentChat!);
-        _hasChatBeenCreated = true;
       }
       final message = Message(
         id: const Uuid().v4(),
@@ -340,8 +340,6 @@ class ChatProvider with ChangeNotifier {
 
       messages = [];
 
-      currentTopicChats.add(newChat);
-      userChats.add(newChat);
       currentTopic = topic;
       if (navigatorKey.currentState != null) {
         Navigator.push(
@@ -353,9 +351,7 @@ class ChatProvider with ChangeNotifier {
       }
       // Send this new chat to your backend for storage
 
-      await _chatRepository.createChat(newChat).then((value) {
-        setLoading(false);
-      });
+      setLoading(false);
     });
   }
 
@@ -448,9 +444,14 @@ class ChatProvider with ChangeNotifier {
     await errorCommander.run(() async {
       setLoading(true);
 
-      if (!_hasChatBeenCreated) {
+      if (await _chatRepository.getChat(chatWithNewTitle.id) == null) {
         await _chatRepository.createChat(chatWithNewTitle);
+        userChats.add(chatWithNewTitle);
+        currentChat = chatWithNewTitle;
+
         _hasChatBeenCreated = true;
+        setLoading(false);
+        return;
       }
 
       // Modify the chat summary in the repository
@@ -459,8 +460,9 @@ class ChatProvider with ChangeNotifier {
       // Update the chat summary in the chats list
       final chatIndex = currentTopicChats
           .indexWhere((chat) => chat.id == chatWithNewTitle.id);
-      currentTopicChats[chatIndex] = chatWithNewTitle;
-
+      if (chatIndex != -1) {
+        currentTopicChats[chatIndex] = chatWithNewTitle;
+      }
       final userChatIndex =
           userChats.indexWhere((chat) => chat.id == chatWithNewTitle.id);
       if (userChatIndex != -1) {
