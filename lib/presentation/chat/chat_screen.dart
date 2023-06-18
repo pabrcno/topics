@@ -17,10 +17,8 @@ class ChatScreen extends StatelessWidget {
         return true; // return true to allow the pop action to continue
       },
       child: Consumer<ChatProvider>(
-          builder: (context, provider, child) => Scaffold(
-              resizeToAvoidBottomInset: true,
-              appBar: const ChatAppBar(),
-              body: ChatBody())),
+          builder: (context, provider, child) =>
+              Scaffold(appBar: const ChatAppBar(), body: ChatBody())),
     );
   }
 }

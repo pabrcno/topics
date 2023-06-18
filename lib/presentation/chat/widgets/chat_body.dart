@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,10 +22,12 @@ class ChatBody extends StatelessWidget {
   final TextEditingController _textController = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    final bool isKeyboardOpen = MediaQuery.of(context).viewInsets.bottom > 0;
+    log(isKeyboardOpen.toString());
     return Consumer<ChatProvider>(
       builder: (context, provider, child) => Column(
         children: <Widget>[
-          Expanded(
+          Flexible(
             child: Stack(
               children: [
                 ChatMessagesListView(),
@@ -59,18 +63,19 @@ class ChatBody extends StatelessWidget {
             textController: _textController,
             focusNode: _focusNode,
           ),
-          AnimatedSwitcher(
-            duration: const Duration(milliseconds: 500),
-            child: !provider.isImageMode
-                ? PromptBuilderTools(
-                    key: const ValueKey('PromptBuilderTools'),
-                    textController: _textController,
-                  )
-                : ImageGenerationTools(
-                    key: const ValueKey('ImageGenerationTools'),
-                    textController: _textController,
-                  ),
-          ),
+          !isKeyboardOpen
+              ? AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: !provider.isImageMode
+                      ? PromptBuilderTools(
+                          key: const ValueKey('PromptBuilderTools'),
+                        )
+                      : ImageGenerationTools(
+                          key: const ValueKey('ImageGenerationTools'),
+                          textController: _textController,
+                        ),
+                )
+              : Container(), // render an empty SizedBox when the keyboard is open
         ],
       ),
     );

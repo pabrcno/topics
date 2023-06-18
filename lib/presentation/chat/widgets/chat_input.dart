@@ -51,7 +51,7 @@ class _ChatInputState extends State<ChatInput> {
                   maxWidth: _contextWidth(context) -
                       150, // adjusted width for new IconButton
                   minHeight: 20.0,
-                  maxHeight: 280,
+                  maxHeight: 240,
                 ),
                 child: SingleChildScrollView(
                   scrollDirection: Axis.vertical,

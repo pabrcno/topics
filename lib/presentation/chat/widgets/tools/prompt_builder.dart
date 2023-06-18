@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:topics/app/chat/chat_provider.dart';
 
 class PromptBuilderTools extends StatefulWidget {
-  final TextEditingController textController;
-
-  PromptBuilderTools({Key? key, required this.textController})
-      : super(key: key);
+  PromptBuilderTools({Key? key}) : super(key: key);
 
   @override
   _PromptBuilderToolsState createState() => _PromptBuilderToolsState();
@@ -121,8 +120,10 @@ class _PromptBuilderToolsState extends State<PromptBuilderTools> {
                                             ),
                                           ),
                                           onPressed: () {
-                                            widget.textController.text +=
-                                                " ${translate(entry.value[i]["instructions"]!)}";
+                                            Provider.of<ChatProvider>(context,
+                                                    listen: false)
+                                                .sendMessage(entry.value[i]
+                                                    ["instructions"]);
                                           },
                                           child: Text(
                                             translate(
