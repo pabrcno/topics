@@ -18,6 +18,7 @@ import 'package:topics/services/exception_handling_service.dart';
 import 'api/chat/chat_api.dart';
 import 'api/image_generation/image_generation_api.dart';
 import 'app/chat/chat_provider.dart';
+import 'app/theme/theme_provider.dart';
 import 'firebase_options.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -45,7 +46,7 @@ void main() async {
   await dotenv.load(fileName: ".env");
   var localizationDelegate = await setupLocalizationDelegate();
 
-  final themeStr = await rootBundle.loadString('assets/appainter_theme.json');
+  final themeStr = await rootBundle.loadString('assets/light_theme.json');
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
   final AuthService authService = AuthService();
@@ -61,31 +62,32 @@ void main() async {
               chatApi: ChatApi(authService),
             ),
           ),
+          ChangeNotifierProvider<ThemeProvider>(
+            create: (context) => ThemeProvider(initialThemeData: theme),
+          ),
         ],
         child: MyApp(
-          theme: theme,
           localizationDelegate: localizationDelegate,
         )),
   );
 }
 
 class MyApp extends StatelessWidget {
-  final ThemeData theme;
   final LocalizationDelegate localizationDelegate;
   const MyApp({
     Key? key,
-    required this.theme,
     required this.localizationDelegate,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context);
     return LocalizedApp(
       localizationDelegate,
       MaterialApp(
         navigatorKey: navigatorKey,
         home: AuthService().handleAuthState(),
-        theme: theme,
+        theme: themeProvider.themeData,
         localizationsDelegates: [
           localizationDelegate,
           GlobalMaterialLocalizations.delegate,

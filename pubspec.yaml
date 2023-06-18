@@ -104,9 +104,12 @@ flutter:
   # To add assets to your application, add an assets section, like this:
 
   assets:
-    - assets/appainter_theme.json
+    - assets/light_theme.json
+    - assets/dark_theme.json
+    - assets/system_theme.json
+    - assets/jungle_theme.json
     - assets/images/topics_light_removebg.png
-    - assets/images/logo_with_label_1-removebg-preview.png
+    - assets/images/topics_dark_removebg.png
     - assets/i18n/
     - .env
   # An image asset can refer to one or more resolution-specific "variants", see
