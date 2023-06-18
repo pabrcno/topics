@@ -7,6 +7,7 @@ import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
 import '../../app/chat/chat_provider.dart';
 
+import '../../app/theme/theme_provider.dart';
 import '../about/about.dart';
 import '../config/configurations.dart';
 import '../store/store_page.dart';
@@ -96,7 +97,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                       );
                     },
                     icon: Image.asset(
-                      'assets/images/topics_light_removebg.png',
+                      Provider.of<ThemeProvider>(context).logoUrl,
                     ),
                   ),
                   actions: [

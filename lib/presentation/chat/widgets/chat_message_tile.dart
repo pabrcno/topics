@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/message_share_button.dart';
 import 'package:topics/presentation/chat/widgets/tts_button.dart';
 import 'package:topics/services/exception_handling_service.dart';
 import 'package:transparent_image/transparent_image.dart';
+import '../../../app/theme/theme_provider.dart';
 import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
 
@@ -48,7 +50,7 @@ class ChatMessageTile extends StatelessWidget {
                 : Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Image.asset('assets/images/topics_light_removebg.png',
+                      Image.asset(Provider.of<ThemeProvider>(context).logoUrl,
                           height: 25),
                       Row(
                         children: [

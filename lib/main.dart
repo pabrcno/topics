@@ -20,6 +20,7 @@ import 'api/image_generation/image_generation_api.dart';
 import 'app/chat/chat_provider.dart';
 import 'app/theme/theme_provider.dart';
 import 'firebase_options.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 Future<LocalizationDelegate> setupLocalizationDelegate() async {
@@ -46,7 +47,12 @@ void main() async {
   await dotenv.load(fileName: ".env");
   var localizationDelegate = await setupLocalizationDelegate();
 
-  final themeStr = await rootBundle.loadString('assets/light_theme.json');
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  String themePath = prefs.getString('themePath') ?? 'assets/light_theme.json';
+  String logoUrl =
+      prefs.getString('logoUrl') ?? 'assets/images/topics_light_removebg.png';
+
+  final themeStr = await rootBundle.loadString(themePath);
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
   final AuthService authService = AuthService();
@@ -63,7 +69,10 @@ void main() async {
             ),
           ),
           ChangeNotifierProvider<ThemeProvider>(
-            create: (context) => ThemeProvider(initialThemeData: theme),
+            create: (context) => ThemeProvider(
+                initialThemeData: theme,
+                initialLogoUrl: logoUrl,
+                initialThemePath: themePath),
           ),
         ],
         child: MyApp(

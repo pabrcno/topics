@@ -16,6 +16,12 @@ class ConfigurationsPage extends StatefulWidget {
 
 class _ConfigurationsPageState extends State<ConfigurationsPage> {
   final ErrorCommander errorCommander = ErrorCommander();
+  final Map<String, String> themePaths = {
+    'assets/light_theme.json': 'Light Theme',
+    'assets/dark_theme.json': 'Dark Theme',
+    'assets/system_theme.json': 'System Theme',
+    'assets/jungle_theme.json': 'Jungle Theme',
+  };
 
   void _logout() {
     var chatProvider = Provider.of<ChatProvider>(context, listen: false);
@@ -24,6 +30,37 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
     AuthService().signOut();
 
     Navigator.of(context).pop();
+  }
+
+  Future<void> _showThemePicker(
+      BuildContext context, ThemeProvider provider) async {
+    return showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: provider.isLoading
+              ? const CircularProgressIndicator()
+              : ListView.builder(
+                  itemCount: themePaths.length,
+                  itemBuilder: (context, index) {
+                    final entry = themePaths.entries.elementAt(index);
+                    return ListTile(
+                      title: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 20),
+                          child: Text(entry.value)),
+                      leading: Icon(provider.themePath == entry.key
+                          ? Icons.check
+                          : Icons.blur_circular_rounded),
+                      onTap: () {
+                        provider.fetchThemeData(entry.key);
+                        Navigator.pop(context);
+                      },
+                    );
+                  },
+                ),
+        );
+      },
+    );
   }
 
   @override
@@ -36,9 +73,13 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
               body: SizedBox(
                 width: double.infinity,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
+                    OutlinedButton(
+                      child: Text(themePaths[provider.themePath]!),
+                      onPressed: () => _showThemePicker(context, provider),
+                    ),
                     OutlinedButton(
                       onPressed: _logout,
                       style: OutlinedButton.styleFrom(
@@ -47,31 +88,8 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                       child: Text(translate('sign_out')),
                     ),
                     const SizedBox(height: 16),
-                    Text('Select Theme:'),
-                    DropdownButton<String>(
-                      onChanged: (newTheme) {
-                        provider.fetchThemeData(
-                            newTheme ?? 'assets/light_theme.json');
-                      },
-                      items: const [
-                        DropdownMenuItem(
-                          value: 'assets/light_theme.json',
-                          child: Text('Light Theme'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'assets/dark_theme.json',
-                          child: Text('Dark Theme'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'assets/system_theme.json',
-                          child: Text('System Theme'),
-                        ),
-                        DropdownMenuItem(
-                          value: 'assets/jungle_theme.json',
-                          child: Text('Jungle Theme'),
-                        ),
-                      ],
-                    ),
+
+                    // More configuration options can be added here...
                   ],
                 ),
               ),

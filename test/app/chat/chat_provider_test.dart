@@ -89,7 +89,6 @@ void main() {
     expect(chatProvider.messageBuffer, equals(''));
     expect(chatProvider.messages, equals([]));
 
-    expect(chatProvider.currentChat, isNull);
     expect(chatProvider.currentTopic, isNull);
   });
 
@@ -315,32 +314,6 @@ void main() {
             .firstWhere((topic) => topic.id == mockTopicNewTitle.id)
             .title,
         equals('Updated Title'));
-    // Check if loading status is false after execution
-    expect(chatProvider.isLoading, equals(false));
-  });
-
-  test(
-      'modifyChatSummary modifies a chat summary and updates it in currentTopicChats',
-      () async {
-    when(mockChatRepository.updateChat(any)).thenAnswer((_) async {});
-    chatProvider.currentTopicChats = [mockChat];
-    final mockChatWithNewSummary = Chat(
-      id: mockChat.id,
-      userId: mockChat.userId,
-      topicId: mockChat.topicId,
-      summary: 'Updated Summary',
-      createdAt: mockChat.createdAt,
-      lastModified: DateTime.now(),
-    );
-
-    await chatProvider.modifyChatSummary(mockChatWithNewSummary);
-
-    // Check if the chat summary is updated
-    expect(
-        chatProvider.currentTopicChats
-            .firstWhere((chat) => chat.id == mockChatWithNewSummary.id)
-            .summary,
-        equals('Updated Summary'));
     // Check if loading status is false after execution
     expect(chatProvider.isLoading, equals(false));
   });

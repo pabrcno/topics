@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:topics/services/auth/auth_service.dart';
 
 import '../../../app/chat/chat_provider.dart';
+import '../../../app/theme/theme_provider.dart';
 import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
 import 'chat_message_tile.dart';
@@ -33,14 +34,14 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
         });
 
         if (provider.messages.isEmpty && provider.messageBuffer.isEmpty) {
-          return const Center(
+          return Center(
             child: Opacity(
                 opacity: 0.1,
                 child: SizedBox(
                   height: 150,
                   child: Image(
-                    image: AssetImage(
-                        'assets/images/topics_light_removebg.png'), // path to your logo image
+                    image: AssetImage(Provider.of<ThemeProvider>(context)
+                        .logoUrl), // path to your logo image
                   ),
                 )),
           );

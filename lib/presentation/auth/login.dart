@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
+import 'package:provider/provider.dart';
 
+import '../../app/theme/theme_provider.dart';
 import '../../services/auth/auth_service.dart';
 import '../legal/privacy_policy.dart';
 
@@ -28,7 +30,7 @@ class LoginPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             Image.asset(
-              'assets/images/topics_light_removebg.png',
+              Provider.of<ThemeProvider>(context).logoUrl,
               width: 300,
             ),
             SignInButton(
