@@ -37,7 +37,7 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
         if (provider.messages.isEmpty && provider.messageBuffer.isEmpty) {
           return const Center(
             child: Opacity(
-                opacity: 1,
+                opacity: .5,
                 child: SizedBox(
                   height: 240,
                   child: AnimatedLogo(),
