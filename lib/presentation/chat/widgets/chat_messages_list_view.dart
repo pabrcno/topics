@@ -68,9 +68,11 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
                 );
               } else {
                 return ChatMessageTile(
-                    message: provider.messages[index],
-                    userImage: user?.photoURL ?? '',
-                    userName: user?.displayName ?? '');
+                  message: provider.messages[index],
+                  userImage: user?.photoURL ?? '',
+                  userName: user?.displayName ?? '',
+                  search: provider.chatSearches[provider.messages[index].id],
+                );
               }
             },
           );

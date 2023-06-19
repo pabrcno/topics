@@ -111,5 +111,6 @@
   "add_to_topic": "Agregar a Tema",
   "clear_chat_description": "limpiar el chat eliminará todos los mensajes y reiniciará la conversación.",
   "clear_chat": "Limpiar Chat",
-  "confirm": "Confirmar"
+  "confirm": "Confirmar",
+  "search_message_title": "## Busquedas Generadas:\n"
 }

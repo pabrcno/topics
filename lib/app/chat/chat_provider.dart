@@ -47,6 +47,7 @@ class ChatProvider with ChangeNotifier {
   List<Chat> currentTopicChats = [];
   bool _isImageMode = false;
   List<Chat> userChats = [];
+  Map<String, String> _chatSearches = {};
 
   int userMessageCount = 0;
   ChatProvider({
@@ -72,6 +73,8 @@ class ChatProvider with ChangeNotifier {
     _isImageMode = value;
     notifyListeners();
   }
+
+  Map<String, String> get chatSearches => _chatSearches;
 
   bool get isImageMode => _isImageMode;
 
@@ -126,7 +129,6 @@ class ChatProvider with ChangeNotifier {
       final fetched = await _chatRepository.getTopics(
         userId ?? authServiceProvider.getCurrentUser()!.uid,
       );
-
       fetched.sort(
         (a, b) => a.lastModified.compareTo(b.lastModified),
       );
@@ -207,89 +209,116 @@ class ChatProvider with ChangeNotifier {
 
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
-      if (!userChats.contains(currentChat)) {
-        userChats.add(currentChat!);
-        await _chatRepository.createChat(currentChat!);
-      }
-      final message = Message(
-        id: const Uuid().v4(),
-        content: content,
-        sentAt: DateTime.now(),
-        chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
-        isUser: true,
-        role: EMessageRole.user,
-      );
+      final message = await _prepareChatAndMessage(content);
+      await _validateUserHasMessages();
 
-      messages.add(message);
+      final stream = await _createChatStream(messages
+          .where((element) =>
+              element.role == EMessageRole.user ||
+              element.role == EMessageRole.assistant)
+          .toList());
+      final platformAllowsVibration = _checkPlatformForVibration();
 
-      notifyListeners();
-      setLoading(true);
-      final userHasMessages = await _decrementUserMessages();
-      if (!userHasMessages) throw Exception('You ran out of messages');
-
-      final stream = await _chatApi.createChatCompletionStream(
-          messages
-              .where((message) => message.role != EMessageRole.imageAssistant)
-              .toList(),
-          currentChat?.temperature ?? 0.7);
-
-      final bool platformAllowsVibration = Platform.isAndroid || Platform.isIOS;
-
-      streamSubscription = stream.listen(
-        (event) async {
-          messageBuffer = messageBuffer + event.content;
-          if (platformAllowsVibration) {
-            Vibration.vibrate(amplitude: 20, duration: 10);
-          }
-          setLoading(false);
-        },
-        onDone: () async {
-          final answer = Message(
-            id: const Uuid().v4(),
-            content: messageBuffer,
-            sentAt: DateTime.now(),
-            chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
-            isUser: false,
-            role: EMessageRole.assistant,
-          );
-
-          messages.add(answer);
-          messageBuffer = '';
-
-          streamSubscription?.cancel();
-          streamSubscription = null;
-          notifyListeners();
-          setLoading(false);
-
-          await Future.wait([
-            _chatRepository.createMessage(answer),
-            _chatRepository.createMessage(message)
-          ]);
-        },
-        onError: (e) {
-          setLoading(false);
-          throw Exception('Error while receiving message: $e');
-        },
-      );
+      await _listenToStream(
+          stream, platformAllowsVibration, message, EMessageRole.assistant);
     });
   }
 
-  void stopStream() {
-    streamSubscription?.cancel();
-    streamSubscription = null; // Cancel the stream subscription if it exists
-    messages.add(
-      Message(
-        id: const Uuid().v4(),
-        content: messageBuffer,
-        sentAt: DateTime.now(),
-        chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
-        isUser: false,
-        role: EMessageRole.system,
-      ),
-    );
-    messageBuffer = '';
-    setLoading(false);
+  Future<Message> _prepareChatAndMessage(String content) async {
+    final message = _createNewUserMessage(content);
+
+    messages.add(message);
+    if (!userChats.contains(currentChat)) {
+      userChats.add(currentChat!);
+      await _chatRepository.createChat(currentChat!);
+    }
+
     notifyListeners();
+    setLoading(true);
+    return message;
+  }
+
+  Message _createNewUserMessage(String content) {
+    return Message(
+      id: const Uuid().v4(),
+      content: content,
+      sentAt: DateTime.now(),
+      chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+      isUser: true,
+      role: EMessageRole.user,
+    );
+  }
+
+  Future<void> _validateUserHasMessages() async {
+    final userHasMessages = await _decrementUserMessages();
+    if (!userHasMessages) throw Exception('You ran out of messages');
+  }
+
+  Future<Stream> _createChatStream(List<Message> chatMessages) async {
+    return await _chatApi.createChatCompletionStream(
+        chatMessages, currentChat?.temperature ?? 0.7);
+  }
+
+  bool _checkPlatformForVibration() {
+    return Platform.isAndroid || Platform.isIOS;
+  }
+
+  Future<void> _listenToStream(Stream stream, bool platformAllowsVibration,
+      Message message, EMessageRole answerRole) async {
+    streamSubscription = stream.listen(
+      (event) async {
+        await _handleStreamEvent(event, platformAllowsVibration);
+      },
+      onDone: () {
+        _handleStreamDone(message, answerRole);
+      },
+      onError: _handleStreamError,
+    );
+  }
+
+  Future<void> _handleStreamEvent(event, bool platformAllowsVibration) async {
+    messageBuffer = messageBuffer + event.content;
+    if (platformAllowsVibration) {
+      Vibration.vibrate(amplitude: 20, duration: 10);
+    }
+    setLoading(false);
+  }
+
+  void _handleStreamDone(Message message, EMessageRole answerRole) async {
+    final answer = _createNewAssistantMessage(answerRole);
+
+    messages.add(answer);
+    messageBuffer = '';
+
+    _cancelStreamSubscription();
+    notifyListeners();
+    setLoading(false);
+
+    await Future.wait([
+      _chatRepository.createMessage(answer),
+      _chatRepository.createMessage(message)
+    ]);
+  }
+
+  Message _createNewAssistantMessage(EMessageRole role) {
+    return Message(
+      id: const Uuid().v4(),
+      content: messageBuffer,
+      sentAt: DateTime.now(),
+      chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+      isUser: false,
+      role: role,
+    );
+  }
+
+  void _cancelStreamSubscription() {
+    streamSubscription?.cancel();
+    streamSubscription = null;
+  }
+
+  void _handleStreamError(e) {
+    setLoading(false);
+    throw Exception('Error while receiving message: $e');
   }
 
   Future<void> clearChat() async {
@@ -474,6 +503,24 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
+  void stopStream() {
+    streamSubscription?.cancel();
+    streamSubscription = null; // Cancel the stream subscription if it exists
+    messages.add(
+      Message(
+        id: const Uuid().v4(),
+        content: messageBuffer,
+        sentAt: DateTime.now(),
+        chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+        isUser: false,
+        role: EMessageRole.system,
+      ),
+    );
+    messageBuffer = '';
+    setLoading(false);
+    notifyListeners();
+  }
+
   Future<void> setCurrentChatTemperature(double chatTemperature) async {
     if (currentChat == null) return;
     currentChat = currentChat?.copyWith(temperature: chatTemperature);
@@ -548,6 +595,33 @@ class ChatProvider with ChangeNotifier {
     currentChat = currentChat?.copyWith(topicId: topicId);
     await _chatRepository.updateChat(currentChat!);
     notifyListeners();
+  }
+
+  Future<void> generateMessageSearch(String title, Message message) async {
+    final prompt =
+        "Generate some google search links from the message content. Example: [search content](https://www.google.com/search?q=search%20content), include only the search list in your answer adn follow the markdown syntax for links. Message Content: ${message.content}";
+    await errorCommander.run(() async {
+      final searchMessage = Message(
+        id: const Uuid().v4(),
+        content: prompt,
+        sentAt: DateTime.now(),
+        chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+        isUser: true,
+        role: EMessageRole.user,
+      );
+
+      await errorCommander.run(() async {
+        await _validateUserHasMessages();
+
+        final stream = await _createChatStream([searchMessage]);
+        final platformAllowsVibration = _checkPlatformForVibration();
+
+        messageBuffer += title;
+
+        await _listenToStream(stream, platformAllowsVibration, message,
+            EMessageRole.searchAssistant);
+      });
+    });
   }
 
   void clearChatStates() {

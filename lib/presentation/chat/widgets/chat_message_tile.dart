@@ -2,12 +2,15 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/app/chat/chat_provider.dart';
 import 'package:topics/presentation/chat/widgets/message_share_button.dart';
 import 'package:topics/presentation/chat/widgets/tts_button.dart';
 import 'package:topics/services/exception_handling_service.dart';
 import 'package:transparent_image/transparent_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../../../app/theme/theme_provider.dart';
 import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
@@ -16,13 +19,23 @@ class ChatMessageTile extends StatelessWidget {
   final Message message;
   final String userImage;
   final String userName;
+  final String? search;
 
   const ChatMessageTile({
     Key? key,
     required this.message,
     required this.userImage,
     required this.userName,
+    this.search,
   }) : super(key: key);
+  void _handleLinkTap(String? href) {
+    if (href != null && href.isNotEmpty) {
+      if (href.startsWith('http') || href.startsWith('https')) {
+        Uri link = Uri.parse(href);
+        launchUrl(link);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +69,7 @@ class ChatMessageTile extends StatelessWidget {
                         children: [
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 5),
-                            child: EMessageRole.imageAssistant != message.role
+                            child: EMessageRole.assistant == message.role
                                 ? TTSButton(text: message.content)
                                 : const SizedBox(),
                           ),
@@ -112,9 +125,28 @@ class ChatMessageTile extends StatelessWidget {
                         backgroundColor: Colors.black,
                       ),
                     ),
+                    onTapLink: (text, href, title) {
+                      _handleLinkTap(href);
+                    },
                   ),
                 ),
-          const SizedBox(height: 20)
+          Padding(
+              padding: const EdgeInsets.all(5),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  message.role == EMessageRole.assistant && message.id != 'new'
+                      ? IconButton(
+                          onPressed: () {
+                            Provider.of<ChatProvider>(context, listen: false)
+                                .generateMessageSearch(
+                                    translate("search_message_title"), message);
+                          },
+                          icon: const Icon(Icons.search))
+                      : const SizedBox()
+                ],
+              )),
+          const SizedBox(height: 15)
         ],
       ),
     );

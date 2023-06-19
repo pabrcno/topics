@@ -112,5 +112,6 @@
   "add_to_topic": "Add to Topic",
   "clear_chat_description": "Are you sure you want to clear this chat?",
   "clear_chat": "Clear Chat",
-  "confirm": "Confirmar"
+  "confirm": "Confirm",
+  "search_message_title": "## Generated Searches:\n"
 }
