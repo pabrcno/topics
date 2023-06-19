@@ -6,6 +6,7 @@ import '../../../app/chat/chat_provider.dart';
 import '../../../app/theme/theme_provider.dart';
 import '../../../domain/core/enums.dart';
 import '../../../domain/models/message/message.dart';
+import '../../widgets/animated_logo.dart';
 import 'chat_message_tile.dart';
 
 class ChatMessagesListView extends StatefulWidget {
@@ -34,15 +35,12 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
         });
 
         if (provider.messages.isEmpty && provider.messageBuffer.isEmpty) {
-          return Center(
+          return const Center(
             child: Opacity(
-                opacity: 0.1,
+                opacity: 1,
                 child: SizedBox(
-                  height: 150,
-                  child: Image(
-                    image: AssetImage(Provider.of<ThemeProvider>(context)
-                        .logoUrl), // path to your logo image
-                  ),
+                  height: 240,
+                  child: AnimatedLogo(),
                 )),
           );
         } else {
@@ -52,7 +50,6 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
             itemCount: provider.messages.length +
                 (provider.messageBuffer.isNotEmpty ? 1 : 0),
             itemBuilder: (context, index) {
-              // Check if there is a new message or an incoming message
               if (index == provider.messages.length) {
                 return ChatMessageTile(
                   userImage: user?.photoURL ?? '',
