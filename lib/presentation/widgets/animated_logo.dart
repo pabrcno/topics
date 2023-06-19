@@ -33,46 +33,50 @@ class _AnimatedLogoState extends State<AnimatedLogo>
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        AnimatedBuilder(
-          animation: _curve,
-          builder: (BuildContext context, Widget? child) {
-            return Transform.translate(
-              offset: Offset(0, (.8 * sin((_curve.value * 2 * pi)) * 10)),
-              child: Transform.rotate(
-                angle: sin(1.5 * ((_curve.value * 2 * pi))) * .05,
-                child: Image(
-                  image: AssetImage(Provider.of<ThemeProvider>(context)
-                      .logoUrl), // path to your logo image
-                  width: 150,
-                  height: 150,
-                ),
-              ),
-            );
-          },
-        ),
-        const SizedBox(
-          height: 30,
-        ),
-        AnimatedBuilder(
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double maxHeight = constraints.maxHeight;
+
+      return Column(
+        children: [
+          AnimatedBuilder(
             animation: _curve,
             builder: (BuildContext context, Widget? child) {
-              return Transform.scale(
-                  scale: max(.2, .3 * sin((_curve.value * 2 * pi)) + .8),
-                  child: Opacity(
-                      opacity: .1,
-                      child: Container(
-                        width: 80,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: Theme.of(context).colorScheme.shadow,
-                          borderRadius: BorderRadius.circular(100),
-                        ),
-                      )));
-            })
-      ],
-    );
+              return Transform.translate(
+                offset: Offset(0, (.8 * sin((_curve.value * 2 * pi)) * 10)),
+                child: Transform.rotate(
+                  angle: sin(1.5 * ((_curve.value * 2 * pi))) * .05,
+                  child: Image(
+                    image: AssetImage(Provider.of<ThemeProvider>(context)
+                        .logoUrl), // path to your logo image
+                    width: maxHeight * .7,
+                  ),
+                ),
+              );
+            },
+          ),
+          SizedBox(
+            height: maxHeight * .2,
+          ),
+          AnimatedBuilder(
+              animation: _curve,
+              builder: (BuildContext context, Widget? child) {
+                return Transform.scale(
+                    scale: max(.2, .3 * sin((_curve.value * 2 * pi)) + .8),
+                    child: Opacity(
+                        opacity: .2,
+                        child: Container(
+                          width: maxHeight * .4,
+                          height: maxHeight * .05,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).colorScheme.shadow,
+                            borderRadius: BorderRadius.circular(100),
+                          ),
+                        )));
+              })
+        ],
+      );
+    });
   }
 
   @override

@@ -19,14 +19,12 @@ class ChatMessageTile extends StatelessWidget {
   final Message message;
   final String userImage;
   final String userName;
-  final String? search;
 
   const ChatMessageTile({
     Key? key,
     required this.message,
     required this.userImage,
     required this.userName,
-    this.search,
   }) : super(key: key);
   void _handleLinkTap(String? href) {
     if (href != null && href.isNotEmpty) {
