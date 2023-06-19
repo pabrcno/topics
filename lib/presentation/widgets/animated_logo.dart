@@ -39,7 +39,7 @@ class _AnimatedLogoState extends State<AnimatedLogo>
           animation: _curve,
           builder: (BuildContext context, Widget? child) {
             return Transform.translate(
-              offset: Offset(0, (sin((_curve.value * 2 * pi)) * 10)),
+              offset: Offset(0, (.8 * sin((_curve.value * 2 * pi)) * 10)),
               child: Transform.rotate(
                 angle: sin(1.5 * ((_curve.value * 2 * pi))) * .05,
                 child: Image(
@@ -59,7 +59,7 @@ class _AnimatedLogoState extends State<AnimatedLogo>
             animation: _curve,
             builder: (BuildContext context, Widget? child) {
               return Transform.scale(
-                  scale: max(.5, .8 * sin((_curve.value * 2 * pi)) + .5),
+                  scale: max(.2, .3 * sin((_curve.value * 2 * pi)) + .8),
                   child: Opacity(
                       opacity: .1,
                       child: Container(
