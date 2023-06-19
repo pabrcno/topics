@@ -43,7 +43,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                 title: Text(
                   translate('image_tools'),
                   style: Theme.of(context).textTheme.titleSmall!.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
                       ),
                 ),
               );

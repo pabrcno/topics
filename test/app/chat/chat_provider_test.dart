@@ -7,7 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:topics/app/chat/chat_provider.dart';
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/models/auth/app_user_credential.dart';
-import 'package:topics/domain/models/chat/chat.dart';
+
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/models/topic/topic.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';

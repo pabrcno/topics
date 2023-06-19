@@ -72,7 +72,8 @@ void main() async {
             create: (context) => ThemeProvider(
                 initialThemeData: theme,
                 initialLogoUrl: logoUrl,
-                initialThemePath: themePath),
+                initialThemePath: themePath,
+                prefs: prefs),
           ),
         ],
         child: MyApp(

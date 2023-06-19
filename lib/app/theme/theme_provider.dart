@@ -8,7 +8,7 @@ class ThemeProvider with ChangeNotifier {
   ThemeData? _themeData;
   String _logoUrl;
   String _themePath;
-
+  SharedPreferences prefs;
   bool _isLoading = false;
 
   bool get isLoading => _isLoading;
@@ -21,7 +21,8 @@ class ThemeProvider with ChangeNotifier {
   ThemeProvider(
       {required ThemeData initialThemeData,
       required String initialLogoUrl,
-      required String initialThemePath})
+      required String initialThemePath,
+      required this.prefs})
       : _themeData = initialThemeData,
         _logoUrl = initialLogoUrl,
         _themePath = initialThemePath,
@@ -35,14 +36,15 @@ class ThemeProvider with ChangeNotifier {
   fetchThemeData(String themePath) async {
     isLoading = true;
     _themePath = themePath;
+
     final themeStr = await rootBundle.loadString(themePath);
     final themeJson = jsonDecode(themeStr);
     _themeData = ThemeDecoder.decodeThemeData(themeJson);
     if (themePath != 'assets/light_theme.json') {
       _logoUrl = 'assets/images/topics_dark_removebg.png';
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString('logoUrl', _logoUrl);
     }
     isLoading = false;
+    await prefs.setString('themePath', themePath);
+    await prefs.setString('logoUrl', _logoUrl);
   }
 }
