@@ -228,8 +228,17 @@ class ChatProvider with ChangeNotifier {
     final message = _createNewUserMessage(content);
 
     messages.add(message);
-    if (!userChats.contains(currentChat)) {
+    if (!userChats.map((e) => e.id).contains(currentChat?.id)) {
+      if (currentChat?.summary == 'Chat') {
+        currentChat = currentChat?.copyWith(
+          summary: message.content,
+        );
+      }
       userChats.add(currentChat!);
+      userChats.sort(
+        (a, b) => b.lastModified.compareTo(a.lastModified),
+      );
+
       await _chatRepository.createChat(currentChat!);
     }
 
@@ -363,7 +372,8 @@ class ChatProvider with ChangeNotifier {
         topicId: topic?.id ?? '', // replace with actual topicId
         createdAt: DateTime.now(),
         lastModified: DateTime.now(),
-        summary: 'Chat', // using the initial message as a summary
+        summary:
+            'Chat ${newChatId.substring(0, 4)}', // using the initial message as a summary
       );
       currentChat = newChat;
 

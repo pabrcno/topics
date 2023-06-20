@@ -110,6 +110,7 @@ class ChatMessageTile extends StatelessWidget {
                     data: message.content,
                     styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
                         .copyWith(
+                      blockSpacing: 30,
                       p: const TextStyle(
                         fontSize: 16,
                       ),

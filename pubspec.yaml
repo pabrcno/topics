@@ -71,12 +71,13 @@ dependencies:
   flutter_cache_manager: ^3.3.0
   image_gallery_saver: ^2.0.2
   flutter_markdown: ^0.6.15
-  pay: ^1.1.1
+
   change_app_package_name: ^1.1.0
   speech_to_text: ^6.1.1
   flutter_tts: ^3.7.0
   google_mlkit_language_id: ^0.7.0
   flutter_keyboard_visibility: ^5.4.1
+  in_app_purchase: ^3.1.7
 
 dev_dependencies:
   flutter_test:
@@ -108,6 +109,7 @@ flutter:
     - assets/dark_theme.json
     - assets/system_theme.json
     - assets/jungle_theme.json
+    - assets/strawberry_theme.json
     - assets/images/topics_light_removebg.png
     - assets/images/topics_dark_removebg.png
     - assets/i18n/

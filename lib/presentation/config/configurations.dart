@@ -21,6 +21,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
     'assets/dark_theme.json': 'Dark Theme',
     'assets/system_theme.json': 'System Theme',
     'assets/jungle_theme.json': 'Jungle Theme',
+    'assets/strawberry_theme.json': 'Strawberry Theme',
   };
 
   void _logout() {
