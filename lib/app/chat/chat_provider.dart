@@ -38,8 +38,6 @@ class ChatProvider with ChangeNotifier {
   final IAuthService authServiceProvider;
   bool _isLoading = false;
 
-  bool _hasChatBeenCreated = false;
-
   final IImageGenerationApi _imageGenerationApi;
   Chat? currentChat;
   Topic? currentTopic;
@@ -488,7 +486,6 @@ class ChatProvider with ChangeNotifier {
         userChats.add(chatWithNewTitle);
         currentChat = chatWithNewTitle;
 
-        _hasChatBeenCreated = true;
         setLoading(false);
         return;
       }
@@ -555,7 +552,6 @@ class ChatProvider with ChangeNotifier {
           currentChat = currentChat!.copyWith(summary: prompt);
         }
         await _chatRepository.createChat(currentChat!);
-        _hasChatBeenCreated = true;
       }
       if (currentChat == null) return;
       setLoading(true);
