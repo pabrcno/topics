@@ -273,8 +273,8 @@ class ChatProvider with ChangeNotifier {
   Future<void> _listenToStream(Stream stream, bool platformAllowsVibration,
       Message message, EMessageRole answerRole) async {
     streamSubscription = stream.listen(
-      (event) async {
-        await _handleStreamEvent(event, platformAllowsVibration);
+      (event) {
+        _handleStreamEvent(event, platformAllowsVibration);
       },
       onDone: () {
         _handleStreamDone(message, answerRole);
@@ -283,16 +283,22 @@ class ChatProvider with ChangeNotifier {
     );
   }
 
-  Future<void> _handleStreamEvent(event, bool platformAllowsVibration) async {
+  void _handleStreamEvent(event, bool platformAllowsVibration) {
     messageBuffer = messageBuffer + event.content;
     if (platformAllowsVibration) {
       Vibration.vibrate(amplitude: 20, duration: 10);
     }
-    setLoading(false);
   }
 
   void _handleStreamDone(Message message, EMessageRole answerRole) async {
-    final answer = _createNewAssistantMessage(answerRole);
+    final answer = Message(
+      id: const Uuid().v4(),
+      content: messageBuffer,
+      sentAt: DateTime.now(),
+      chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+      isUser: false,
+      role: answerRole,
+    );
 
     messages.add(answer);
     messageBuffer = '';
@@ -307,23 +313,13 @@ class ChatProvider with ChangeNotifier {
     ]);
   }
 
-  Message _createNewAssistantMessage(EMessageRole role) {
-    return Message(
-      id: const Uuid().v4(),
-      content: messageBuffer,
-      sentAt: DateTime.now(),
-      chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
-      isUser: false,
-      role: role,
-    );
-  }
-
   void _cancelStreamSubscription() {
     streamSubscription?.cancel();
     streamSubscription = null;
   }
 
   void _handleStreamError(e) {
+    messageBuffer = '';
     setLoading(false);
     throw Exception('Error while receiving message: $e');
   }

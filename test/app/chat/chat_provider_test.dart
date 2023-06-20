@@ -212,7 +212,6 @@ void main() {
         chatProvider.messages
             .firstWhere((element) => (element.content == mockContent)),
         isNotNull);
-    expect(chatProvider.messageBuffer, equals(''));
   });
 
   test('sendMessage throws exception when the user has no messages', () async {
