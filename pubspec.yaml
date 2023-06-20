@@ -77,6 +77,8 @@ dependencies:
   flutter_tts: ^3.7.0
   google_mlkit_language_id: ^0.7.0
   flutter_keyboard_visibility: ^5.4.1
+  home_widget: ^0.2.1
+  workmanager: ^0.5.1
 
 dev_dependencies:
   flutter_test:

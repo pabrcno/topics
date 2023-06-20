@@ -5,9 +5,7 @@ import 'package:topics/presentation/chat/widgets/chat_body.dart';
 import '../../app/chat/chat_provider.dart';
 
 class ChatScreen extends StatelessWidget {
-  final bool isNew;
-
-  ChatScreen({Key? key, this.isNew = false}) : super(key: key);
+  ChatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
