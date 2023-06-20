@@ -546,7 +546,14 @@ class ChatProvider with ChangeNotifier {
     required int steps,
   }) async {
     await errorCommander.run(() async {
-      if (!_hasChatBeenCreated) {
+      if (userChats
+          .map(
+            (chat) => chat.id,
+          )
+          .contains(currentChat?.id)) {
+        if (currentChat!.summary == 'Chat') {
+          currentChat = currentChat!.copyWith(summary: prompt);
+        }
         await _chatRepository.createChat(currentChat!);
         _hasChatBeenCreated = true;
       }
