@@ -70,6 +70,7 @@ class ChatBody extends StatelessWidget {
                             child: Container(
                                 padding:
                                     const EdgeInsets.only(bottom: 5, left: 5),
+                                height: 50,
                                 decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
                                 ),
