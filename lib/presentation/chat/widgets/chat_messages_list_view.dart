@@ -43,34 +43,36 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
                     child: AnimatedLogo(), // path to your logo image
                   )));
         } else {
-          return ListView.builder(
-            padding: const EdgeInsets.only(bottom: 20),
-            controller: _scrollController,
-            itemCount: provider.messages.length +
-                (provider.messageBuffer.isNotEmpty ? 1 : 0),
-            itemBuilder: (context, index) {
-              if (index == provider.messages.length) {
-                return ChatMessageTile(
-                  userImage: user?.photoURL ?? '',
-                  userName: user?.displayName ?? '',
-                  message: Message(
-                    content: provider.messageBuffer,
-                    id: 'new',
-                    chatId: provider.currentChat?.id ?? '',
-                    isUser: false,
-                    role: EMessageRole.assistant,
-                    sentAt: DateTime.now(),
-                  ),
-                );
-              } else {
-                return ChatMessageTile(
-                  message: provider.messages[index],
-                  userImage: user?.photoURL ?? '',
-                  userName: user?.displayName ?? '',
-                );
-              }
-            },
-          );
+          return Padding(
+              padding: const EdgeInsets.only(bottom: 60),
+              child: ListView.builder(
+                padding: const EdgeInsets.only(bottom: 20),
+                controller: _scrollController,
+                itemCount: provider.messages.length +
+                    (provider.messageBuffer.isNotEmpty ? 1 : 0),
+                itemBuilder: (context, index) {
+                  if (index == provider.messages.length) {
+                    return ChatMessageTile(
+                      userImage: user?.photoURL ?? '',
+                      userName: user?.displayName ?? '',
+                      message: Message(
+                        content: provider.messageBuffer,
+                        id: 'new',
+                        chatId: provider.currentChat?.id ?? '',
+                        isUser: false,
+                        role: EMessageRole.assistant,
+                        sentAt: DateTime.now(),
+                      ),
+                    );
+                  } else {
+                    return ChatMessageTile(
+                      message: provider.messages[index],
+                      userImage: user?.photoURL ?? '',
+                      userName: user?.displayName ?? '',
+                    );
+                  }
+                },
+              ));
         }
       },
     );
