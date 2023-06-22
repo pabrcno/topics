@@ -35,7 +35,7 @@ class _ChatInputState extends State<ChatInput> {
               color: Theme.of(context).colorScheme.surface,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.5),
+                  color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
                   spreadRadius: 0,
                   blurRadius: 5,
                   offset: const Offset(0, -3), // changes position of shadow
