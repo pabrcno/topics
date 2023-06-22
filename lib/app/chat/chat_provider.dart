@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/core/enums.dart';
@@ -21,6 +23,7 @@ import '../../main.dart';
 import '../../presentation/chat/chat_screen.dart';
 
 import '../../services/exception_handling_service.dart';
+import '../../utils/constants.dart';
 
 class ChatProvider with ChangeNotifier {
   List<Message> _messages = [];
@@ -45,7 +48,14 @@ class ChatProvider with ChangeNotifier {
   List<Chat> currentTopicChats = [];
   bool _isImageMode = false;
   List<Chat> userChats = [];
-  Map<String, String> _chatSearches = {};
+  String? _initImagePath;
+
+  String? get initImagePath => _initImagePath;
+
+  set initImagePath(String? val) {
+    _initImagePath = val;
+    notifyListeners();
+  }
 
   int userMessageCount = 0;
   ChatProvider({
@@ -71,8 +81,6 @@ class ChatProvider with ChangeNotifier {
     _isImageMode = value;
     notifyListeners();
   }
-
-  Map<String, String> get chatSearches => _chatSearches;
 
   bool get isImageMode => _isImageMode;
 
@@ -536,10 +544,23 @@ class ChatProvider with ChangeNotifier {
     required double weight,
     required int height,
     required int width,
-    required int steps,
+    String? initImageMode,
+    List<Map<String, dynamic>>? textPrompts,
+    String? clipGuidancePreset,
+    String? sampler,
+    int? samples,
   }) async {
     await errorCommander.run(() async {
-      if (userChats
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      int steps = (prefs.getInt(ImageEqSharedPrefKeys.steps) ?? 50);
+      double imageStrength =
+          (prefs.getDouble(ImageEqSharedPrefKeys.imageStrength) ?? 0.35);
+      int cfgScale = (prefs.getInt(ImageEqSharedPrefKeys.cfgScale) ?? 7);
+      String? stylePreset =
+          (prefs.getString(ImageEqSharedPrefKeys.stylePreset));
+
+      if (!userChats
           .map(
             (chat) => chat.id,
           )
@@ -553,13 +574,22 @@ class ChatProvider with ChangeNotifier {
       setLoading(true);
       // Create a new ImageGenerationRequest object
       final newImageGenerationRequest = ImageGenerationRequest(
-        prompt: prompt,
-        weight: weight,
-        height: height,
-        width: width,
-        steps: steps,
-        chatId: currentChat!.id,
-      );
+          prompt: prompt,
+          weight: weight,
+          height: height,
+          width: width,
+          steps: steps,
+          chatId: currentChat!.id,
+          imageStrength: initImagePath != null ? imageStrength : null,
+          initImageMode: initImagePath != null ? "IMAGE_STRENGTH" : null,
+          initImage: initImagePath != null
+              ? const Base64Codec().encode(
+                  File(initImagePath!).readAsBytesSync(),
+                )
+              : null,
+          cfgScale: cfgScale,
+          stylePreset: stylePreset);
+
       final userMessage = Message(
         id: const Uuid().v4(),
         content: prompt,

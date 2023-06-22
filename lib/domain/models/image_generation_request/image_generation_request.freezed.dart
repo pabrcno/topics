@@ -21,12 +21,22 @@ ImageGenerationRequest _$ImageGenerationRequestFromJson(
 
 /// @nodoc
 mixin _$ImageGenerationRequest {
-  String get prompt => throw _privateConstructorUsedError;
-  double get weight => throw _privateConstructorUsedError;
-  int get height => throw _privateConstructorUsedError;
-  int get width => throw _privateConstructorUsedError;
-  int get steps => throw _privateConstructorUsedError;
+  String? get prompt => throw _privateConstructorUsedError;
+  double? get weight => throw _privateConstructorUsedError;
+  int? get height => throw _privateConstructorUsedError;
+  int? get width => throw _privateConstructorUsedError;
+  int? get steps => throw _privateConstructorUsedError;
   String get chatId => throw _privateConstructorUsedError;
+  double? get imageStrength => throw _privateConstructorUsedError;
+  String? get initImageMode => throw _privateConstructorUsedError;
+  String? get initImage => throw _privateConstructorUsedError;
+  List<Map<String, dynamic>>? get textPrompts =>
+      throw _privateConstructorUsedError;
+  int? get cfgScale => throw _privateConstructorUsedError;
+  String? get clipGuidancePreset => throw _privateConstructorUsedError;
+  String? get sampler => throw _privateConstructorUsedError;
+  int? get samples => throw _privateConstructorUsedError;
+  String? get stylePreset => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -41,12 +51,21 @@ abstract class $ImageGenerationRequestCopyWith<$Res> {
       _$ImageGenerationRequestCopyWithImpl<$Res, ImageGenerationRequest>;
   @useResult
   $Res call(
-      {String prompt,
-      double weight,
-      int height,
-      int width,
-      int steps,
-      String chatId});
+      {String? prompt,
+      double? weight,
+      int? height,
+      int? width,
+      int? steps,
+      String chatId,
+      double? imageStrength,
+      String? initImageMode,
+      String? initImage,
+      List<Map<String, dynamic>>? textPrompts,
+      int? cfgScale,
+      String? clipGuidancePreset,
+      String? sampler,
+      int? samples,
+      String? stylePreset});
 }
 
 /// @nodoc
@@ -63,38 +82,83 @@ class _$ImageGenerationRequestCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? prompt = null,
-    Object? weight = null,
-    Object? height = null,
-    Object? width = null,
-    Object? steps = null,
+    Object? prompt = freezed,
+    Object? weight = freezed,
+    Object? height = freezed,
+    Object? width = freezed,
+    Object? steps = freezed,
     Object? chatId = null,
+    Object? imageStrength = freezed,
+    Object? initImageMode = freezed,
+    Object? initImage = freezed,
+    Object? textPrompts = freezed,
+    Object? cfgScale = freezed,
+    Object? clipGuidancePreset = freezed,
+    Object? sampler = freezed,
+    Object? samples = freezed,
+    Object? stylePreset = freezed,
   }) {
     return _then(_value.copyWith(
-      prompt: null == prompt
+      prompt: freezed == prompt
           ? _value.prompt
           : prompt // ignore: cast_nullable_to_non_nullable
-              as String,
-      weight: null == weight
+              as String?,
+      weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as double,
-      height: null == height
+              as double?,
+      height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int,
-      width: null == width
+              as int?,
+      width: freezed == width
           ? _value.width
           : width // ignore: cast_nullable_to_non_nullable
-              as int,
-      steps: null == steps
+              as int?,
+      steps: freezed == steps
           ? _value.steps
           : steps // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       chatId: null == chatId
           ? _value.chatId
           : chatId // ignore: cast_nullable_to_non_nullable
               as String,
+      imageStrength: freezed == imageStrength
+          ? _value.imageStrength
+          : imageStrength // ignore: cast_nullable_to_non_nullable
+              as double?,
+      initImageMode: freezed == initImageMode
+          ? _value.initImageMode
+          : initImageMode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      initImage: freezed == initImage
+          ? _value.initImage
+          : initImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      textPrompts: freezed == textPrompts
+          ? _value.textPrompts
+          : textPrompts // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>?,
+      cfgScale: freezed == cfgScale
+          ? _value.cfgScale
+          : cfgScale // ignore: cast_nullable_to_non_nullable
+              as int?,
+      clipGuidancePreset: freezed == clipGuidancePreset
+          ? _value.clipGuidancePreset
+          : clipGuidancePreset // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sampler: freezed == sampler
+          ? _value.sampler
+          : sampler // ignore: cast_nullable_to_non_nullable
+              as String?,
+      samples: freezed == samples
+          ? _value.samples
+          : samples // ignore: cast_nullable_to_non_nullable
+              as int?,
+      stylePreset: freezed == stylePreset
+          ? _value.stylePreset
+          : stylePreset // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -108,12 +172,21 @@ abstract class _$$_ImageGenerationRequestCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String prompt,
-      double weight,
-      int height,
-      int width,
-      int steps,
-      String chatId});
+      {String? prompt,
+      double? weight,
+      int? height,
+      int? width,
+      int? steps,
+      String chatId,
+      double? imageStrength,
+      String? initImageMode,
+      String? initImage,
+      List<Map<String, dynamic>>? textPrompts,
+      int? cfgScale,
+      String? clipGuidancePreset,
+      String? sampler,
+      int? samples,
+      String? stylePreset});
 }
 
 /// @nodoc
@@ -128,38 +201,83 @@ class __$$_ImageGenerationRequestCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? prompt = null,
-    Object? weight = null,
-    Object? height = null,
-    Object? width = null,
-    Object? steps = null,
+    Object? prompt = freezed,
+    Object? weight = freezed,
+    Object? height = freezed,
+    Object? width = freezed,
+    Object? steps = freezed,
     Object? chatId = null,
+    Object? imageStrength = freezed,
+    Object? initImageMode = freezed,
+    Object? initImage = freezed,
+    Object? textPrompts = freezed,
+    Object? cfgScale = freezed,
+    Object? clipGuidancePreset = freezed,
+    Object? sampler = freezed,
+    Object? samples = freezed,
+    Object? stylePreset = freezed,
   }) {
     return _then(_$_ImageGenerationRequest(
-      prompt: null == prompt
+      prompt: freezed == prompt
           ? _value.prompt
           : prompt // ignore: cast_nullable_to_non_nullable
-              as String,
-      weight: null == weight
+              as String?,
+      weight: freezed == weight
           ? _value.weight
           : weight // ignore: cast_nullable_to_non_nullable
-              as double,
-      height: null == height
+              as double?,
+      height: freezed == height
           ? _value.height
           : height // ignore: cast_nullable_to_non_nullable
-              as int,
-      width: null == width
+              as int?,
+      width: freezed == width
           ? _value.width
           : width // ignore: cast_nullable_to_non_nullable
-              as int,
-      steps: null == steps
+              as int?,
+      steps: freezed == steps
           ? _value.steps
           : steps // ignore: cast_nullable_to_non_nullable
-              as int,
+              as int?,
       chatId: null == chatId
           ? _value.chatId
           : chatId // ignore: cast_nullable_to_non_nullable
               as String,
+      imageStrength: freezed == imageStrength
+          ? _value.imageStrength
+          : imageStrength // ignore: cast_nullable_to_non_nullable
+              as double?,
+      initImageMode: freezed == initImageMode
+          ? _value.initImageMode
+          : initImageMode // ignore: cast_nullable_to_non_nullable
+              as String?,
+      initImage: freezed == initImage
+          ? _value.initImage
+          : initImage // ignore: cast_nullable_to_non_nullable
+              as String?,
+      textPrompts: freezed == textPrompts
+          ? _value._textPrompts
+          : textPrompts // ignore: cast_nullable_to_non_nullable
+              as List<Map<String, dynamic>>?,
+      cfgScale: freezed == cfgScale
+          ? _value.cfgScale
+          : cfgScale // ignore: cast_nullable_to_non_nullable
+              as int?,
+      clipGuidancePreset: freezed == clipGuidancePreset
+          ? _value.clipGuidancePreset
+          : clipGuidancePreset // ignore: cast_nullable_to_non_nullable
+              as String?,
+      sampler: freezed == sampler
+          ? _value.sampler
+          : sampler // ignore: cast_nullable_to_non_nullable
+              as String?,
+      samples: freezed == samples
+          ? _value.samples
+          : samples // ignore: cast_nullable_to_non_nullable
+              as int?,
+      stylePreset: freezed == stylePreset
+          ? _value.stylePreset
+          : stylePreset // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -168,32 +286,68 @@ class __$$_ImageGenerationRequestCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_ImageGenerationRequest implements _ImageGenerationRequest {
   const _$_ImageGenerationRequest(
-      {required this.prompt,
-      required this.weight,
-      required this.height,
-      required this.width,
-      required this.steps,
-      required this.chatId});
+      {this.prompt,
+      this.weight,
+      this.height,
+      this.width,
+      this.steps,
+      required this.chatId,
+      this.imageStrength,
+      this.initImageMode,
+      this.initImage,
+      final List<Map<String, dynamic>>? textPrompts,
+      this.cfgScale,
+      this.clipGuidancePreset,
+      this.sampler,
+      this.samples,
+      this.stylePreset})
+      : _textPrompts = textPrompts;
 
   factory _$_ImageGenerationRequest.fromJson(Map<String, dynamic> json) =>
       _$$_ImageGenerationRequestFromJson(json);
 
   @override
-  final String prompt;
+  final String? prompt;
   @override
-  final double weight;
+  final double? weight;
   @override
-  final int height;
+  final int? height;
   @override
-  final int width;
+  final int? width;
   @override
-  final int steps;
+  final int? steps;
   @override
   final String chatId;
+  @override
+  final double? imageStrength;
+  @override
+  final String? initImageMode;
+  @override
+  final String? initImage;
+  final List<Map<String, dynamic>>? _textPrompts;
+  @override
+  List<Map<String, dynamic>>? get textPrompts {
+    final value = _textPrompts;
+    if (value == null) return null;
+    if (_textPrompts is EqualUnmodifiableListView) return _textPrompts;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final int? cfgScale;
+  @override
+  final String? clipGuidancePreset;
+  @override
+  final String? sampler;
+  @override
+  final int? samples;
+  @override
+  final String? stylePreset;
 
   @override
   String toString() {
-    return 'ImageGenerationRequest(prompt: $prompt, weight: $weight, height: $height, width: $width, steps: $steps, chatId: $chatId)';
+    return 'ImageGenerationRequest(prompt: $prompt, weight: $weight, height: $height, width: $width, steps: $steps, chatId: $chatId, imageStrength: $imageStrength, initImageMode: $initImageMode, initImage: $initImage, textPrompts: $textPrompts, cfgScale: $cfgScale, clipGuidancePreset: $clipGuidancePreset, sampler: $sampler, samples: $samples, stylePreset: $stylePreset)';
   }
 
   @override
@@ -206,13 +360,44 @@ class _$_ImageGenerationRequest implements _ImageGenerationRequest {
             (identical(other.height, height) || other.height == height) &&
             (identical(other.width, width) || other.width == width) &&
             (identical(other.steps, steps) || other.steps == steps) &&
-            (identical(other.chatId, chatId) || other.chatId == chatId));
+            (identical(other.chatId, chatId) || other.chatId == chatId) &&
+            (identical(other.imageStrength, imageStrength) ||
+                other.imageStrength == imageStrength) &&
+            (identical(other.initImageMode, initImageMode) ||
+                other.initImageMode == initImageMode) &&
+            (identical(other.initImage, initImage) ||
+                other.initImage == initImage) &&
+            const DeepCollectionEquality()
+                .equals(other._textPrompts, _textPrompts) &&
+            (identical(other.cfgScale, cfgScale) ||
+                other.cfgScale == cfgScale) &&
+            (identical(other.clipGuidancePreset, clipGuidancePreset) ||
+                other.clipGuidancePreset == clipGuidancePreset) &&
+            (identical(other.sampler, sampler) || other.sampler == sampler) &&
+            (identical(other.samples, samples) || other.samples == samples) &&
+            (identical(other.stylePreset, stylePreset) ||
+                other.stylePreset == stylePreset));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, prompt, weight, height, width, steps, chatId);
+  int get hashCode => Object.hash(
+      runtimeType,
+      prompt,
+      weight,
+      height,
+      width,
+      steps,
+      chatId,
+      imageStrength,
+      initImageMode,
+      initImage,
+      const DeepCollectionEquality().hash(_textPrompts),
+      cfgScale,
+      clipGuidancePreset,
+      sampler,
+      samples,
+      stylePreset);
 
   @JsonKey(ignore: true)
   @override
@@ -231,28 +416,55 @@ class _$_ImageGenerationRequest implements _ImageGenerationRequest {
 
 abstract class _ImageGenerationRequest implements ImageGenerationRequest {
   const factory _ImageGenerationRequest(
-      {required final String prompt,
-      required final double weight,
-      required final int height,
-      required final int width,
-      required final int steps,
-      required final String chatId}) = _$_ImageGenerationRequest;
+      {final String? prompt,
+      final double? weight,
+      final int? height,
+      final int? width,
+      final int? steps,
+      required final String chatId,
+      final double? imageStrength,
+      final String? initImageMode,
+      final String? initImage,
+      final List<Map<String, dynamic>>? textPrompts,
+      final int? cfgScale,
+      final String? clipGuidancePreset,
+      final String? sampler,
+      final int? samples,
+      final String? stylePreset}) = _$_ImageGenerationRequest;
 
   factory _ImageGenerationRequest.fromJson(Map<String, dynamic> json) =
       _$_ImageGenerationRequest.fromJson;
 
   @override
-  String get prompt;
+  String? get prompt;
   @override
-  double get weight;
+  double? get weight;
   @override
-  int get height;
+  int? get height;
   @override
-  int get width;
+  int? get width;
   @override
-  int get steps;
+  int? get steps;
   @override
   String get chatId;
+  @override
+  double? get imageStrength;
+  @override
+  String? get initImageMode;
+  @override
+  String? get initImage;
+  @override
+  List<Map<String, dynamic>>? get textPrompts;
+  @override
+  int? get cfgScale;
+  @override
+  String? get clipGuidancePreset;
+  @override
+  String? get sampler;
+  @override
+  int? get samples;
+  @override
+  String? get stylePreset;
   @override
   @JsonKey(ignore: true)
   _$$_ImageGenerationRequestCopyWith<_$_ImageGenerationRequest> get copyWith =>

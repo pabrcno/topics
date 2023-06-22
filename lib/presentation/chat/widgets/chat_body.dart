@@ -3,7 +3,9 @@ import 'package:provider/provider.dart';
 
 import 'package:topics/presentation/chat/widgets/chat_input.dart';
 import 'package:topics/presentation/chat/widgets/chat_messages_list_view.dart';
+import 'package:topics/presentation/chat/widgets/tools/image_equalizer.dart';
 import 'package:topics/presentation/chat/widgets/tools/image_generation_tools.dart';
+import 'package:topics/presentation/chat/widgets/tools/image_input.dart';
 import 'package:topics/presentation/chat/widgets/tools/ocr_input.dart';
 import 'package:topics/presentation/chat/widgets/tools/prompt_builder.dart';
 import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
@@ -31,27 +33,32 @@ class ChatBody extends StatelessWidget {
                     bottom: 0,
                     left: 0,
                     child: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 500),
-                      child: !provider.isImageMode
-                          ? Disabled(
-                              disabled: provider.messageBuffer.isNotEmpty ||
-                                  provider.isLoading,
-                              child: ToolsContainer(
-                                key: const ValueKey('PromptBuilder'),
-                                widgetList: [
-                                  OCRInput(onOcrResult: (result) {
-                                    _textController.text = result;
-                                  }),
-                                  TemperatureSliderButton(),
-                                ],
-                              ),
-                            )
-                          : const SizedBox(
-                              key: ValueKey('PromptBuilder'),
-                              height: 0,
-                              width: 0,
-                            ),
-                    )),
+                        duration: const Duration(milliseconds: 500),
+                        child: !provider.isImageMode
+                            ? Disabled(
+                                disabled: provider.messageBuffer.isNotEmpty ||
+                                    provider.isLoading,
+                                child: ToolsContainer(
+                                  key: const ValueKey('PromptBuilder'),
+                                  widgetList: [
+                                    OCRInput(onOcrResult: (result) {
+                                      _textController.text = result;
+                                    }),
+                                    TemperatureSliderButton(),
+                                  ],
+                                ),
+                              )
+                            : Disabled(
+                                key: const ValueKey('ImageTools'),
+                                disabled: provider.messageBuffer.isNotEmpty ||
+                                    provider.isLoading,
+                                child: const ToolsContainer(
+                                  widgetList: [
+                                    ImageInput(),
+                                    ImageEqualizerButton()
+                                  ],
+                                ),
+                              ))),
               ],
             ),
           ),

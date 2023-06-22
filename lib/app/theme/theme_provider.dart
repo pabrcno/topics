@@ -42,6 +42,8 @@ class ThemeProvider with ChangeNotifier {
     _themeData = ThemeDecoder.decodeThemeData(themeJson);
     if (themePath != 'assets/light_theme.json') {
       _logoUrl = 'assets/images/topics_dark_removebg.png';
+    } else {
+      _logoUrl = 'assets/images/topics_light_removebg.png';
     }
     isLoading = false;
     await prefs.setString('themePath', themePath);
