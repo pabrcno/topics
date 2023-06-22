@@ -113,5 +113,18 @@
   "clear_chat_description": "Are you sure you want to clear this chat?",
   "clear_chat": "Clear Chat",
   "confirm": "Confirm",
-  "search_message_title": "## Generated Searches:\n"
+  "search_message_title": "## Generated Searches:\n",
+  "addImage": "Add Image",
+  "pickFromGallery": "Pick Image from Gallery",
+  "takePicture": "Take a Picture",
+  "imageEqualizer": "Image Equalizer",
+  "imageStrength": "Image Strength",
+  "howSimilar": "How similar will be the result to your image",
+  "cfgScale": "CFG Scale",
+  "strictOutput": "How strictly output adheres to your prompt.",
+  "steps": "Steps",
+  "higherValues": "Higher values will cost you more messages.",
+  "lowerValues": "Lower values will output less quality images.",
+  "stylePreset": "Style Preset",
+  "outputStyle": "Output Style"
 }

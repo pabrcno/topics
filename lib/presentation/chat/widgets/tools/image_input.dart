@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/app/chat/chat_provider.dart';
@@ -34,7 +35,7 @@ class ImageInput extends StatelessWidget {
     return Consumer<ChatProvider>(builder: (ctx, chatProvider, _) {
       return chatProvider.initImagePath == null
           ? ElevatedButton.icon(
-              label: const Text('Add Image'),
+              label: Text(translate('addImage')),
               icon: const Icon(Icons.photo_camera_back),
               onPressed: () {
                 showDialog(
@@ -43,17 +44,19 @@ class ImageInput extends StatelessWidget {
                           content: SingleChildScrollView(
                             child: ListBody(
                               children: <Widget>[
-                                TextButton(
-                                  child: Text("Pick Image from Gallery 🖼️"),
+                                TextButton.icon(
+                                  icon: const Icon(Icons.photo_library),
+                                  label: Text(translate('pickFromGallery')),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     _pickImage(
                                         ImageSource.gallery, chatProvider);
                                   },
                                 ),
-                                SizedBox(height: 40),
-                                TextButton(
-                                  child: Text("Take a Picture 📸"),
+                                const SizedBox(height: 40),
+                                TextButton.icon(
+                                  icon: const Icon(Icons.photo_camera_back),
+                                  label: Text(translate('takePicture')),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     _pickImage(
@@ -85,7 +88,7 @@ class ImageInput extends StatelessWidget {
                               Image.file(File(chatProvider.initImagePath!)),
                           actions: <Widget>[
                             TextButton(
-                              child: const Text('Delete'),
+                              child: Text(translate('delete')),
                               onPressed: () {
                                 // Remove the image
                                 chatProvider.initImagePath = null;

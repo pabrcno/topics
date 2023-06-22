@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../utils/constants.dart';
@@ -10,7 +11,7 @@ class ImageEqualizerButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton.icon(
       icon: const Icon(Icons.equalizer),
-      label: const Text("Image Equalizer"),
+      label: Text(translate('imageEqualizer')),
       onPressed: () {
         showDialog(
           context: context,
@@ -87,14 +88,16 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
   Widget build(BuildContext context) {
     return Dialog(
       child: Container(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(30.0),
         child: Column(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text('Image Strength (${imageStrength.toStringAsFixed(2)})'),
-            SizedBox(height: 5),
-            Text('How similar will be the result to your image',
-                style: TextStyle(fontSize: 10, color: Colors.grey)),
+            Text(
+                '${translate('imageStrength')} (${imageStrength.toStringAsFixed(2)})'),
+            const SizedBox(height: 5),
+            Text(translate('howSimilar'),
+                style: Theme.of(context).textTheme.labelMedium),
             Slider(
               value: imageStrength,
               min: 0,
@@ -107,10 +110,10 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
                 });
               },
             ),
-            Text('CFG Scale (${cfgScale})'),
-            SizedBox(height: 5),
-            Text('How strictly output adheres to your prompt.',
-                style: TextStyle(fontSize: 10, color: Colors.grey)),
+            Text('${translate('cfgScale')} ($cfgScale)'),
+            const SizedBox(height: 5),
+            Text(translate('strictOutput'),
+                style: Theme.of(context).textTheme.labelMedium),
             Slider(
               value: cfgScale.toDouble(),
               min: 0,
@@ -123,12 +126,13 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
                 });
               },
             ),
-            Text('Steps (${steps.toInt()})'),
-            SizedBox(height: 5),
-            Text('Higher values will cost you more messages.',
-                style: const TextStyle(fontSize: 10, color: Colors.grey)),
-            Text('Lower values will output less quality images.',
-                style: const TextStyle(fontSize: 10, color: Colors.grey)),
+            Text('${translate('steps')} ($steps)'),
+            const SizedBox(height: 5),
+            Text(translate('higherValues'),
+                style: Theme.of(context).textTheme.labelMedium),
+            const SizedBox(height: 5),
+            Text(translate('lowerValues'),
+                style: Theme.of(context).textTheme.labelMedium),
             Slider(
               value: steps.toDouble(),
               min: 10,
@@ -141,10 +145,10 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
                 });
               },
             ),
-            SizedBox(height: 5),
-            Text('Style Preset'),
+            const SizedBox(height: 10),
+            Text(translate('stylePreset')),
             DropdownButton<String>(
-              hint: Text('Output Style'),
+              hint: Text(translate('outputStyle')),
               value: stylePresetMap.entries
                   .firstWhere((element) => element.value == stylePreset)
                   .key,
