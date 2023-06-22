@@ -45,22 +45,22 @@ class ImageInput extends StatelessWidget {
                             child: ListBody(
                               children: <Widget>[
                                 TextButton.icon(
-                                  icon: const Icon(Icons.photo_library),
-                                  label: Text(translate('pickFromGallery')),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                    _pickImage(
-                                        ImageSource.gallery, chatProvider);
-                                  },
-                                ),
-                                const SizedBox(height: 40),
-                                TextButton.icon(
                                   icon: const Icon(Icons.photo_camera_back),
                                   label: Text(translate('takePicture')),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     _pickImage(
                                         ImageSource.camera, chatProvider);
+                                  },
+                                ),
+                                const SizedBox(height: 40),
+                                TextButton.icon(
+                                  icon: const Icon(Icons.photo_library),
+                                  label: Text(translate('pickFromGallery')),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                    _pickImage(
+                                        ImageSource.gallery, chatProvider);
                                   },
                                 )
                               ],
