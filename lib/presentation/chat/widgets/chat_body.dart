@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 
 import 'package:topics/presentation/chat/widgets/chat_input.dart';
@@ -59,6 +62,41 @@ class ChatBody extends StatelessWidget {
                                   ],
                                 ),
                               ))),
+                provider.initImagePath != null
+                    ? Positioned(
+                        bottom: 40,
+                        right: 0,
+                        child: InkWell(
+                            child: Container(
+                                padding:
+                                    const EdgeInsets.only(bottom: 5, left: 5),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                child: Image.file(
+                                  File(provider.initImagePath!),
+                                  height: 75,
+                                  fit: BoxFit.cover,
+                                )),
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (ctx) => AlertDialog(
+                                        content: Image.file(
+                                            File(provider.initImagePath!)),
+                                        actions: <Widget>[
+                                          TextButton(
+                                            child: Text(translate('delete')),
+                                            onPressed: () {
+                                              // Remove the image
+                                              provider.initImagePath = null;
+                                              Navigator.of(ctx).pop();
+                                            },
+                                          ),
+                                        ],
+                                      ));
+                            }))
+                    : Container(),
               ],
             ),
           ),

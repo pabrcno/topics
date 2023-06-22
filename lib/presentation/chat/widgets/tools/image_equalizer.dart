@@ -9,16 +9,18 @@ class ImageEqualizerButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ElevatedButton.icon(
-      icon: const Icon(Icons.equalizer),
-      label: Text(translate('imageEqualizer')),
-      onPressed: () {
-        showDialog(
-          context: context,
-          builder: (_) => const ImageEqualizer(),
-        );
-      },
-    );
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 5),
+        child: ElevatedButton.icon(
+          icon: const Icon(Icons.equalizer),
+          label: Text(translate('imageEqualizer')),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (_) => const ImageEqualizer(),
+            );
+          },
+        ));
   }
 }
 
