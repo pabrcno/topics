@@ -6,6 +6,7 @@ import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
 import '../../app/chat/chat_provider.dart';
+import '../../app/notification/notification_provider.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({Key? key}) : super(key: key);
@@ -81,6 +82,13 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                       child: Text(themePaths[provider.themePath]!),
                       onPressed: () => _showThemePicker(context, provider),
                     ),
+                    OutlinedButton(
+                        onPressed: () {
+                          Provider.of<NotificationProvider>(context,
+                                  listen: false)
+                              .createChatNotification();
+                        },
+                        child: Text('Chat Notification')),
                     OutlinedButton(
                       onPressed: _logout,
                       style: OutlinedButton.styleFrom(

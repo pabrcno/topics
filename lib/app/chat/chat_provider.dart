@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -669,5 +670,18 @@ class ChatProvider with ChangeNotifier {
     currentTopic = null;
     messages = [];
     notifyListeners();
+  }
+
+  void createMessageNotification(
+      int id, String title, String body, String channelKey) {
+    AwesomeNotifications().createNotification(
+      content: NotificationContent(
+        id: id,
+        channelKey: channelKey,
+        title: title,
+        body: body,
+        payload: {'message': body},
+      ),
+    );
   }
 }

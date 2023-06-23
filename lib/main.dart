@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/app/notification/notification_provider.dart';
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/repo/user/firestore_user_repo.dart';
 import 'package:topics/services/auth/auth_service.dart';
@@ -21,6 +22,7 @@ import 'app/chat/chat_provider.dart';
 import 'app/theme/theme_provider.dart';
 import 'firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:awesome_notifications/awesome_notifications.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 Future<LocalizationDelegate> setupLocalizationDelegate() async {
@@ -56,6 +58,24 @@ void main() async {
   final themeJson = jsonDecode(themeStr);
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
   final AuthService authService = AuthService();
+  await AwesomeNotifications().initialize(
+      null,
+      [
+        NotificationChannel(
+          channelKey: 'alerts',
+          channelName: 'Alerts',
+          channelDescription: 'Notification tests as alerts',
+          playSound: true,
+          onlyAlertOnce: true,
+          groupAlertBehavior: GroupAlertBehavior.Children,
+          importance: NotificationImportance.High,
+          defaultPrivacy: NotificationPrivacy.Private,
+          defaultColor: Colors.blueGrey.shade900,
+          ledColor: Colors.blueGrey.shade900,
+        ),
+      ],
+      debug: true);
+
   runApp(
     MultiProvider(
         providers: [
@@ -75,6 +95,7 @@ void main() async {
                 initialThemePath: themePath,
                 prefs: prefs),
           ),
+          ChangeNotifierProvider(create: (context) => NotificationProvider())
         ],
         child: MyApp(
           localizationDelegate: localizationDelegate,

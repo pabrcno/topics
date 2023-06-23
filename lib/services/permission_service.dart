@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
@@ -49,6 +50,22 @@ class PermissionService {
 
   Future<bool> hasMicrophonePermission() async {
     return hasPermission(Permission.microphone);
+  }
+
+  Future<bool> requestNotificationsPermission(
+      {Function? onPermissionDenied}) async {
+    bool granted = await AwesomeNotifications().isNotificationAllowed();
+
+    if (!granted) {
+      granted =
+          await AwesomeNotifications().requestPermissionToSendNotifications();
+    }
+
+    if (!granted) {
+      onPermissionDenied?.call();
+    }
+
+    return granted;
   }
 }
 
