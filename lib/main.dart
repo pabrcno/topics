@@ -10,7 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/app/notification/notification_provider.dart';
+
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/repo/user/firestore_user_repo.dart';
 import 'package:topics/services/auth/auth_service.dart';
@@ -62,10 +62,11 @@ void main() async {
       null,
       [
         NotificationChannel(
-          channelKey: 'alerts',
-          channelName: 'Alerts',
-          channelDescription: 'Notification tests as alerts',
+          channelKey: 'topics_chat_channel',
+          channelName: 'Chats',
+          channelDescription: 'Chat channel for Topics app',
           playSound: true,
+          enableVibration: true,
           onlyAlertOnce: true,
           groupAlertBehavior: GroupAlertBehavior.Children,
           importance: NotificationImportance.High,
@@ -95,7 +96,6 @@ void main() async {
                 initialThemePath: themePath,
                 prefs: prefs),
           ),
-          ChangeNotifierProvider(create: (context) => NotificationProvider())
         ],
         child: MyApp(
           localizationDelegate: localizationDelegate,

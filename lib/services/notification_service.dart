@@ -1,10 +1,36 @@
+import 'dart:developer';
+import 'dart:isolate';
+import 'dart:ui';
+
 import 'package:awesome_notifications/awesome_notifications.dart';
-import 'package:flutter/foundation.dart';
+import 'package:topics/domain/core/enums.dart';
+
 import 'package:topics/services/permission_service.dart';
 
-class NotificationProvider extends ChangeNotifier {
+@pragma('vm:entry-point')
+Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
+  log('onActionReceivedMethod: ${receivedAction.buttonKeyInput}');
+  final SendPort? port =
+      IsolateNameServer.lookupPortByName(NotificationService.isolateName);
+  port?.send(receivedAction.buttonKeyInput);
+}
+
+typedef NotificationCallback = Future<void> Function(String input);
+
+class NotificationService {
   ReceivedNotification? _receivedNotification;
   ReceivedAction? _receivedAction;
+  final NotificationCallback onMessageReply;
+  static const String isolateName = 'isolate';
+  final ReceivePort _port = ReceivePort();
+
+  NotificationService({required this.onMessageReply}) {
+    IsolateNameServer.registerPortWithName(_port.sendPort, isolateName);
+    _port.listen((dynamic data) {
+      String input = data as String;
+      onMessageReply(input);
+    });
+  }
 
   ReceivedNotification? get receivedNotification => _receivedNotification;
   ReceivedAction? get receivedAction => _receivedAction;
@@ -13,54 +39,44 @@ class NotificationProvider extends ChangeNotifier {
       ReceivedNotification receivedNotification) async {
     // Your code goes here
     _receivedNotification = receivedNotification;
-    notifyListeners(); // Notify listeners when the notification data is updated
   }
 
   Future<void> onNotificationDisplayedMethod(
       ReceivedNotification receivedNotification) async {
     // Your code goes here
     _receivedNotification = receivedNotification;
-    notifyListeners(); // Notify listeners when the notification data is updated
   }
 
   Future<void> onDismissActionReceivedMethod(
       ReceivedAction receivedAction) async {
     // Your code goes here
     _receivedAction = receivedAction;
-    notifyListeners(); // Notify listeners when the action data is updated
   }
 
-  @pragma('vm:entry-point')
-  static Future<void> onActionReceivedMethod(
-      ReceivedAction receivedAction) async {
-    if (receivedAction.actionType == ActionType.SilentAction ||
-        receivedAction.actionType == ActionType.SilentBackgroundAction) {
-      // For background actions, you must hold the execution until the end
-      print(
-          'Message sent via notification input: "${receivedAction.buttonKeyInput}"');
-      // await executeLongTaskInBackground();
-    } else {}
-  }
-
-  Future<void> createChatNotification() async {
+  Future<void> createChatNotification(String body, EMessageRole role) async {
     if (await permissionServiceProvider.requestNotificationsPermission()) {
+      AwesomeNotifications()
+          .setListeners(onActionReceivedMethod: onActionReceivedMethod);
       await AwesomeNotifications().createNotification(
           content: NotificationContent(
               id: -1, // -1 is replaced by a random number
-              channelKey: 'alerts',
-              title: 'Huston! The eagle has landed!',
-              body:
-                  "A small step for a man, but a giant leap to Flutter's community!",
-              bigPicture: 'https://storage.googleapis.com/cms-storage-bucket/d406c736e7c4c57f5f61.png',
-              largeIcon: 'https://storage.googleapis.com/cms-storage-bucket/0dbfcc7a59cd1cf16282.png',
+              channelKey: 'topics_chat_channel',
+              body: role == EMessageRole.assistant ? body : null,
+              bigPicture: role == EMessageRole.imageAssistant ? body : null,
+              largeIcon: 'asset://assets/images/topics_dark_removebg.png',
+
               //'asset://assets/images/balloons-in-sky.jpg',
               notificationLayout: NotificationLayout.BigPicture,
               payload: {'notificationId': '1234567890'}),
           actionButtons: [
-            NotificationActionButton(key: 'REDIRECT', label: 'Redirect'),
             NotificationActionButton(
-                key: 'REPLY',
+                key: 'Text Reply',
                 label: 'Reply Message',
+                requireInputText: true,
+                actionType: ActionType.SilentAction),
+            NotificationActionButton(
+                key: 'Image Generation',
+                label: 'Generate Image',
                 requireInputText: true,
                 actionType: ActionType.SilentAction),
             NotificationActionButton(

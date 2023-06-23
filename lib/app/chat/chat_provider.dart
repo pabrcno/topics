@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
@@ -215,6 +216,7 @@ class ChatProvider with ChangeNotifier {
       streamSubscription; // Declare the StreamSubscription variable
 
   Future<void> sendMessage(String content) async {
+    log("called");
     await errorCommander.run(() async {
       final message = await _prepareChatAndMessage(content);
       await _validateUserHasMessages();

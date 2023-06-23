@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/app/theme/theme_provider.dart';
+import 'package:topics/domain/core/enums.dart';
 import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
 import '../../app/chat/chat_provider.dart';
-import '../../app/notification/notification_provider.dart';
+import '../../domain/models/message/message.dart';
+import '../../services/notification_service.dart';
 
 class ConfigurationsPage extends StatefulWidget {
   const ConfigurationsPage({Key? key}) : super(key: key);
@@ -84,9 +86,23 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                     ),
                     OutlinedButton(
                         onPressed: () {
-                          Provider.of<NotificationProvider>(context,
-                                  listen: false)
-                              .createChatNotification();
+                          final provider =
+                              Provider.of<ChatProvider>(context, listen: false);
+
+                          final notificationService = NotificationService(
+                            onMessageReply: provider.sendMessage,
+                          );
+                          final message = provider.messages.isNotEmpty
+                              ? provider.messages.last
+                              : Message(
+                                  content: 'Ask me anything!',
+                                  role: EMessageRole.assistant,
+                                  chatId: provider.currentChat?.id ?? '',
+                                  id: 'INITIAL_NOTIFICATION_MESSAGE',
+                                  isUser: false,
+                                  sentAt: DateTime.now());
+                          notificationService.createChatNotification(
+                              message.content, message.role);
                         },
                         child: Text('Chat Notification')),
                     OutlinedButton(
