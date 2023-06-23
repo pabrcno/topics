@@ -3,14 +3,17 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart'
+    as notifications;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/core/enums.dart';
-import 'package:topics/domain/models/message/message.dart';
+
 import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/domain/services/i_auth_service.dart';
+import 'package:topics/services/permission_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
 
@@ -24,6 +27,7 @@ import '../../presentation/chat/chat_screen.dart';
 
 import '../../services/exception_handling_service.dart';
 import '../../utils/constants.dart';
+import 'package:topics/domain/models/message/message.dart';
 
 class ChatProvider with ChangeNotifier {
   List<Message> _messages = [];
@@ -667,7 +671,30 @@ class ChatProvider with ChangeNotifier {
     currentChat = null;
     currentChat = null;
     currentTopic = null;
+    initImagePath = null;
     messages = [];
     notifyListeners();
+  }
+
+  Future<void> showNotification(String title, String body) async {
+    await permissionServiceProvider.requestNotificationsPermission();
+    const notifications.AndroidNotificationDetails
+        androidPlatformChannelSpecifics =
+        notifications.AndroidNotificationDetails(
+      'topics_chat_channel',
+      'Chat',
+      importance: notifications.Importance.max,
+      priority: notifications.Priority.high,
+      showWhen: true,
+    );
+    const notifications.NotificationDetails platformChannelSpecifics =
+        notifications.NotificationDetails(
+            android: androidPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+      0,
+      title,
+      body,
+      platformChannelSpecifics,
+    );
   }
 }

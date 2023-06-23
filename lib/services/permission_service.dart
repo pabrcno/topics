@@ -1,3 +1,4 @@
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class PermissionService {
@@ -49,6 +50,21 @@ class PermissionService {
 
   Future<bool> hasMicrophonePermission() async {
     return hasPermission(Permission.microphone);
+  }
+
+  Future<bool> requestNotificationsPermission(
+      {Function? onPermissionDenied}) async {
+    FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+        FlutterLocalNotificationsPlugin();
+    final bool? granted = await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestPermission();
+
+    if (granted != null && !granted) {
+      onPermissionDenied?.call();
+    }
+    return granted ?? false;
   }
 }
 

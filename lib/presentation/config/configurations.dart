@@ -81,6 +81,14 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                       child: Text(themePaths[provider.themePath]!),
                       onPressed: () => _showThemePicker(context, provider),
                     ),
+                    OutlinedButton.icon(
+                      icon: const Icon(Icons.notification_add),
+                      label: Text("Chat on notification"),
+                      onPressed: () {
+                        Provider.of<ChatProvider>(context, listen: false)
+                            .showNotification('Topics Chat', "Hello World");
+                      },
+                    ),
                     OutlinedButton(
                       onPressed: _logout,
                       style: OutlinedButton.styleFrom(

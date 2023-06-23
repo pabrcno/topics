@@ -78,6 +78,7 @@ dependencies:
   google_mlkit_language_id: ^0.7.0
   flutter_keyboard_visibility: ^5.4.1
   in_app_purchase: ^3.1.7
+  flutter_local_notifications: ^14.1.1
 
 dev_dependencies:
   flutter_test:
