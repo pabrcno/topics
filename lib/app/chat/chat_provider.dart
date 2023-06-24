@@ -216,7 +216,6 @@ class ChatProvider with ChangeNotifier {
       streamSubscription; // Declare the StreamSubscription variable
 
   Future<void> sendMessage(String content) async {
-    log("called");
     await errorCommander.run(() async {
       final message = await _prepareChatAndMessage(content);
       await _validateUserHasMessages();
@@ -294,13 +293,31 @@ class ChatProvider with ChangeNotifier {
     );
   }
 
+  Future<void> _listenToStreamNotification(
+      Stream stream,
+      bool platformAllowsVibration,
+      Message message,
+      EMessageRole answerRole) async {
+    streamSubscription = stream.listen(
+      (event) {
+        _handleStreamEvent(event, platformAllowsVibration);
+        NotificationService.updateChatNotification(
+            messageBuffer, EMessageRole.assistant, true);
+      },
+      onDone: () {
+        _handleStreamDone(message, answerRole);
+        NotificationService.updateChatNotification(
+            messageBuffer, EMessageRole.assistant, false);
+      },
+      onError: _handleStreamError,
+    );
+  }
+
   void _handleStreamEvent(event, bool platformAllowsVibration) {
     messageBuffer = messageBuffer + event.content;
     if (platformAllowsVibration) {
       Vibration.vibrate(amplitude: 20, duration: 10);
     }
-    NotificationService.updateChatNotification(
-        messageBuffer, EMessageRole.assistant, isLoading);
   }
 
   void _handleStreamDone(Message message, EMessageRole answerRole) async {
@@ -315,8 +332,6 @@ class ChatProvider with ChangeNotifier {
 
     messages.add(answer);
     messageBuffer = '';
-    NotificationService.updateChatNotification(
-        messages.last.content, EMessageRole.assistant, false);
 
     _cancelStreamSubscription();
     notifyListeners();
@@ -621,8 +636,7 @@ class ChatProvider with ChangeNotifier {
       final imageMessages =
           await _imageGenerationApi.generateImage(newImageGenerationRequest);
       messages.addAll(imageMessages);
-      NotificationService.updateChatNotification(
-          messages.last.content, EMessageRole.imageAssistant, isLoading);
+
       await Future.wait(imageMessages
           .map((message) => _chatRepository.createMessage(message)));
 
@@ -674,6 +688,116 @@ class ChatProvider with ChangeNotifier {
         await _listenToStream(stream, platformAllowsVibration, message,
             EMessageRole.searchAssistant);
       });
+    });
+  }
+
+  Future<void> sendNotificationImageGenerationRequest({
+    required String prompt,
+    required double weight,
+    required int height,
+    required int width,
+    String? initImageMode,
+    List<Map<String, dynamic>>? textPrompts,
+    String? clipGuidancePreset,
+    String? sampler,
+    int? samples,
+  }) async {
+    await errorCommander.run(() async {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+
+      int steps = (prefs.getInt(ImageEqSharedPrefKeys.steps) ?? 50);
+      double imageStrength =
+          (prefs.getDouble(ImageEqSharedPrefKeys.imageStrength) ?? 0.35);
+      int cfgScale = (prefs.getInt(ImageEqSharedPrefKeys.cfgScale) ?? 7);
+      String? stylePreset =
+          (prefs.getString(ImageEqSharedPrefKeys.stylePreset));
+
+      if (!userChats
+          .map(
+            (chat) => chat.id,
+          )
+          .contains(currentChat?.id)) {
+        if (currentChat!.summary == 'Chat') {
+          currentChat = currentChat!.copyWith(summary: prompt);
+        }
+        await _chatRepository.createChat(currentChat!);
+      }
+      if (currentChat == null) return;
+      setLoading(true);
+      // Create a new ImageGenerationRequest object
+      final newImageGenerationRequest = ImageGenerationRequest(
+          prompt: prompt,
+          weight: weight,
+          height: height,
+          width: width,
+          steps: steps,
+          chatId: currentChat!.id,
+          imageStrength: initImagePath != null ? imageStrength : null,
+          initImageMode: initImagePath != null ? "IMAGE_STRENGTH" : null,
+          initImage: initImagePath != null
+              ? const Base64Codec().encode(
+                  File(initImagePath!).readAsBytesSync(),
+                )
+              : null,
+          cfgScale: cfgScale,
+          stylePreset: stylePreset);
+
+      final userMessage = Message(
+        id: const Uuid().v4(),
+        content: prompt,
+        sentAt: DateTime.now(),
+        chatId: currentChat!.id,
+        isUser: true,
+        role: EMessageRole.user,
+      );
+      messages.add(userMessage);
+      notifyListeners();
+      await _chatRepository.createMessage(userMessage);
+      final userHasMessages =
+          await _decrementUserMessages(decrementValue: (steps ~/ 20).toInt());
+
+      // Send this new image generation request to your backend for storage
+      if (!userHasMessages) {
+        setLoading(false);
+        return;
+      }
+      final hasAmplitudeControl =
+          await Vibration.hasAmplitudeControl() ?? false;
+      final imageMessages =
+          await _imageGenerationApi.generateImage(newImageGenerationRequest);
+      messages.addAll(imageMessages);
+      NotificationService.updateChatNotification(
+          messages.last.content, EMessageRole.imageAssistant, isLoading);
+      await Future.wait(imageMessages
+          .map((message) => _chatRepository.createMessage(message)));
+
+      setLoading(false);
+
+      notifyListeners();
+      if (hasAmplitudeControl) {
+        Vibration.vibrate(duration: 500, amplitude: 20);
+      }
+    }, onError: (e) {
+      setLoading(false);
+      throw Exception('Error while sending image generation request: $e');
+    });
+  }
+
+  Future<void> sendNotificationMessage(String content) async {
+    log("called");
+    await errorCommander.run(() async {
+      final message = await _prepareChatAndMessage(content);
+      await _validateUserHasMessages();
+
+      final stream = await _createChatStream(messages
+          .where((element) =>
+              element.role == EMessageRole.user ||
+              element.role == EMessageRole.assistant)
+          .toList());
+      final platformAllowsVibration = _checkPlatformForVibration();
+
+      await _listenToStreamNotification(
+          stream, platformAllowsVibration, message, EMessageRole.assistant);
     });
   }
 

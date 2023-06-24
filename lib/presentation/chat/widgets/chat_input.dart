@@ -77,6 +77,7 @@ class _ChatInputState extends State<ChatInput> {
                         decoration: InputDecoration.collapsed(
                           hintText: translate('type_a_message'),
                         ),
+                        textCapitalization: TextCapitalization.sentences,
                       ),
                     ),
                   ),

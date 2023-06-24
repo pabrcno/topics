@@ -90,13 +90,14 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                               Provider.of<ChatProvider>(context, listen: false);
 
                           final notificationService = NotificationService(
-                              onMessageReply: provider.sendMessage,
+                              onMessageReply: provider.sendNotificationMessage,
                               onImageGeneration: (prompt) async {
-                                await provider.sendImageGenerationRequest(
-                                    width: 512,
-                                    height: 512,
-                                    weight: 0.5,
-                                    prompt: prompt);
+                                await provider
+                                    .sendNotificationImageGenerationRequest(
+                                        width: 512,
+                                        height: 512,
+                                        weight: 0.5,
+                                        prompt: prompt);
                               });
                           final message = provider.messages.isNotEmpty
                               ? provider.messages.last
