@@ -128,5 +128,6 @@
   "stylePreset": "Style Preset",
   "outputStyle": "Output Style",
   "ask_me_anything": "C'mon I dare you! Ask me anything...",
-  "open_notification": "Open Chat Notification"
+  "open_notification": "Open Chat Notification",
+  "added_to_topic": "Added to Topic"
 }

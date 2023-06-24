@@ -638,11 +638,16 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
-  Future<void> changeChatTopicId(String topicId) async {
-    if (currentChat == null) return;
-    currentChat = currentChat?.copyWith(topicId: topicId);
-    await _chatRepository.updateChat(currentChat!);
-    notifyListeners();
+  Future<void> changeChatTopicId(String topicId, Chat? chat) async {
+    await errorCommander.run(() async {
+      if (chat != null) {
+        await _chatRepository.updateChat(chat.copyWith(topicId: topicId));
+        return;
+      }
+      currentChat = currentChat?.copyWith(topicId: topicId);
+      await _chatRepository.updateChat(currentChat!.copyWith(topicId: topicId));
+      notifyListeners();
+    });
   }
 
   Future<void> generateMessageSearch(String title, Message message) async {

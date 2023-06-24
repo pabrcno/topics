@@ -13,6 +13,44 @@ class ChatTileMenu extends StatelessWidget {
     required this.chat,
   }) : super(key: key);
 
+  void _showChangeTopicDialog(BuildContext context) async {
+    await showDialog<String>(
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          title: Text(translate('add_to_topic')),
+          children: Provider.of<ChatProvider>(context, listen: false)
+              .topics
+              .map((topic) {
+            return SimpleDialogOption(
+                onPressed: () async {
+                  Provider.of<ChatProvider>(context, listen: false)
+                      .changeChatTopicId(topic.id, chat)
+                      .then((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text(translate('added_to_topic')),
+                        backgroundColor: Colors.green,
+                      ),
+                    );
+
+                    Navigator.pop(context, topic.title);
+                  });
+                },
+                child: Column(children: [
+                  ListTile(
+                    leading: const Icon(Icons.topic_outlined),
+                    title: Text(topic.title),
+                    dense: true,
+                  ),
+                  const Divider()
+                ]));
+          }).toList(),
+        );
+      },
+    );
+  }
+
   void _showDeleteDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -100,6 +138,14 @@ class ChatTileMenu extends StatelessWidget {
                         _showDeleteDialog(context);
                       },
                     ),
+                    const Divider(),
+                    ListTile(
+                        onTap: () {
+                          Navigator.of(context).pop();
+                          _showChangeTopicDialog(context);
+                        },
+                        leading: const Icon(Icons.topic_outlined),
+                        title: Text(translate('add_to_topic')))
                   ],
                 ));
           },

@@ -102,7 +102,8 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                             children: chatProvider.topics.map((topic) {
                               return SimpleDialogOption(
                                   onPressed: () async {
-                                    chatProvider.changeChatTopicId(topic.id);
+                                    chatProvider.changeChatTopicId(
+                                        topic.id, null);
                                     Navigator.pop(context, topic.title);
                                   },
                                   child: Column(children: [

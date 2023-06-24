@@ -127,5 +127,6 @@
   "stylePreset": "Preset de Estilo",
   "outputStyle": "Estilo de Salida",
   "ask_me_anything": "Vamos te reto! pregúntame cualquier cosa...",
-  "open_notification": "Abrir Notificación de Chat"
+  "open_notification": "Abrir Notificación de Chat",
+  "added_to_topic": "Añadido a Tema"
 }
