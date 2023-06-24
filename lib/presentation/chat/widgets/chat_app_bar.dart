@@ -24,13 +24,11 @@ class ChatAppBar extends StatelessWidget implements PreferredSizeWidget {
                 builder: (BuildContext context) {
                   String tempSummary = '';
                   return AlertDialog(
-                    title: const Text('Change Summary'),
+                    title: Text(translate('change_summary')),
                     content: TextField(
                       onChanged: (value) {
                         tempSummary = value;
                       },
-                      decoration:
-                          const InputDecoration(hintText: "Enter new summary"),
                     ),
                     actions: <Widget>[
                       TextButton(

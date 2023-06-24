@@ -302,12 +302,10 @@ class ChatProvider with ChangeNotifier {
       (event) {
         _handleStreamEvent(event, platformAllowsVibration);
         NotificationService.updateChatNotification(
-            messageBuffer, EMessageRole.assistant, true);
+            messageBuffer, EMessageRole.assistant, isLoading);
       },
       onDone: () {
-        _handleStreamDone(message, answerRole);
-        NotificationService.updateChatNotification(
-            messageBuffer, EMessageRole.assistant, false);
+        _handleNotificationStreamDone(message, answerRole);
       },
       onError: _handleStreamError,
     );
@@ -336,6 +334,33 @@ class ChatProvider with ChangeNotifier {
     _cancelStreamSubscription();
     notifyListeners();
     setLoading(false);
+
+    await Future.wait([
+      _chatRepository.createMessage(answer),
+      _chatRepository.createMessage(message)
+    ]);
+  }
+
+  void _handleNotificationStreamDone(
+      Message message, EMessageRole answerRole) async {
+    final answer = Message(
+      id: const Uuid().v4(),
+      content: messageBuffer,
+      sentAt: DateTime.now(),
+      chatId: currentChat?.id ?? 'EMPTY_CHAT_ID',
+      isUser: false,
+      role: answerRole,
+    );
+
+    messages.add(answer);
+
+    messageBuffer = '';
+
+    _cancelStreamSubscription();
+    notifyListeners();
+    setLoading(false);
+    NotificationService.updateChatNotification(
+        messages.last.content, EMessageRole.assistant, isLoading);
 
     await Future.wait([
       _chatRepository.createMessage(answer),
