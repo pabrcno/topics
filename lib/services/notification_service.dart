@@ -1,18 +1,27 @@
-import 'dart:developer';
 import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:awesome_notifications/awesome_notifications.dart';
+
 import 'package:topics/domain/core/enums.dart';
 
 import 'package:topics/services/permission_service.dart';
 
+const CHAT_NOTIFICATION_ID = 1020;
+
+const IMAGE_GENERATION_KEY = 'Image Generation';
+const TEXT_GENERATION_KEY = 'Text Generation';
+
 @pragma('vm:entry-point')
 Future<void> onActionReceivedMethod(ReceivedAction receivedAction) async {
-  log('onActionReceivedMethod: ${receivedAction.buttonKeyInput}');
+  NotificationService.updateChatNotification(
+      receivedAction.buttonKeyInput, EMessageRole.user, true);
   final SendPort? port =
       IsolateNameServer.lookupPortByName(NotificationService.isolateName);
-  port?.send(receivedAction.buttonKeyInput);
+  port?.send({
+    'input': receivedAction.buttonKeyInput,
+    'key': receivedAction.buttonKeyPressed,
+  });
 }
 
 typedef NotificationCallback = Future<void> Function(String input);
@@ -21,14 +30,26 @@ class NotificationService {
   ReceivedNotification? _receivedNotification;
   ReceivedAction? _receivedAction;
   final NotificationCallback onMessageReply;
+  final NotificationCallback onImageGeneration;
+
   static const String isolateName = 'isolate';
   final ReceivePort _port = ReceivePort();
 
-  NotificationService({required this.onMessageReply}) {
+  NotificationService({
+    required this.onMessageReply,
+    required this.onImageGeneration,
+  }) {
     IsolateNameServer.registerPortWithName(_port.sendPort, isolateName);
     _port.listen((dynamic data) {
-      String input = data as String;
-      onMessageReply(input);
+      Map<String, String> actionData = data as Map<String, String>;
+      String input = actionData['input']!;
+      String key = actionData['key']!;
+
+      if (key == TEXT_GENERATION_KEY) {
+        onMessageReply(input);
+      } else if (key == IMAGE_GENERATION_KEY) {
+        onImageGeneration(input);
+      }
     });
   }
 
@@ -59,23 +80,27 @@ class NotificationService {
           .setListeners(onActionReceivedMethod: onActionReceivedMethod);
       await AwesomeNotifications().createNotification(
           content: NotificationContent(
-              id: -1, // -1 is replaced by a random number
+              id: CHAT_NOTIFICATION_ID, // -1 is replaced by a random number
               channelKey: 'topics_chat_channel',
-              body: role == EMessageRole.assistant ? body : null,
+              title: role == EMessageRole.user ? 'You' : 'Assistant',
+              body: role != EMessageRole.imageAssistant ? body : null,
               bigPicture: role == EMessageRole.imageAssistant ? body : null,
               largeIcon: 'asset://assets/images/topics_dark_removebg.png',
+              hideLargeIconOnExpand: true,
 
               //'asset://assets/images/balloons-in-sky.jpg',
-              notificationLayout: NotificationLayout.BigPicture,
-              payload: {'notificationId': '1234567890'}),
+              notificationLayout: role == EMessageRole.imageAssistant
+                  ? NotificationLayout.BigPicture
+                  : NotificationLayout.BigText,
+              payload: {'notificationId': '$CHAT_NOTIFICATION_ID'}),
           actionButtons: [
             NotificationActionButton(
-                key: 'Text Reply',
+                key: TEXT_GENERATION_KEY,
                 label: 'Reply Message',
                 requireInputText: true,
                 actionType: ActionType.SilentAction),
             NotificationActionButton(
-                key: 'Image Generation',
+                key: IMAGE_GENERATION_KEY,
                 label: 'Generate Image',
                 requireInputText: true,
                 actionType: ActionType.SilentAction),
@@ -86,5 +111,45 @@ class NotificationService {
                 isDangerousOption: true)
           ]);
     }
+  }
+
+  static Future<void> updateChatNotification(
+      String body, EMessageRole role, bool isLoading) async {
+    await AwesomeNotifications().createNotification(
+        content: NotificationContent(
+            id: CHAT_NOTIFICATION_ID,
+            title: role == EMessageRole.user ? 'You' : 'Assistant',
+            channelKey: 'topics_chat_channel',
+            body: role != EMessageRole.imageAssistant ? body : null,
+            bigPicture: role == EMessageRole.imageAssistant ? body : null,
+            largeIcon: isLoading
+                ? 'asset://assets/images/loading.png'
+                : role == EMessageRole.imageAssistant
+                    ? null
+                    : 'asset://assets/images/topics_dark_removebg.png',
+            hideLargeIconOnExpand: true,
+
+            //'asset://assets/images/balloons-in-sky.jpg',
+            notificationLayout: role == EMessageRole.imageAssistant
+                ? NotificationLayout.BigPicture
+                : NotificationLayout.BigText,
+            payload: {'notificationId': '$CHAT_NOTIFICATION_ID'}),
+        actionButtons: [
+          NotificationActionButton(
+              key: TEXT_GENERATION_KEY,
+              label: 'Reply Message',
+              requireInputText: true,
+              actionType: ActionType.SilentAction),
+          NotificationActionButton(
+              key: IMAGE_GENERATION_KEY,
+              label: 'Generate Image',
+              requireInputText: true,
+              actionType: ActionType.SilentAction),
+          NotificationActionButton(
+              key: 'DISMISS',
+              label: 'Dismiss',
+              actionType: ActionType.DismissAction,
+              isDangerousOption: true)
+        ]);
   }
 }

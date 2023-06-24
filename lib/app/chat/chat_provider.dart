@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,6 +12,7 @@ import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/repo/i_chat_repository.dart';
 import 'package:topics/domain/repo/i_user_repository.dart';
 import 'package:topics/domain/services/i_auth_service.dart';
+import 'package:topics/services/notification_service.dart';
 import 'package:uuid/uuid.dart';
 import 'package:vibration/vibration.dart';
 
@@ -299,6 +299,8 @@ class ChatProvider with ChangeNotifier {
     if (platformAllowsVibration) {
       Vibration.vibrate(amplitude: 20, duration: 10);
     }
+    NotificationService.updateChatNotification(
+        messageBuffer, EMessageRole.assistant, isLoading);
   }
 
   void _handleStreamDone(Message message, EMessageRole answerRole) async {
@@ -313,6 +315,8 @@ class ChatProvider with ChangeNotifier {
 
     messages.add(answer);
     messageBuffer = '';
+    NotificationService.updateChatNotification(
+        messages.last.content, EMessageRole.assistant, false);
 
     _cancelStreamSubscription();
     notifyListeners();
@@ -617,6 +621,8 @@ class ChatProvider with ChangeNotifier {
       final imageMessages =
           await _imageGenerationApi.generateImage(newImageGenerationRequest);
       messages.addAll(imageMessages);
+      NotificationService.updateChatNotification(
+          messages.last.content, EMessageRole.imageAssistant, isLoading);
       await Future.wait(imageMessages
           .map((message) => _chatRepository.createMessage(message)));
 
@@ -672,18 +678,5 @@ class ChatProvider with ChangeNotifier {
     currentTopic = null;
     messages = [];
     notifyListeners();
-  }
-
-  void createMessageNotification(
-      int id, String title, String body, String channelKey) {
-    AwesomeNotifications().createNotification(
-      content: NotificationContent(
-        id: id,
-        channelKey: channelKey,
-        title: title,
-        body: body,
-        payload: {'message': body},
-      ),
-    );
   }
 }

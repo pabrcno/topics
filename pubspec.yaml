@@ -113,6 +113,7 @@ flutter:
     - assets/strawberry_theme.json
     - assets/images/topics_light_removebg.png
     - assets/images/topics_dark_removebg.png
+    - assets/images/loading.png
     - assets/i18n/
     - .env
   # An image asset can refer to one or more resolution-specific "variants", see

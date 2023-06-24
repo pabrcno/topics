@@ -59,7 +59,7 @@ void main() async {
   final theme = ThemeDecoder.decodeThemeData(themeJson)!;
   final AuthService authService = AuthService();
   await AwesomeNotifications().initialize(
-      null,
+      'resource://drawable/app_icon',
       [
         NotificationChannel(
           channelKey: 'topics_chat_channel',
