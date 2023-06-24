@@ -38,7 +38,6 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
   String? stylePreset;
 
   Map<String, String?> stylePresetMap = {
-    "None": null,
     "Enhance": "enhance",
     "Anime": "anime",
     "Photographic": "photographic",
@@ -66,6 +65,9 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
 
   _loadPreferences() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (prefs.getString(ImageEqSharedPrefKeys.stylePreset)?.isEmpty ?? true) {
+      await prefs.setString(ImageEqSharedPrefKeys.stylePreset, "enhance");
+    }
     setState(() {
       imageStrength =
           (prefs.getDouble(ImageEqSharedPrefKeys.imageStrength) ?? 0.35);
@@ -152,8 +154,8 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
             DropdownButton<String>(
               hint: Text(translate('outputStyle')),
               value: stylePresetMap.entries
-                  .firstWhere((element) =>
-                      element.value == stylePreset || element.value == null)
+                  .firstWhere(
+                      (element) => element.value == (stylePreset ?? 'enhance'))
                   .key,
               onChanged: (String? newKey) {
                 setState(() {
