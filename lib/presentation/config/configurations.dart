@@ -70,65 +70,98 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
   @override
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
-        builder: (context, provider, child) => Scaffold(
-              appBar: AppBar(
-                title: Text(translate('configurations')),
-              ),
-              body: SizedBox(
-                width: double.infinity,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    OutlinedButton(
-                      child: Text(themePaths[provider.themePath]!),
-                      onPressed: () => _showThemePicker(context, provider),
-                    ),
-                    OutlinedButton(
-                        onPressed: () {
-                          final provider =
-                              Provider.of<ChatProvider>(context, listen: false);
+      builder: (context, provider, child) => SizedBox(
+        width: double.infinity,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            OutlinedButton(
+              child: Text(themePaths[provider.themePath]!),
+              onPressed: () => _showThemePicker(context, provider),
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  final provider =
+                      Provider.of<ChatProvider>(context, listen: false);
 
-                          final notificationService = NotificationService(
-                              onMessageReply: provider.sendNotificationMessage,
-                              onImageGeneration: (prompt) async {
-                                await provider
-                                    .sendNotificationImageGenerationRequest(
-                                        width: 512,
-                                        height: 512,
-                                        weight: 0.5,
-                                        prompt: prompt);
-                              });
-                          final message = provider.messages.isNotEmpty
-                              ? provider.messages.last
-                              : Message(
-                                  content: translate('ask_me_anything'),
-                                  role: EMessageRole.assistant,
-                                  chatId: provider.currentChat?.id ?? '',
-                                  id: 'INITIAL_NOTIFICATION_MESSAGE',
-                                  isUser: false,
-                                  sentAt: DateTime.now());
-                          notificationService.createChatNotification(
-                              message.content, message.role);
-                        },
-                        child: Text(
-                          translate("open_notification"),
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.tertiary),
-                        )),
-                    OutlinedButton(
-                      onPressed: _logout,
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: Theme.of(context).colorScheme.error,
+                  final notificationService = NotificationService(
+                      onMessageReply: provider.sendNotificationMessage,
+                      onImageGeneration: (prompt) async {
+                        await provider.sendNotificationImageGenerationRequest(
+                            width: 512,
+                            height: 512,
+                            weight: 0.5,
+                            prompt: prompt);
+                      });
+                  final message = provider.messages.isNotEmpty
+                      ? provider.messages.last
+                      : Message(
+                          content: translate('ask_me_anything'),
+                          role: EMessageRole.assistant,
+                          chatId: provider.currentChat?.id ?? '',
+                          id: 'INITIAL_NOTIFICATION_MESSAGE',
+                          isUser: false,
+                          sentAt: DateTime.now());
+                  notificationService.createChatNotification(
+                      message.content, message.role);
+                },
+                child: Text(
+                  translate("open_notification"),
+                  style:
+                      TextStyle(color: Theme.of(context).colorScheme.tertiary),
+                )),
+            OutlinedButton(
+              child: Text(translate('change_language'),
+                  style: TextStyle(color: Colors.amber.shade600)),
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  builder: (BuildContext bc) {
+                    return SafeArea(
+                      child: Container(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Wrap(
+                          children: <Widget>[
+                            ListTile(
+                              leading: Text('🇬🇧'), // emoji flag
+                              title: Text('English'),
+                              onTap: () {
+                                changeLocale(context, 'en');
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            Divider(),
+                            ListTile(
+                              leading: Text('🇪🇸'), // emoji flag
+                              title: Text('Español'),
+                              onTap: () {
+                                changeLocale(context, 'es');
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                            // Add more ListTiles for other languages
+                          ],
+                        ),
                       ),
-                      child: Text(translate('sign_out')),
-                    ),
-                    const SizedBox(height: 16),
-
-                    // More configuration options can be added here...
-                  ],
-                ),
+                    );
+                  },
+                );
+              },
+            ),
+            OutlinedButton(
+              onPressed: _logout,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Theme.of(context).colorScheme.error,
               ),
-            ));
+              child: Text(translate('sign_out')),
+            ),
+            const SizedBox(height: 16),
+
+            // More configuration options can be added here...
+          ],
+        ),
+      ),
+    );
   }
 }
