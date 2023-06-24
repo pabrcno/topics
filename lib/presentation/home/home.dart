@@ -23,10 +23,11 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
   static const List<Destination> allDestinations = <Destination>[
-    Destination(0, 'Chat', Icons.chat),
-    Destination(1, 'Chats', Icons.history),
-    Destination(2, 'Topics', Icons.topic),
-    Destination(3, 'Store', Icons.store), // This line is new
+    Destination(0, '', Icons.chat),
+    Destination(1, '', Icons.history),
+    Destination(2, '', Icons.topic),
+    Destination(3, '', Icons.store),
+    Destination(4, '', Icons.settings),
   ];
   PageController pageController = PageController(initialPage: 0);
   late final List<GlobalKey<NavigatorState>> navigatorKeys;
@@ -107,17 +108,6 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                           const Icon(Icons.message_outlined),
                           Text(' ${chatProvider.userMessageCount}'),
                         ])),
-                    IconButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const ConfigurationsPage(),
-                          ),
-                        );
-                      },
-                      icon: const Icon(Icons.settings),
-                    ),
                   ],
                 ),
           body: PageView(
@@ -142,12 +132,16 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                   return const TopicList();
                 case 3:
                   return const StorePage();
+                case 4:
+                  return const ConfigurationsPage();
                 default:
                   return Container(); // or some kind of default page
               }
             }).toList(),
           ),
-          floatingActionButton: selectedIndex != 3 && selectedIndex != 0
+          floatingActionButton: selectedIndex != 3 &&
+                  selectedIndex != 0 &&
+                  selectedIndex != 4
               ? FloatingActionButton(
                   onPressed: () {
                     if (selectedIndex == 1) {
