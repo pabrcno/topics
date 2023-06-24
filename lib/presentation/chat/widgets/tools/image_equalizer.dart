@@ -152,7 +152,8 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
             DropdownButton<String>(
               hint: Text(translate('outputStyle')),
               value: stylePresetMap.entries
-                  .firstWhere((element) => element.value == stylePreset)
+                  .firstWhere((element) =>
+                      element.value == stylePreset || element.value == null)
                   .key,
               onChanged: (String? newKey) {
                 setState(() {

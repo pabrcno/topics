@@ -635,7 +635,7 @@ class ChatProvider with ChangeNotifier {
                 )
               : null,
           cfgScale: cfgScale,
-          stylePreset: stylePreset);
+          stylePreset: stylePreset == '' ? null : stylePreset);
 
       final userMessage = Message(
         id: const Uuid().v4(),
@@ -765,7 +765,7 @@ class ChatProvider with ChangeNotifier {
                 )
               : null,
           cfgScale: cfgScale,
-          stylePreset: stylePreset);
+          stylePreset: stylePreset == '' ? null : stylePreset);
 
       final userMessage = Message(
         id: const Uuid().v4(),
@@ -809,7 +809,6 @@ class ChatProvider with ChangeNotifier {
   }
 
   Future<void> sendNotificationMessage(String content) async {
-    log("called");
     await errorCommander.run(() async {
       final message = await _prepareChatAndMessage(content);
       await _validateUserHasMessages();
