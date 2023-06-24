@@ -126,5 +126,6 @@
   "higherValues": "Higher values will cost you more messages.",
   "lowerValues": "Lower values will output less quality images.",
   "stylePreset": "Style Preset",
-  "outputStyle": "Output Style"
+  "outputStyle": "Output Style",
+  "ask_me_anything": "Ask Me Anything..."
 }

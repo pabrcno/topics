@@ -125,5 +125,6 @@
   "higherValues": "Valores más altos te costarán más mensajes.",
   "lowerValues": "Valores más bajos producirán imágenes de menor calidad.",
   "stylePreset": "Preset de Estilo",
-  "outputStyle": "Estilo de Salida"
+  "outputStyle": "Estilo de Salida",
+  "ask_me_anything": "Pregúntame cualquier cosa..."
 }

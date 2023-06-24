@@ -103,7 +103,7 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
             Slider(
               value: imageStrength,
               min: 0,
-              max: 1,
+              max: 0.99,
               onChanged: (newValue) {
                 setState(() {
                   imageStrength = newValue;

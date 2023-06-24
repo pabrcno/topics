@@ -101,7 +101,7 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                           final message = provider.messages.isNotEmpty
                               ? provider.messages.last
                               : Message(
-                                  content: 'Ask me anything!',
+                                  content: translate('ask_me_anything'),
                                   role: EMessageRole.assistant,
                                   chatId: provider.currentChat?.id ?? '',
                                   id: 'INITIAL_NOTIFICATION_MESSAGE',
