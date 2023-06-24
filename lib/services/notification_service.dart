@@ -87,6 +87,7 @@ class NotificationService {
               bigPicture: role == EMessageRole.imageAssistant ? body : null,
               largeIcon: 'asset://assets/images/topics_dark_removebg.png',
               hideLargeIconOnExpand: true,
+              fullScreenIntent: true,
 
               //'asset://assets/images/balloons-in-sky.jpg',
               notificationLayout: role == EMessageRole.imageAssistant
@@ -128,6 +129,7 @@ class NotificationService {
                     ? null
                     : 'asset://assets/images/topics_dark_removebg.png',
             hideLargeIconOnExpand: true,
+            fullScreenIntent: true,
 
             //'asset://assets/images/balloons-in-sky.jpg',
             notificationLayout: role == EMessageRole.imageAssistant

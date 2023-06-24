@@ -126,5 +126,6 @@
   "lowerValues": "Valores más bajos producirán imágenes de menor calidad.",
   "stylePreset": "Preset de Estilo",
   "outputStyle": "Estilo de Salida",
-  "ask_me_anything": "Pregúntame cualquier cosa..."
+  "ask_me_anything": "Vamos te reto! pregúntame cualquier cosa...",
+  "open_notification": "Abrir Notificación de Chat"
 }

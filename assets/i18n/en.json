@@ -127,5 +127,6 @@
   "lowerValues": "Lower values will output less quality images.",
   "stylePreset": "Style Preset",
   "outputStyle": "Output Style",
-  "ask_me_anything": "Ask Me Anything..."
+  "ask_me_anything": "C'mon I dare you! Ask me anything...",
+  "open_notification": "Open Chat Notification"
 }

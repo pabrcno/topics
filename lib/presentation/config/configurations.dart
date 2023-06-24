@@ -110,7 +110,11 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                           notificationService.createChatNotification(
                               message.content, message.role);
                         },
-                        child: Text('Chat Notification')),
+                        child: Text(
+                          translate("open_notification"),
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.tertiary),
+                        )),
                     OutlinedButton(
                       onPressed: _logout,
                       style: OutlinedButton.styleFrom(
