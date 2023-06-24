@@ -7,7 +7,7 @@ import '../../app/chat/chat_provider.dart';
 class ChatScreen extends StatelessWidget {
   final bool isNew;
 
-  ChatScreen({Key? key, this.isNew = false}) : super(key: key);
+  const ChatScreen({Key? key, this.isNew = false}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +18,7 @@ class ChatScreen extends StatelessWidget {
       },
       child: Consumer<ChatProvider>(
           builder: (context, provider, child) =>
-              Scaffold(appBar: const ChatAppBar(), body: ChatBody())),
+              const Scaffold(appBar: ChatAppBar(), body: ChatBody())),
     );
   }
 }

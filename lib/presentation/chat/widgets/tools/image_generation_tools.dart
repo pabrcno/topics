@@ -4,7 +4,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 class ImageGenerationTools extends StatefulWidget {
   final TextEditingController textController;
 
-  ImageGenerationTools({Key? key, required this.textController})
+  const ImageGenerationTools({Key? key, required this.textController})
       : super(key: key);
 
   @override
@@ -87,7 +87,7 @@ class _ImageGenerationToolsState extends State<ImageGenerationTools> {
                                               horizontal: 12)),
                                       onPressed: () {
                                         widget.textController.text +=
-                                            " " + entry.value[i];
+                                            " ${entry.value[i]}";
                                       },
                                       child: Text(entry.value[i],
                                           style: TextStyle(

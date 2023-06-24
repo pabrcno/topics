@@ -5,7 +5,7 @@ import 'package:google_mlkit_language_id/google_mlkit_language_id.dart';
 class TTSButton extends StatefulWidget {
   final String text;
 
-  TTSButton({required this.text});
+  const TTSButton({super.key, required this.text});
 
   @override
   _TTSButtonState createState() => _TTSButtonState();

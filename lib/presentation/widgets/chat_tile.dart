@@ -58,7 +58,7 @@ class ChatTile extends StatelessWidget {
         provider.fetchMessages();
         Navigator.of(context).push(
           MaterialPageRoute(
-            builder: (context) => ChatScreen(),
+            builder: (context) => const ChatScreen(),
             // Set fullscreenDialog to true
           ),
         );

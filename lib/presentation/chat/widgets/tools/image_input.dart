@@ -9,9 +9,9 @@ class ImageInput extends StatelessWidget {
   const ImageInput({Key? key}) : super(key: key);
 
   Future<void> _pickImage(ImageSource source, ChatProvider chatProvider) async {
-    final ImagePicker _picker = ImagePicker();
+    final ImagePicker picker = ImagePicker();
     // Pick image
-    final XFile? image = await _picker.pickImage(
+    final XFile? image = await picker.pickImage(
         maxHeight: 1024, maxWidth: 1024, source: source);
     if (image != null) {
       // Cropping image

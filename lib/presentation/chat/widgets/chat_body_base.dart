@@ -107,8 +107,8 @@ class ChatBodyBase extends StatelessWidget {
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 500),
             child: !provider.isImageMode
-                ? PromptBuilderTools(
-                    key: const ValueKey('PromptBuilderTools'),
+                ? const PromptBuilderTools(
+                    key: ValueKey('PromptBuilderTools'),
                   )
                 : ImageGenerationTools(
                     key: const ValueKey('ImageGenerationTools'),

@@ -61,7 +61,7 @@ class _StorePageState extends State<StorePage> {
     return Scaffold(
       body: GridView.builder(
         itemCount: _products.length,
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
         itemBuilder: (BuildContext context, int index) {
@@ -87,7 +87,7 @@ class _StorePageState extends State<StorePage> {
                     _inAppPurchase.buyNonConsumable(
                         purchaseParam: purchaseParam);
                   },
-                  child: Text('Buy'),
+                  child: const Text('Buy'),
                 ),
               ],
             ),

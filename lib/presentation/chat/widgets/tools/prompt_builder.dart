@@ -9,7 +9,7 @@ import 'package:topics/app/chat/chat_provider.dart';
 import 'package:topics/presentation/widgets/disabled.dart';
 
 class PromptBuilderTools extends StatefulWidget {
-  PromptBuilderTools({Key? key}) : super(key: key);
+  const PromptBuilderTools({Key? key}) : super(key: key);
 
   @override
   _PromptBuilderToolsState createState() => _PromptBuilderToolsState();

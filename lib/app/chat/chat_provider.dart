@@ -393,7 +393,7 @@ class ChatProvider with ChangeNotifier {
         Navigator.push(
           navigatorKey.currentState!.context,
           MaterialPageRoute(
-            builder: (context) => ChatScreen(), // your chat screen widget
+            builder: (context) => const ChatScreen(), // your chat screen widget
           ),
         );
       }

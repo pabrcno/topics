@@ -67,7 +67,7 @@ class _OCRInputState extends State<OCRInput> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.secondary,
-            padding: EdgeInsets.all(5)),
+            padding: const EdgeInsets.all(5)),
         onPressed: _openCamera,
         child: Text(
           'OCR',

@@ -16,7 +16,7 @@ class ChatBody extends StatelessWidget {
           Flexible(
             child: Stack(
               children: [
-                ChatMessagesListView(),
+                const ChatMessagesListView(),
                 Positioned(child: ChatBodyBase()),
               ],
             ),

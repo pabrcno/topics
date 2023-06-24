@@ -19,7 +19,7 @@ class TemperatureSliderButton extends StatelessWidget {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
             backgroundColor: Theme.of(context).colorScheme.tertiary,
-            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0)),
         onPressed: () {
           showModalBottomSheet(
             context: context,

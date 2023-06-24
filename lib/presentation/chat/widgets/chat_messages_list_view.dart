@@ -10,7 +10,7 @@ import '../../widgets/animated_logo.dart';
 import 'chat_message_tile.dart';
 
 class ChatMessagesListView extends StatefulWidget {
-  ChatMessagesListView({Key? key}) : super(key: key);
+  const ChatMessagesListView({Key? key}) : super(key: key);
 
   @override
   _ChatMessagesListViewState createState() => _ChatMessagesListViewState();

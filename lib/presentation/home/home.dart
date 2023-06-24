@@ -130,7 +130,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             children: allDestinations.map((Destination destination) {
               switch (destination.index) {
                 case 0:
-                  return ChatBody();
+                  return const ChatBody();
                 case 1:
                   return ChatsList(
                     chats: chatProvider.userChats,
