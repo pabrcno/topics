@@ -7,6 +7,7 @@ import 'package:topics/presentation/home/widgets/topic_modal.dart';
 
 import '../../app/chat/chat_provider.dart';
 
+import '../../app/store/store_provider.dart';
 import '../../app/theme/theme_provider.dart';
 import '../about/about.dart';
 import '../config/configurations.dart';
@@ -106,7 +107,8 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                         padding: const EdgeInsets.symmetric(horizontal: 5),
                         child: Row(children: [
                           const Icon(Icons.message_outlined),
-                          Text(' ${chatProvider.userMessageCount}'),
+                          Text(
+                              ' ${chatProvider.userMessageCount + Provider.of<StoreProvider>(context).userMessageCount}'),
                         ])),
                   ],
                 ),

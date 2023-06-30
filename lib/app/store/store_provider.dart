@@ -9,6 +9,8 @@ class StoreProvider with ChangeNotifier {
   final AuthService authService = AuthService();
   List<ProductDetails> _products = [];
 
+  int userMessageCount = 0;
+
   List<ProductDetails> get products => _products;
 
   set products(List<ProductDetails> products) {
@@ -25,7 +27,6 @@ class StoreProvider with ChangeNotifier {
 
   Future<void> loadProducts() async {
     final List<String> storeItems = [
-      'test',
       '50_messages_pack',
       '100_messages_pack',
       '500_messages_pack',
@@ -53,10 +54,13 @@ class StoreProvider with ChangeNotifier {
         if (purchase.status == PurchaseStatus.purchased) {
           userRepository.increaseMessages(
               authService.getCurrentUser()?.uid ?? '', messageCount);
+
+          // Update user message count
+          userMessageCount += messageCount;
         }
       }
     } else if (purchase.status == PurchaseStatus.error) {
-      print('error');
+      throw Exception('Error while purchasing: ${purchase.error}');
     }
   }
 

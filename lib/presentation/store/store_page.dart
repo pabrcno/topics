@@ -30,7 +30,13 @@ class _StorePageState extends State<StorePage> {
               final product = store.products[index];
               return InkWell(
                   onTap: () {
-                    store.buyProduct(product);
+                    store.buyProduct(product).then((_) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('You bought ${product.title}'),
+                        ),
+                      );
+                    });
                   },
                   child: Card(
                     color: getTileColor(store.products[index].id, context),
