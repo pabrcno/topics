@@ -10,7 +10,6 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
-import 'package:topics/presentation/store/store_page.dart';
 
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/repo/user/firestore_user_repo.dart';
