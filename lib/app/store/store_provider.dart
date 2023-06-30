@@ -29,8 +29,9 @@ class StoreProvider with ChangeNotifier {
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: product);
 
-      await _inAppPurchase.buyNonConsumable(
+      await _inAppPurchase.buyConsumable(
         purchaseParam: purchaseParam,
+        autoConsume: true,
       );
 
       return _inAppPurchase.purchaseStream.listen((purchaseDetails) {
