@@ -80,7 +80,7 @@ class ChatMessageTile extends StatelessWidget {
           const SizedBox(height: 5),
           message.role == EMessageRole.imageAssistant
               ? InkWell(
-                  onDoubleTap: () async {
+                  onLongPress: () async {
                     ErrorCommander().run(() async {
                       var file = await DefaultCacheManager()
                           .getSingleFile(message.content);
