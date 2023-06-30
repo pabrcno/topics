@@ -10,6 +10,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:json_theme/json_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/presentation/store/store_page.dart';
 
 import 'package:topics/repo/chat/firestore_chat_repository.dart';
 import 'package:topics/repo/user/firestore_user_repo.dart';
@@ -19,6 +20,7 @@ import 'package:topics/services/exception_handling_service.dart';
 import 'api/chat/chat_api.dart';
 import 'api/image_generation/image_generation_api.dart';
 import 'app/chat/chat_provider.dart';
+import 'app/store/store_provider.dart';
 import 'app/theme/theme_provider.dart';
 import 'firebase_options.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -96,6 +98,10 @@ void main() async {
                 initialThemePath: themePath,
                 prefs: prefs),
           ),
+          ChangeNotifierProvider<StoreProvider>(
+            create: (context) =>
+                StoreProvider(userRepository: FirestoreUserRepository()),
+          )
         ],
         child: MyApp(
           localizationDelegate: localizationDelegate,

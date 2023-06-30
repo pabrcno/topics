@@ -44,7 +44,7 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
                   )));
         } else {
           return Padding(
-              padding: const EdgeInsets.only(bottom: 80),
+              padding: const EdgeInsets.only(bottom: 100),
               child: ListView.builder(
                 padding: const EdgeInsets.only(bottom: 20),
                 controller: _scrollController,

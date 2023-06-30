@@ -8,7 +8,10 @@ class FirestoreUserRepository implements IUserRepository {
 
   @override
   Future<void> createUser(AppUser user) async {
-    await _firestore.collection('users').doc(user.uid).set(user.toJson());
+    await _firestore
+        .collection('users')
+        .doc(user.uid)
+        .set({...user.toJson(), "messageCount": 25});
   }
 
   @override
@@ -28,5 +31,13 @@ class FirestoreUserRepository implements IUserRepository {
         .collection('users')
         .doc(uid)
         .update({'messageCount': FieldValue.increment(-decrement)});
+  }
+
+  @override
+  Future<void> increaseMessages(String uid, int increment) async {
+    await _firestore
+        .collection('users')
+        .doc(uid)
+        .update({'messageCount': FieldValue.increment(increment)});
   }
 }
