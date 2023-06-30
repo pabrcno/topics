@@ -57,9 +57,9 @@ class ErrorCommander {
     } catch (error) {
       if (onError != null) {
         onError(error);
-      } else {
-        _handleError(error);
       }
+      _handleError(error);
+
       rethrow; // If you want the error to propagate further.
     }
   }
