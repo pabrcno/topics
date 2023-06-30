@@ -29,7 +29,7 @@ class StoreProvider with ChangeNotifier {
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: product);
 
-      await _inAppPurchase.buyConsumable(
+      await _inAppPurchase.buyNonConsumable(
         purchaseParam: purchaseParam,
       );
 
