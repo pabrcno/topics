@@ -11,7 +11,7 @@ class FirestoreUserRepository implements IUserRepository {
     await _firestore
         .collection('users')
         .doc(user.uid)
-        .set({...user.toJson(), "messageCount": 25});
+        .set({...user.toJson(), "messagesCount": 25});
   }
 
   @override

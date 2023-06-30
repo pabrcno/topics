@@ -13,7 +13,7 @@ class StoreProvider with ChangeNotifier {
   List<ProductDetails> _products = [];
   final _errorCommander = ErrorCommander();
   int userMessageCount = 0;
-
+  PurchaseDetails? completedPurchase;
   List<ProductDetails> get products => _products;
 
   set products(List<ProductDetails> products) {
@@ -23,31 +23,35 @@ class StoreProvider with ChangeNotifier {
 
   StoreProvider({required this.userRepository});
 
-  Future<StreamSubscription<List<PurchaseDetails>>> buyProduct(
-      ProductDetails product, BuildContext context) async {
+  Future<void> _deliverMessage(ProductDetails product) async {
+    final messageCount = getMessageCountFromProductId(product.id);
+    userRepository.increaseMessages(
+        authService.getCurrentUser()?.uid ?? '', messageCount);
+    userMessageCount += messageCount;
+  }
+
+  Future<void> buyProduct(ProductDetails product, BuildContext context) async {
     return await _errorCommander.run(() async {
       final PurchaseParam purchaseParam =
           PurchaseParam(productDetails: product);
 
       await _inAppPurchase.buyConsumable(
         purchaseParam: purchaseParam,
-        autoConsume: true,
       );
 
-      return _inAppPurchase.purchaseStream.listen((purchaseDetails) {
+      _inAppPurchase.purchaseStream.listen((purchaseDetails) {
         if (purchaseDetails
             .any((element) => element.status == PurchaseStatus.purchased)) {
-          final messageCount = getMessageCountFromProductId(product.id);
-          userRepository.increaseMessages(
-              authService.getCurrentUser()?.uid ?? '', messageCount);
-          userMessageCount += messageCount;
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                  'You have successfully purchased $messageCount messages'),
-            ),
-          );
+          _deliverMessage(product);
+          completedPurchase = purchaseDetails.firstWhere(
+              (element) => element.status == PurchaseStatus.purchased);
         }
+      }, onDone: () {
+        if (completedPurchase != null) {
+          _inAppPurchase.completePurchase(completedPurchase!);
+        }
+      }, onError: (error) {
+        throw error;
       });
     });
   }
