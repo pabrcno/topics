@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:topics/services/auth/auth_service.dart';
+import 'package:topics/services/exception_handling_service.dart';
 import '../../domain/repo/i_user_repository.dart';
 
 class StoreProvider with ChangeNotifier {
@@ -8,7 +11,7 @@ class StoreProvider with ChangeNotifier {
   final IUserRepository userRepository;
   final AuthService authService = AuthService();
   List<ProductDetails> _products = [];
-
+  final _errorCommander = ErrorCommander();
   int userMessageCount = 0;
 
   List<ProductDetails> get products => _products;
@@ -20,9 +23,32 @@ class StoreProvider with ChangeNotifier {
 
   StoreProvider({required this.userRepository});
 
-  Future<void> buyProduct(ProductDetails product) async {
-    final PurchaseParam purchaseParam = PurchaseParam(productDetails: product);
-    await _inAppPurchase.buyNonConsumable(purchaseParam: purchaseParam);
+  Future<StreamSubscription<List<PurchaseDetails>>> buyProduct(
+      ProductDetails product, BuildContext context) async {
+    return await _errorCommander.run(() async {
+      final PurchaseParam purchaseParam =
+          PurchaseParam(productDetails: product);
+
+      await _inAppPurchase.buyConsumable(
+        purchaseParam: purchaseParam,
+      );
+
+      return _inAppPurchase.purchaseStream.listen((purchaseDetails) {
+        if (purchaseDetails
+            .any((element) => element.status == PurchaseStatus.purchased)) {
+          final messageCount = getMessageCountFromProductId(product.id);
+          userRepository.increaseMessages(
+              authService.getCurrentUser()?.uid ?? '', messageCount);
+          userMessageCount += messageCount;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(
+                  'You have successfully purchased $messageCount messages'),
+            ),
+          );
+        }
+      });
+    });
   }
 
   Future<void> loadProducts() async {
@@ -41,27 +67,6 @@ class StoreProvider with ChangeNotifier {
     }
 
     products = response.productDetails;
-  }
-
-  void handlePurchase(PurchaseDetails purchase) {
-    if (purchase.status == PurchaseStatus.purchased) {
-      if (!purchase.pendingCompletePurchase) {
-        InAppPurchase.instance.completePurchase(purchase);
-        // Extract the number of messages based on product id
-        final messageCount = getMessageCountFromProductId(purchase.productID);
-        // Increase user messages4
-
-        if (purchase.status == PurchaseStatus.purchased) {
-          userRepository.increaseMessages(
-              authService.getCurrentUser()?.uid ?? '', messageCount);
-
-          // Update user message count
-          userMessageCount += messageCount;
-        }
-      }
-    } else if (purchase.status == PurchaseStatus.error) {
-      throw Exception('Error while purchasing: ${purchase.error}');
-    }
   }
 
   // Add more cases depending on your products

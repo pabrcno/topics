@@ -3,6 +3,7 @@ import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/app/theme/theme_provider.dart';
 import 'package:topics/domain/core/enums.dart';
+import 'package:topics/presentation/auth/login.dart';
 import 'package:topics/services/auth/auth_service.dart';
 import 'package:topics/services/exception_handling_service.dart';
 
@@ -33,7 +34,9 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
 
     AuthService().signOut();
 
-    Navigator.of(context).pop();
+    Navigator.of(context).replace(
+        oldRoute: ModalRoute.of(context)!,
+        newRoute: MaterialPageRoute(builder: (_) => const LoginPage()));
   }
 
   Future<void> _showThemePicker(

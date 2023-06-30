@@ -24,19 +24,13 @@ class _StorePageState extends State<StorePage> {
           return GridView.builder(
             itemCount: store.products.length,
             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2, childAspectRatio: .75),
+                crossAxisCount: 2, childAspectRatio: 0.9),
             itemBuilder: (BuildContext context, int index) {
               store.products.sort((a, b) => a.price.compareTo(b.price));
               final product = store.products[index];
               return InkWell(
-                  onTap: () {
-                    store.buyProduct(product).then((_) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('You bought ${product.title}'),
-                        ),
-                      );
-                    });
+                  onTap: () async {
+                    await store.buyProduct(product, context);
                   },
                   child: Card(
                     color: getTileColor(store.products[index].id, context),
@@ -49,22 +43,40 @@ class _StorePageState extends State<StorePage> {
                           Flexible(
                             child: Padding(
                                 padding:
-                                    const EdgeInsets.symmetric(vertical: 20),
+                                    const EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
                                   product.title
                                       .substring(0, product.title.indexOf('(')),
-                                  style: Theme.of(context).textTheme.titleLarge,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .titleMedium!
+                                      .copyWith(
+                                          color: getTextColor(
+                                              store.products[index].id,
+                                              context)),
                                 )),
                           ),
-                          Text(
-                            product.description,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
+                          Padding(
+                              padding: const EdgeInsets.all(10),
+                              child: Text(
+                                product.description,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall!
+                                    .copyWith(
+                                        color: getTextColor(
+                                            store.products[index].id, context)),
+                              )),
                           Padding(
                               padding: const EdgeInsets.symmetric(vertical: 20),
                               child: Text(
                                 product.price,
-                                style: Theme.of(context).textTheme.titleLarge,
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .titleLarge!
+                                    .copyWith(
+                                        color: getTextColor(
+                                            store.products[index].id, context)),
                               )),
                         ],
                       ),
@@ -80,11 +92,24 @@ class _StorePageState extends State<StorePage> {
   Color getTileColor(String id, BuildContext context) {
     switch (id) {
       case '50_messages_pack':
-        return Theme.of(context).colorScheme.onPrimary;
+        return Theme.of(context).colorScheme.primaryContainer;
       case '100_messages_pack':
-        return Theme.of(context).colorScheme.onSecondary;
+        return Theme.of(context).colorScheme.secondaryContainer;
       case '500_messages_pack':
-        return Theme.of(context).colorScheme.onTertiary;
+        return Theme.of(context).colorScheme.tertiaryContainer;
+      default:
+        return Colors.black;
+    }
+  }
+
+  Color getTextColor(String id, BuildContext context) {
+    switch (id) {
+      case '50_messages_pack':
+        return Theme.of(context).colorScheme.onPrimaryContainer;
+      case '100_messages_pack':
+        return Theme.of(context).colorScheme.onSecondaryContainer;
+      case '500_messages_pack':
+        return Theme.of(context).colorScheme.onTertiaryContainer;
       default:
         return Colors.black;
     }
