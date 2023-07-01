@@ -140,7 +140,7 @@ class _ImageEqualizerState extends State<ImageEqualizer> {
             Slider(
               value: steps.toDouble(),
               min: 10,
-              max: 150,
+              max: 50, // TODO: 150
               onChanged: (newValue) {
                 setState(() {
                   steps = newValue.toInt();
