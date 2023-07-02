@@ -114,8 +114,8 @@ class _ChatInputState extends State<ChatInput> {
                                   provider.sendImageGenerationRequest(
                                     prompt: messageText,
                                     weight: 0.5,
-                                    height: 512,
-                                    width: 512,
+                                    height: 1024,
+                                    width: 1024,
                                   );
                                   widget._textController.clear();
                                 },

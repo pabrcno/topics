@@ -92,8 +92,8 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                       onMessageReply: provider.sendNotificationMessage,
                       onImageGeneration: (prompt) async {
                         await provider.sendNotificationImageGenerationRequest(
-                            width: 512,
-                            height: 512,
+                            width: 1024,
+                            height: 1024,
                             weight: 0.5,
                             prompt: prompt);
                       });
