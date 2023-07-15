@@ -12,10 +12,7 @@ class SpeechInput extends StatefulWidget {
 }
 
 class _SpeechInputState extends State<SpeechInput> {
-  // Initialize a variable of SpeechToText.
   final _speech = stt.SpeechToText();
-
-  // Variable to keep track of the listening state.
   bool _isListening = false;
 
   @override
@@ -45,7 +42,6 @@ class _SpeechInputState extends State<SpeechInput> {
         },
       );
       if (available) {
-        // Ensure that you have the necessary permissions before starting to listen.
         if (await permissionServiceProvider.requestMicrophonePermission()) {
           setState(() {
             _isListening = true;
@@ -53,17 +49,9 @@ class _SpeechInputState extends State<SpeechInput> {
           _speech.listen(
             onResult: (val) {
               setState(() {
-                // Write recognized words to the controller.
                 widget.controller.text = val.recognizedWords;
               });
-              // Log the confidence rating, if available.
-              if (val.hasConfidenceRating && val.confidence > 0) {
-                setState(() {
-                  _isListening = false;
-                });
-              }
             },
-            listenFor: const Duration(seconds: 59),
           );
         }
       }

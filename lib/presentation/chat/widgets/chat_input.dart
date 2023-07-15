@@ -55,7 +55,7 @@ class _ChatInputState extends State<ChatInput> {
                   },
                 ),
                 Container(
-                  margin: const EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(
                       minWidth: _contextWidth(context) -
