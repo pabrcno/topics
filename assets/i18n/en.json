@@ -130,5 +130,7 @@
   "ask_me_anything": "C'mon I dare you! Ask me anything...",
   "open_notification": "Open Chat Notification",
   "added_to_topic": "Added to Topic",
-  "change_language": "Change Language"
+  "change_language": "Change Language",
+  "disable_accessibility_mode": "Disable Accessibility Mode",
+  "enable_accessibility_mode": "Enable Accessibility Mode"
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/app/theme/theme_provider.dart';
 import 'package:topics/domain/core/enums.dart';
 import 'package:topics/presentation/auth/login.dart';
@@ -27,6 +28,29 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
     'assets/jungle_theme.json': 'Jungle Theme',
     'assets/strawberry_theme.json': 'Strawberry Theme',
   };
+
+  bool isAccessibilityMode = false;
+
+  @override
+  void initState() {
+    super.initState();
+    loadAccessibilityMode();
+  }
+
+  void loadAccessibilityMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isAccessibilityMode = prefs.getBool('isAccessibilityMode') ?? false;
+    });
+  }
+
+  void toggleAccessibilityMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isAccessibilityMode = !isAccessibilityMode;
+      prefs.setBool('isAccessibilityMode', isAccessibilityMode);
+    });
+  }
 
   void _logout() {
     var chatProvider = Provider.of<ChatProvider>(context, listen: false);
@@ -123,21 +147,21 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                   builder: (BuildContext bc) {
                     return SafeArea(
                       child: Container(
-                        padding: EdgeInsets.symmetric(vertical: 20),
+                        padding: const EdgeInsets.symmetric(vertical: 20),
                         child: Wrap(
                           children: <Widget>[
                             ListTile(
-                              leading: Text('🇬🇧'), // emoji flag
-                              title: Text('English'),
+                              leading: const Text('🇬🇧'), // emoji flag
+                              title: const Text('English'),
                               onTap: () {
                                 changeLocale(context, 'en');
                                 Navigator.of(context).pop();
                               },
                             ),
-                            Divider(),
+                            const Divider(),
                             ListTile(
-                              leading: Text('🇪🇸'), // emoji flag
-                              title: Text('Español'),
+                              leading: const Text('🇪🇸'), // emoji flag
+                              title: const Text('Español'),
                               onTap: () {
                                 changeLocale(context, 'es');
                                 Navigator.of(context).pop();
@@ -158,6 +182,16 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                 foregroundColor: Theme.of(context).colorScheme.error,
               ),
               child: Text(translate('sign_out')),
+            ),
+            OutlinedButton(
+              onPressed: toggleAccessibilityMode,
+              child: Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Text(
+                    isAccessibilityMode
+                        ? translate('disable_accessibility_mode')
+                        : translate('enable_accessibility_mode'),
+                  )),
             ),
             const SizedBox(height: 16),
 

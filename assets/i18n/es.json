@@ -129,5 +129,7 @@
   "ask_me_anything": "Vamos te reto! pregúntame cualquier cosa...",
   "open_notification": "Abrir Notificación de Chat",
   "added_to_topic": "Añadido a Tema",
-  "change_language": "Cambiar Idioma"
+  "change_language": "Cambiar Idioma",
+  "disable_accessibility_mode": "Desactivar Modo Accesibilidad",
+  "enable_accessibility_mode": "Activar Modo Accesibilidad"
 }
