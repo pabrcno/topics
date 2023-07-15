@@ -39,6 +39,14 @@
           }
         },
         {
+          "client_id": "199942357204-uu20pdfinnqp6mnaasfvhrr5k9cscb5k.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.sequencetech.topics",
+            "certificate_hash": "5c4b14b698f73c6365da01f4cc4954a758fbd6f2"
+          }
+        },
+        {
           "client_id": "199942357204-2sf88fkrtbvf5orkemouap8s16k348eb.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -59,7 +67,7 @@
               "client_id": "199942357204-fefi2a3t2si8u8u29cadu2eqaaavumao.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.sequencetech.topics.RunnerTests"
+                "bundle_id": "com.example.topics.RunnerTests"
               }
             }
           ]
