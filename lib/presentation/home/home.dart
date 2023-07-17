@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:topics/presentation/chat/widgets/accessibility_chat_body.dart';
 import 'package:topics/presentation/chat/widgets/chat_app_bar.dart';
 import 'package:topics/presentation/chat/widgets/chat_body.dart';
 import 'package:topics/presentation/home/widgets/topic_modal.dart';
@@ -49,6 +51,15 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
     return controller;
   }
 
+  bool isAccessibilityMode = false;
+
+  void loadAccessibilityMode() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      isAccessibilityMode = prefs.getBool('isAccessibilityMode') ?? false;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -61,6 +72,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
       (int index) => buildFaderController(),
     ).toList();
     destinationFaders[selectedIndex].value = 1.0;
+    loadAccessibilityMode();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Provider.of<ChatProvider>(context, listen: false).fetchUserChats();
@@ -80,6 +92,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    loadAccessibilityMode();
     return WillPopScope(onWillPop: () async {
       return false;
     }, child: Consumer<ChatProvider>(
@@ -87,7 +100,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: selectedIndex == 0
-              ? const ChatAppBar()
+              ? isAccessibilityMode
+                  ? null
+                  : const ChatAppBar()
               : AppBar(
                   leading: IconButton(
                     onPressed: () {
@@ -122,7 +137,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
             children: allDestinations.map((Destination destination) {
               switch (destination.index) {
                 case 0:
-                  return const ChatBody();
+                  return isAccessibilityMode
+                      ? const AccessibilityChatBody()
+                      : const ChatBody();
                 case 1:
                   return ChatsList(
                     chats: chatProvider.userChats,
