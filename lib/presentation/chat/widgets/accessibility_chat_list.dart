@@ -14,8 +14,6 @@ class AccessibilityMessagesContainer extends StatefulWidget {
 
 class _AccessibilityMessagesContainerState
     extends State<AccessibilityMessagesContainer> {
-  int currentIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Consumer<ChatProvider>(builder: (context, chatProvider, child) {
@@ -25,21 +23,19 @@ class _AccessibilityMessagesContainerState
               onTapDown: (details) {
                 var screenWidth = MediaQuery.of(context).size.width;
                 if (details.localPosition.dx < screenWidth * 0.25) {
-                  if (currentIndex > 0) {
-                    setState(() {
-                      currentIndex--;
-                    });
+                  if (chatProvider.currentMessageIndex > 0) {
+                    chatProvider.currentMessageIndex--;
                   }
                 } else if (details.localPosition.dx > screenWidth * 0.75) {
-                  if (currentIndex < chatProvider.messages.length - 1) {
-                    setState(() {
-                      currentIndex++;
-                    });
+                  if (chatProvider.currentMessageIndex <
+                      chatProvider.messages.length - 1) {
+                    chatProvider.currentMessageIndex++;
                   }
                 }
               },
               child: AccessibilityChatTile(
-                  message: chatProvider.messages[currentIndex]),
+                  message:
+                      chatProvider.messages[chatProvider.currentMessageIndex]),
             )
           : Container(
               height: MediaQuery.of(context).size.height * 0.75,

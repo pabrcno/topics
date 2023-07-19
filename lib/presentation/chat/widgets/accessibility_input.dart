@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-import 'package:topics/app/tts/tts_provider.dart';
 import '../../../app/chat/chat_provider.dart';
 
 class AccessibilityInput extends StatefulWidget {
@@ -44,14 +42,11 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
     final chatProvider = Provider.of<ChatProvider>(context, listen: false);
     final screenSize = MediaQuery.of(context).size;
 
-    final ttsProvider = Provider.of<TTSProvider>(context);
-
-    ttsProvider.speak(translate("tap_to_speak"));
     return InkWell(
       onTap: messageContent.isEmpty ? _startListening : _stopListening,
       onDoubleTap: () => _sendMessage(chatProvider),
       child: Container(
-        height: screenSize.height * 0.15,
+        height: screenSize.height * .2,
         width: screenSize.width,
         color: Colors.grey[300],
         child: Center(

@@ -52,6 +52,7 @@ class ChatProvider with ChangeNotifier {
   List<Chat> userChats = [];
   String? _initImagePath;
 
+  int currentMessageIndex = 0;
   String? get initImagePath => _initImagePath;
 
   set initImagePath(String? val) {
