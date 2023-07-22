@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../../../app/chat/chat_provider.dart';
@@ -49,11 +50,26 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
       builder: (context, chatProvider, child) {
         final screenSize = MediaQuery.of(context).size;
 
-        return GestureDetector(
-          onHorizontalDragEnd: (_) {
+        return InkWell(
+          onLongPress: () {
             if (messageContent.isNotEmpty) {
               _sendMessage(chatProvider);
+              return;
             }
+            final ttsProvider =
+                Provider.of<TTSProvider>(context, listen: false);
+
+            String allInstructions = translate('start_voice_input') +
+                '. ' +
+                translate('stop_voice_input') +
+                '. ' +
+                translate('send_voice_message') +
+                '. ' +
+                translate('listen_to_message') +
+                '. ' +
+                translate('navigate_chat');
+
+            ttsProvider.speak(allInstructions);
           },
           onTap: messageContent.isEmpty
               ? () => _startListening(chatProvider)
@@ -68,17 +84,21 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
             setState(() => messageContent = '');
           },
           child: SizedBox(
-            height: screenSize.height * .15,
-            width: screenSize.width,
-            child: Center(
-              child: Text(
-                messageContent.isEmpty ? 'Tap to speak' : messageContent,
-                style: messageContent.isEmpty
-                    ? Theme.of(context).textTheme.headlineLarge
-                    : null,
-              ),
-            ),
-          ),
+              height: screenSize.height * .15,
+              width: screenSize.width,
+              child: Column(children: [
+                Center(
+                  child: Text(
+                    messageContent.isEmpty ? 'Tap to speak' : messageContent,
+                    style: messageContent.isEmpty
+                        ? Theme.of(context).textTheme.headlineLarge
+                        : null,
+                  ),
+                ),
+                SizedBox(height: 20),
+                if (messageContent.isEmpty)
+                  Text('Long press to hear instructions')
+              ])),
         );
       },
     );

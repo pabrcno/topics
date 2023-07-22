@@ -133,5 +133,10 @@
   "change_language": "Change Language",
   "disable_accessibility_mode": "Disable Accessibility Mode",
   "enable_accessibility_mode": "Enable Accessibility Mode",
-  "tap_to_speak": "Keep pressed the bottom of the screen to record your message, to listen the recording tap, to send the message double tap."
+  "tap_to_speak": "Keep pressed the bottom of the screen to record your message, to listen the recording tap, to send the message double tap.",
+  "start_voice_input": "Start Voice Input: To start providing your voice input for the message, tap the bottom of the screen. The application will begin recording your message after the tap.",
+  "stop_voice_input": "Stop Voice Input and Clear Text: If you wish to stop the voice input before it ends automatically or to clear any previously recorded message, double-tap on the bottom of the screen.",
+  "send_voice_message": "Send Voice Message: If you have a recorded voice message, long press on the screen to send the message. The application will confirm the message content and send it.",
+  "listen_to_message": "Listen to Message Content: After recording a voice message, wait until the vibrations of the AI typing finish and tap the screen to hear the recorded content. The application will read out the message for you.",
+  "navigate_chat": "Navigate Chat Messages: To read your chat messages, you have two areas on the screen to tap. Tap on the left quarter of the screen to navigate to the previous chat message. The application will read out the message for you. Similarly, tap on the right quarter of the screen to navigate to the next chat message."
 }

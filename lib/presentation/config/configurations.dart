@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:topics/app/theme/theme_provider.dart';
@@ -28,6 +29,10 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
     'assets/jungle_theme.json': 'Jungle Theme',
     'assets/strawberry_theme.json': 'Strawberry Theme',
   };
+  Future<String> getVersionNumber() async {
+    final PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    return packageInfo.version;
+  }
 
   bool isAccessibilityMode = false;
 
@@ -194,7 +199,16 @@ class _ConfigurationsPageState extends State<ConfigurationsPage> {
                   )),
             ),
             const SizedBox(height: 16),
-
+            FutureBuilder<String>(
+              future: getVersionNumber(),
+              builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else {
+                  return Text('Version: ${snapshot.data}');
+                }
+              },
+            ),
             // More configuration options can be added here...
           ],
         ),
