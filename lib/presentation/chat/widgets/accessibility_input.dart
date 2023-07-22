@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import '../../../app/chat/chat_provider.dart';
+import '../../../app/tts/tts_provider.dart';
 
 class AccessibilityInput extends StatefulWidget {
   const AccessibilityInput({super.key});
@@ -48,11 +49,21 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
       builder: (context, chatProvider, child) {
         final screenSize = MediaQuery.of(context).size;
 
-        return InkWell(
+        return GestureDetector(
+          onHorizontalDragEnd: (_) {
+            if (messageContent.isNotEmpty) {
+              _sendMessage(chatProvider);
+            }
+          },
           onTap: messageContent.isEmpty
               ? () => _startListening(chatProvider)
-              : () => _sendMessage(chatProvider),
-          onLongPress: () {
+              : () {
+                  final ttsProvider =
+                      Provider.of<TTSProvider>(context, listen: false);
+                  ttsProvider.stop();
+                  ttsProvider.speak(messageContent);
+                },
+          onDoubleTap: () {
             _speech.stop();
             setState(() => messageContent = '');
           },

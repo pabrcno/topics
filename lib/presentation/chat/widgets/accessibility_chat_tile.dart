@@ -23,16 +23,13 @@ class AccessibilityChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
-
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ttsProvider.speak(message.content);
-    });
     return GestureDetector(
         onDoubleTap: () {
+          final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
           ttsProvider.stop();
         },
-        onLongPress: () {
+        onTap: () {
+          final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
           ttsProvider.stop();
           ttsProvider.speak(message.content);
         },
