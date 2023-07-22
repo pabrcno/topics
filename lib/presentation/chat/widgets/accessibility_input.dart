@@ -89,7 +89,9 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
               child: Column(children: [
                 Center(
                   child: Text(
-                    messageContent.isEmpty ? 'Tap to speak' : messageContent,
+                    messageContent.isEmpty
+                        ? translate("tap_to_speak")
+                        : messageContent,
                     style: messageContent.isEmpty
                         ? Theme.of(context).textTheme.headlineLarge
                         : null,
@@ -97,7 +99,7 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
                 ),
                 SizedBox(height: 20),
                 if (messageContent.isEmpty)
-                  Text('Long press to hear instructions')
+                  Text(translate('long_press_for_instructions'))
               ])),
         );
       },
