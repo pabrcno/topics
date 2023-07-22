@@ -52,8 +52,15 @@ class ChatProvider with ChangeNotifier {
   List<Chat> userChats = [];
   String? _initImagePath;
 
-  int currentMessageIndex = 0;
+  int _currentMessageIndex = 0;
   String? get initImagePath => _initImagePath;
+
+  int get currentMessageIndex => _currentMessageIndex;
+
+  set currentMessageIndex(int val) {
+    _currentMessageIndex = val;
+    notifyListeners();
+  }
 
   set initImagePath(String? val) {
     _initImagePath = val;
@@ -219,6 +226,7 @@ class ChatProvider with ChangeNotifier {
   Future<void> sendMessage(String content) async {
     await errorCommander.run(() async {
       final message = await _prepareChatAndMessage(content);
+
       await _validateUserHasMessages();
 
       final stream = await _createChatStream(messages
@@ -237,12 +245,14 @@ class ChatProvider with ChangeNotifier {
     final message = _createNewUserMessage(content);
 
     messages.add(message);
+
     if (!userChats.map((e) => e.id).contains(currentChat?.id)) {
       if (currentChat?.summary == 'Chat') {
         currentChat = currentChat?.copyWith(
           summary: message.content,
         );
       }
+
       userChats.add(currentChat!);
       userChats.sort(
         (a, b) => b.lastModified.compareTo(a.lastModified),
@@ -250,8 +260,9 @@ class ChatProvider with ChangeNotifier {
 
       await _chatRepository.createChat(currentChat!);
     }
-
+    currentMessageIndex = messages.length - 1;
     notifyListeners();
+
     setLoading(true);
     return message;
   }
@@ -340,6 +351,7 @@ class ChatProvider with ChangeNotifier {
       _chatRepository.createMessage(answer),
       _chatRepository.createMessage(message)
     ]);
+    currentMessageIndex = messages.length - 1;
   }
 
   void _handleNotificationStreamDone(
@@ -360,6 +372,8 @@ class ChatProvider with ChangeNotifier {
     _cancelStreamSubscription();
     notifyListeners();
     setLoading(false);
+
+    currentMessageIndex = messages.length - 1;
     NotificationService.updateChatNotification(
         messages.last.content, EMessageRole.assistant, isLoading);
 

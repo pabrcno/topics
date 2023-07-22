@@ -212,3 +212,23 @@ class Destination {
   final String title;
   final IconData icon;
 }
+
+class NoSwipePhysics extends ScrollPhysics {
+  final PageController pageController;
+
+  const NoSwipePhysics({required this.pageController, ScrollPhysics? parent})
+      : super(parent: parent);
+
+  @override
+  NoSwipePhysics applyTo(ScrollPhysics? ancestor) {
+    return NoSwipePhysics(pageController: pageController, parent: ancestor);
+  }
+
+  @override
+  double applyPhysicsToUserOffset(ScrollMetrics position, double offset) {
+    if (pageController.page == 0 && offset < 0) {
+      return 0.0;
+    }
+    return offset;
+  }
+}

@@ -54,7 +54,7 @@ class AccessibilityChatTile extends StatelessWidget {
                               .copyWith(
                         blockSpacing: 30,
                         p: const TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                         ),
                         codeblockDecoration: BoxDecoration(
                           color: Colors.black,

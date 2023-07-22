@@ -16,30 +16,67 @@ class _AccessibilityMessagesContainerState
     extends State<AccessibilityMessagesContainer> {
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
     return Consumer<ChatProvider>(builder: (context, chatProvider, child) {
-      return chatProvider.messages.isNotEmpty
-          ? GestureDetector(
-              behavior: HitTestBehavior.translucent,
-              onTapDown: (details) {
-                var screenWidth = MediaQuery.of(context).size.width;
-                if (details.localPosition.dx < screenWidth * 0.25) {
-                  if (chatProvider.currentMessageIndex > 0) {
-                    chatProvider.currentMessageIndex--;
-                  }
-                } else if (details.localPosition.dx > screenWidth * 0.75) {
-                  if (chatProvider.currentMessageIndex <
-                      chatProvider.messages.length - 1) {
-                    chatProvider.currentMessageIndex++;
-                  }
-                }
-              },
-              child: AccessibilityChatTile(
-                  message:
-                      chatProvider.messages[chatProvider.currentMessageIndex]),
-            )
-          : Container(
-              height: MediaQuery.of(context).size.height * 0.75,
-            );
+      return SizedBox(
+          width: screenWidth,
+          height: screenHeight * 0.70,
+          child: Stack(
+            children: [
+              // Middle section (Chat list)
+              Positioned(
+                top: 10,
+                bottom: 0,
+                child: SizedBox(
+                  width: screenWidth,
+                  height: screenHeight, // Providing height to the SizedBox
+                  child: chatProvider.messages.isNotEmpty
+                      ? AccessibilityChatTile(
+                          message: chatProvider
+                              .messages[chatProvider.currentMessageIndex],
+                        )
+                      : Container(),
+                ),
+              ),
+              // Left navigator
+              Positioned(
+                left: 0,
+                top: 0,
+                bottom: 0,
+                child: SizedBox(
+                  width: screenWidth * 0.25,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      if (chatProvider.currentMessageIndex > 0) {
+                        chatProvider.currentMessageIndex--;
+                      }
+                    },
+                  ),
+                ),
+              ),
+              // Right navigator
+              Positioned(
+                right: 0,
+                top: 0,
+                bottom: 0,
+                child: SizedBox(
+                  width: screenWidth * 0.25,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.translucent,
+                    onTap: () {
+                      if (chatProvider.currentMessageIndex <
+                          chatProvider.messages.length - 1) {
+                        chatProvider.currentMessageIndex++;
+                      }
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ));
     });
   }
 }

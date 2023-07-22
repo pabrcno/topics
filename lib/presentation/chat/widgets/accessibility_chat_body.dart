@@ -9,11 +9,13 @@ class AccessibilityChatBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const SafeArea(
-        child: Column(
+        child: Scaffold(
+            body: Column(
+      mainAxisSize: MainAxisSize.max,
       children: <Widget>[
         AccessibilityMessagesContainer(),
         AccessibilityInput()
       ],
-    ));
+    )));
   }
 }

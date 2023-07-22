@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
@@ -14,17 +16,20 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
   String messageContent = '';
   final stt.SpeechToText _speech = stt.SpeechToText();
 
-  Future<void> _startListening() async {
+  Future<void> _startListening(ChatProvider chatProvider) async {
     bool available = await _speech.initialize(
       onStatus: (status) => print('STT Status: $status'),
       onError: (error) => print('STT Error: $error'),
+      finalTimeout: const Duration(seconds: 5),
     );
     if (available) {
-      _speech.listen(onResult: (result) {
-        setState(() {
-          messageContent = result.recognizedWords;
-        });
-      });
+      _speech.listen(
+        onResult: (result) {
+          setState(() {
+            messageContent = result.recognizedWords;
+          });
+        },
+      );
     }
   }
 
@@ -39,21 +44,32 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
 
   @override
   Widget build(BuildContext context) {
-    final chatProvider = Provider.of<ChatProvider>(context, listen: false);
-    final screenSize = MediaQuery.of(context).size;
+    return Consumer<ChatProvider>(
+      builder: (context, chatProvider, child) {
+        final screenSize = MediaQuery.of(context).size;
 
-    return InkWell(
-      onTap: messageContent.isEmpty ? _startListening : _stopListening,
-      onDoubleTap: () => _sendMessage(chatProvider),
-      child: Container(
-        height: screenSize.height * .2,
-        width: screenSize.width,
-        color: Colors.grey[300],
-        child: Center(
-          child:
-              Text(messageContent.isEmpty ? 'Tap to speak...' : messageContent),
-        ),
-      ),
+        return InkWell(
+          onTap: messageContent.isEmpty
+              ? () => _startListening(chatProvider)
+              : () => _sendMessage(chatProvider),
+          onLongPress: () {
+            _speech.stop();
+            setState(() => messageContent = '');
+          },
+          child: SizedBox(
+            height: screenSize.height * .15,
+            width: screenSize.width,
+            child: Center(
+              child: Text(
+                messageContent.isEmpty ? 'Tap to speak' : messageContent,
+                style: messageContent.isEmpty
+                    ? Theme.of(context).textTheme.headlineLarge
+                    : null,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
