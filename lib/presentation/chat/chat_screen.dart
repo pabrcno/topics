@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:topics/presentation/chat/widgets/accessibility_chat_body.dart';
 import 'package:topics/presentation/chat/widgets/chat_app_bar.dart';
 import 'package:topics/presentation/chat/widgets/chat_body.dart';
 import '../../app/chat/chat_provider.dart';
@@ -37,7 +38,11 @@ class _ChatScreenState extends State<ChatScreen> {
       },
       child: Consumer<ChatProvider>(
         builder: (context, provider, child) {
-          return const Scaffold(appBar: ChatAppBar(), body: ChatBody());
+          return Scaffold(
+              appBar: !isAccessibilityMode ? const ChatAppBar() : null,
+              body: !isAccessibilityMode
+                  ? const ChatBody()
+                  : const AccessibilityChatBody());
         },
       ),
     );

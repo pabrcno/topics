@@ -131,5 +131,6 @@
   "added_to_topic": "Añadido a Tema",
   "change_language": "Cambiar Idioma",
   "disable_accessibility_mode": "Desactivar Modo Accesibilidad",
-  "enable_accessibility_mode": "Activar Modo Accesibilidad"
+  "enable_accessibility_mode": "Activar Modo Accesibilidad",
+  "tap_to_speak": "Manten presionado el fondo de la pantalla para grabar tu mensaje, para escuchar el mensaje presiona una vez, para enviar presiona dos veces."
 }

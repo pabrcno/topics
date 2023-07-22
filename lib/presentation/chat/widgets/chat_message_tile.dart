@@ -111,9 +111,6 @@ class ChatMessageTile extends StatelessWidget {
                     styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
                         .copyWith(
                       blockSpacing: 30,
-                      p: const TextStyle(
-                        fontSize: 16,
-                      ),
                       codeblockDecoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(2.0),

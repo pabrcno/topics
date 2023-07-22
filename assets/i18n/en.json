@@ -132,5 +132,6 @@
   "added_to_topic": "Added to Topic",
   "change_language": "Change Language",
   "disable_accessibility_mode": "Disable Accessibility Mode",
-  "enable_accessibility_mode": "Enable Accessibility Mode"
+  "enable_accessibility_mode": "Enable Accessibility Mode",
+  "tap_to_speak": "Keep pressed the bottom of the screen to record your message, to listen the recording tap, to send the message double tap."
 }

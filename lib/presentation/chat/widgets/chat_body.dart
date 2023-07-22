@@ -11,18 +11,19 @@ class ChatBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<ChatProvider>(
-      builder: (context, provider, child) => Column(
-        children: <Widget>[
-          Flexible(
-            child: Stack(
-              children: [
-                const ChatMessagesListView(),
-                Positioned(child: ChatBodyBase()),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+        builder: (context, provider, child) => SafeArea(
+              child: Column(
+                children: <Widget>[
+                  Flexible(
+                    child: Stack(
+                      children: [
+                        const ChatMessagesListView(),
+                        Positioned(child: ChatBodyBase()),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ));
   }
 }

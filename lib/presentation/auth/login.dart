@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info/package_info.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/presentation/home/home.dart';
 
 import '../../app/theme/theme_provider.dart';
 import '../../services/auth/auth_service.dart';
@@ -33,9 +34,15 @@ class LoginPage extends StatelessWidget {
               Provider.of<ThemeProvider>(context).logoUrl,
               width: 300,
             ),
-            SignInButton(
-              onPressed: () => AuthService().signInWithGoogle(),
-            ),
+            SignInButton(onPressed: () {
+              return AuthService().signInWithGoogle().then((value) {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const HomePage(),
+                  ),
+                );
+              });
+            }),
             FutureBuilder<String>(
               future: getVersionNumber(),
               builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
