@@ -33,7 +33,7 @@ class ThemeProvider with ChangeNotifier {
 
   String get themePath => _themePath;
 
-  fetchThemeData(String themePath) async {
+  void fetchThemeData(String themePath) async {
     isLoading = true;
     _themePath = themePath;
 

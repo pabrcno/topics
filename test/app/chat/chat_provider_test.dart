@@ -7,6 +7,7 @@ import 'package:mockito/mockito.dart';
 import 'package:topics/app/chat/chat_provider.dart';
 import 'package:topics/domain/api/image_generation/i_image_generation_api.dart';
 import 'package:topics/domain/models/auth/app_user_credential.dart';
+import 'package:topics/domain/models/chat/chat.dart';
 
 import 'package:topics/domain/models/message/message.dart';
 import 'package:topics/domain/models/topic/topic.dart';
@@ -344,5 +345,76 @@ void main() {
     expect(chatProvider.currentTopic, isNull);
     expect(chatProvider.messages, isEmpty);
     expect(chatProvider.isLoading, equals(false));
+  });
+  test('fetchMessagesCount function works as expected', () async {
+    const int mockUserMessageCount = 10;
+    when(mockUserRepository.getUser(any)).thenAnswer((_) async =>
+        mockAppUserWithMessages.copyWith(messageCount: mockUserMessageCount));
+
+    await chatProvider.fetchMessagesCount();
+
+    expect(chatProvider.userMessageCount, equals(mockUserMessageCount));
+    expect(chatProvider.isLoading, equals(false));
+  });
+  test('isImageMode property is updated correctly', () {
+    chatProvider.isImageMode = true;
+    expect(chatProvider.isImageMode, equals(true));
+
+    chatProvider.isImageMode = false;
+    expect(chatProvider.isImageMode, equals(false));
+  });
+
+  test('clearChat function works as expected', () {
+    // Set up initial chat and messages
+    chatProvider.currentChat = mockChat;
+    chatProvider.messages = mockMessages;
+
+    chatProvider.clearChat();
+
+    // Verify that chat and messages are cleared
+    expect(chatProvider.currentChat, isNotNull);
+    expect(chatProvider.messages, isEmpty);
+  });
+  test('setCurrentChatTemperature function works as expected', () {
+    final double mockTemperature = 0.8;
+
+    chatProvider.setCurrentChatTemperature(mockTemperature);
+
+    // Verify that the chat's temperature is updated
+    expect(chatProvider.currentChat!.temperature, equals(mockTemperature));
+  });
+
+  test('changeChatTopicId function works as expected', () async {
+    final String newTopicId = 'newTopicId';
+    final Chat updatedChat = mockChat.copyWith(topicId: newTopicId);
+
+    when(mockChatRepository.updateChat(any))
+        .thenAnswer((_) async => updatedChat);
+
+    await chatProvider.changeChatTopicId(newTopicId, null);
+
+    // Verify that the chat's topic ID is updated
+    expect(chatProvider.currentChat!.topicId, equals(newTopicId));
+  });
+  test('sendNotificationMessage function works as expected', () async {
+    when(mockUserRepository.getUser(any))
+        .thenAnswer((_) async => mockAppUserWithMessages);
+
+    const mockContent = 'Hello!';
+    final mockEvent = mockMessage;
+
+    when(mockChatApi.createChatCompletionStream(any, any))
+        .thenAnswer((_) async {
+      final controller = StreamController<Message>();
+      controller.add(mockEvent);
+      controller.close();
+      return controller.stream;
+    });
+
+    await chatProvider.sendNotificationMessage(mockContent);
+
+    // check if the message is in the list
+    expect(
+        chatProvider.messages.any((msg) => msg.content == mockContent), isTrue);
   });
 }
