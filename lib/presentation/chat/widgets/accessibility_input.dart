@@ -22,7 +22,7 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
     bool available = await _speech.initialize(
       onStatus: (status) => print('STT Status: $status'),
       onError: (error) => print('STT Error: $error'),
-      finalTimeout: const Duration(seconds: 5),
+      finalTimeout: const Duration(seconds: 15),
     );
     if (available) {
       _speech.listen(
@@ -46,6 +46,8 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
 
   @override
   Widget build(BuildContext context) {
+    final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
+
     return Consumer<ChatProvider>(
       builder: (context, chatProvider, child) {
         final screenSize = MediaQuery.of(context).size;
@@ -56,8 +58,6 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
               _sendMessage(chatProvider);
               return;
             }
-            final ttsProvider =
-                Provider.of<TTSProvider>(context, listen: false);
 
             String allInstructions = translate('start_voice_input') +
                 '. ' +
@@ -72,7 +72,10 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
             ttsProvider.speak(allInstructions);
           },
           onTap: messageContent.isEmpty
-              ? () => _startListening(chatProvider)
+              ? () {
+                  ttsProvider.stop();
+                  _startListening(chatProvider);
+                }
               : () {
                   final ttsProvider =
                       Provider.of<TTSProvider>(context, listen: false);
@@ -86,7 +89,8 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
           child: SizedBox(
               height: screenSize.height * .15,
               width: screenSize.width,
-              child: Column(children: [
+              child: SingleChildScrollView(
+                  child: Column(children: [
                 Center(
                   child: Text(
                     messageContent.isEmpty
@@ -100,7 +104,7 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
                 SizedBox(height: 20),
                 if (messageContent.isEmpty)
                   Text(translate('long_press_for_instructions'))
-              ])),
+              ]))),
         );
       },
     );

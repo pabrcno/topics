@@ -33,7 +33,7 @@ class _SpeechInputState extends State<SpeechInput> {
   void _listen() async {
     if (!_isListening) {
       bool available = await _speech.initialize(
-        finalTimeout: const Duration(seconds: 5),
+        finalTimeout: const Duration(seconds: 15),
         onError: (val) async {
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
