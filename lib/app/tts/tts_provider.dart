@@ -44,7 +44,8 @@ class TTSProvider with ChangeNotifier {
       return;
     }
     // Identify the language of the text.
-    final result = await languageIdentifier.identifyLanguage(text);
+    final result =
+        await languageIdentifier.identifyLanguage(text.substring(0, 100));
     final String language = result;
     if (await flutterTts.isLanguageAvailable(language)) {
       await flutterTts.setLanguage(language);
@@ -54,7 +55,8 @@ class TTSProvider with ChangeNotifier {
     }
     _isPlaying = true;
     notifyListeners();
-    await flutterTts.setPitch(1.0);
+    await flutterTts.setPitch(0.5);
+    await flutterTts.setSpeechRate(0.7);
     await flutterTts.speak(text);
   }
 
