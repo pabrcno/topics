@@ -46,7 +46,7 @@ class _AccessibilityMessagesContainerState
                 top: 0,
                 bottom: 0,
                 child: SizedBox(
-                  width: screenWidth * 0.25,
+                  width: screenWidth * 0.15,
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
@@ -63,7 +63,7 @@ class _AccessibilityMessagesContainerState
                 top: 0,
                 bottom: 0,
                 child: SizedBox(
-                  width: screenWidth * 0.25,
+                  width: screenWidth * 0.15,
                   child: GestureDetector(
                     behavior: HitTestBehavior.translucent,
                     onTap: () {

@@ -55,8 +55,8 @@ class TTSProvider with ChangeNotifier {
     }
     _isPlaying = true;
     notifyListeners();
-    await flutterTts.setPitch(0.5);
-    await flutterTts.setSpeechRate(0.7);
+    await flutterTts.setPitch(0.7);
+    await flutterTts.setSpeechRate(0.5);
     await flutterTts.speak(text);
   }
 
