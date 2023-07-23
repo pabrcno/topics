@@ -44,8 +44,8 @@ class TTSProvider with ChangeNotifier {
       return;
     }
     // Identify the language of the text.
-    final result =
-        await languageIdentifier.identifyLanguage(text.substring(0, 100));
+    final result = await languageIdentifier
+        .identifyLanguage(text.length >= 100 ? text.substring(0, 100) : text);
     final String language = result;
     if (await flutterTts.isLanguageAvailable(language)) {
       await flutterTts.setLanguage(language);

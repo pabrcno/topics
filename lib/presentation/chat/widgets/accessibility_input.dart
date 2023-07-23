@@ -97,7 +97,7 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
                         ? translate("tap_to_speak")
                         : messageContent,
                     style: messageContent.isEmpty
-                        ? Theme.of(context).textTheme.headlineLarge
+                        ? Theme.of(context).textTheme.headlineMedium
                         : null,
                   ),
                 ),
