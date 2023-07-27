@@ -62,7 +62,7 @@ class ChatMessageTile extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Image.asset(Provider.of<ThemeProvider>(context).logoUrl,
-                          height: 25),
+                          height: 30),
                       Row(
                         children: [
                           Padding(
@@ -94,27 +94,32 @@ class ChatMessageTile extends StatelessWidget {
                       );
                     });
                   },
-                  child: FadeInImage.memoryNetwork(
-                    placeholder:
-                        kTransparentImage, // this is a transparent placeholder from the transparent_image package
-                    image: message.content,
-                    fit: BoxFit.cover,
-                    width: double.infinity,
-                    fadeInDuration: const Duration(seconds: 1),
+                  child: InteractiveViewer(
+                    boundaryMargin: EdgeInsets.all(20),
+                    minScale: 0.1,
+                    maxScale: 4,
+                    child: FadeInImage.memoryNetwork(
+                      placeholder: kTransparentImage,
+                      image: message.content,
+                      fit: BoxFit.cover,
+                      width: double.infinity,
+                      fadeInDuration: const Duration(seconds: 1),
+                    ),
                   ))
               : Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: MarkdownBody(
                     fitContent: false,
                     selectable: true,
                     data: message.content,
                     styleSheet: MarkdownStyleSheet.fromTheme(Theme.of(context))
                         .copyWith(
-                      blockSpacing: 30,
+                      blockSpacing: 25,
                       codeblockDecoration: BoxDecoration(
                         color: Colors.black,
                         borderRadius: BorderRadius.circular(2.0),
                       ),
+                      p: TextStyle(fontSize: 18),
                       codeblockPadding: const EdgeInsets.all(8.0),
                       code: const TextStyle(
                         color: Colors.white,

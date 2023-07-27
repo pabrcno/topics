@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:vibration/vibration.dart';
 import '../../../app/tts/tts_provider.dart';
 import '../../../domain/models/message/message.dart';
 
@@ -23,14 +24,22 @@ class AccessibilityChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Immediately execute an action after widget build
+    Future.delayed(Duration.zero, () {
+      Vibration.vibrate(duration: 20);
+      final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
+      ttsProvider.stop();
+      ttsProvider.speak(message.content);
+    });
+
     return GestureDetector(
         onDoubleTap: () {
           final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
-          ttsProvider.stop();
-        },
-        onTap: () {
-          final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
-          ttsProvider.stop();
+          if (ttsProvider.isPlaying) {
+            ttsProvider.stop();
+
+            return;
+          }
           ttsProvider.speak(message.content);
         },
         child: SizedBox(
@@ -41,8 +50,11 @@ class AccessibilityChatTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: MarkdownBody(
+                      onTapText: () {
+                        Vibration.vibrate(duration: 100);
+                      },
                       fitContent: false,
                       selectable: true,
                       data: message.content,

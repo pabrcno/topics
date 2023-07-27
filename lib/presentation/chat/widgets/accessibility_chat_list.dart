@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:topics/presentation/chat/widgets/accessibility_chat_tile.dart';
+import 'package:vibration/vibration.dart';
 
 import '../../../app/chat/chat_provider.dart';
 
@@ -51,6 +52,7 @@ class _AccessibilityMessagesContainerState
                     behavior: HitTestBehavior.translucent,
                     onTap: () {
                       if (chatProvider.currentMessageIndex > 0) {
+                        Vibration.vibrate(duration: 100);
                         chatProvider.currentMessageIndex--;
                       }
                     },
@@ -69,6 +71,7 @@ class _AccessibilityMessagesContainerState
                     onTap: () {
                       if (chatProvider.currentMessageIndex <
                           chatProvider.messages.length - 1) {
+                        Vibration.vibrate(duration: 100);
                         chatProvider.currentMessageIndex++;
                       }
                     },

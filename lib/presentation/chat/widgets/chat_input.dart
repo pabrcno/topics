@@ -32,7 +32,9 @@ class _ChatInputState extends State<ChatInput> {
       builder: (context, provider, child) {
         return Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.surface,
+              color: provider.isImageMode
+                  ? Theme.of(context).colorScheme.primary
+                  : Theme.of(context).colorScheme.background,
               boxShadow: [
                 BoxShadow(
                   color: Theme.of(context).colorScheme.shadow.withOpacity(0.1),
@@ -48,7 +50,7 @@ class _ChatInputState extends State<ChatInput> {
                   iconSize: 28,
                   icon: const Icon(Icons.image),
                   color: provider.isImageMode
-                      ? Theme.of(context).colorScheme.primary
+                      ? Theme.of(context).colorScheme.onPrimary
                       : Colors.grey,
                   onPressed: () {
                     provider.isImageMode = !provider.isImageMode;
@@ -69,6 +71,9 @@ class _ChatInputState extends State<ChatInput> {
                       scrollDirection: Axis.vertical,
                       reverse: true,
                       child: TextField(
+                        cursorColor: provider.isImageMode
+                            ? Theme.of(context).colorScheme.onPrimary
+                            : Theme.of(context).colorScheme.primary,
                         keyboardType: TextInputType.multiline,
                         maxLines: null,
                         minLines: 2,
@@ -76,7 +81,23 @@ class _ChatInputState extends State<ChatInput> {
                         controller: widget._textController,
                         decoration: InputDecoration.collapsed(
                           hintText: translate('type_a_message'),
+                          hintStyle: TextStyle(
+                            color: provider.isImageMode
+                                ? Theme.of(context)
+                                    .colorScheme
+                                    .onPrimary
+                                    .withOpacity(0.5)
+                                : Theme.of(context)
+                                    .colorScheme
+                                    .primary
+                                    .withOpacity(0.5),
+                          ),
                         ),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                              color: provider.isImageMode
+                                  ? Theme.of(context).colorScheme.onPrimary
+                                  : Theme.of(context).colorScheme.primary,
+                            ),
                         textCapitalization: TextCapitalization.sentences,
                       ),
                     ),

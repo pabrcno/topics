@@ -40,9 +40,6 @@ class TTSProvider with ChangeNotifier {
   }
 
   Future<void> speak(String text) async {
-    if (_isPlaying) {
-      return;
-    }
     // Identify the language of the text.
     final result = await languageIdentifier
         .identifyLanguage(text.length >= 100 ? text.substring(0, 100) : text);
