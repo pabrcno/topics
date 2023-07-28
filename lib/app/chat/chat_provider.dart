@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'dart:io';
-import 'dart:js_interop';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -353,9 +352,6 @@ class ChatProvider with ChangeNotifier {
       _chatRepository.createMessage(message)
     ]);
     currentMessageIndex = messages.length - 1;
-    final hasAmplitude = Vibration.hasAmplitudeControl.isDefinedAndNotNull &&
-        (await Vibration.hasAmplitudeControl() ?? false);
-    if (hasAmplitude) Vibration.vibrate(duration: 100);
   }
 
   void _handleNotificationStreamDone(
