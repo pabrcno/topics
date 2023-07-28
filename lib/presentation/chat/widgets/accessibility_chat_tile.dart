@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +8,7 @@ import '../../../domain/models/message/message.dart';
 
 class AccessibilityChatTile extends StatelessWidget {
   final Message message;
-  final debouncer = Debouncer(delay: Duration(milliseconds: 500)); // A
+  // A
   AccessibilityChatTile({
     Key? key,
     required this.message,
@@ -26,21 +24,17 @@ class AccessibilityChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debouncer.run(() {
-      // your action
-      Vibration.vibrate(duration: 20);
-      final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
-      ttsProvider.stop();
-      ttsProvider.speak(message.content);
-    });
     return GestureDetector(
         onDoubleTap: () {
           final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
+          Vibration.vibrate(duration: 20);
           if (ttsProvider.isPlaying) {
             ttsProvider.stop();
 
             return;
           }
+
+          ttsProvider.stop();
           ttsProvider.speak(message.content);
         },
         child: SizedBox(
@@ -84,19 +78,3 @@ class AccessibilityChatTile extends StatelessWidget {
             )));
   }
 }
-
-class Debouncer {
-  final Duration delay;
-  Timer? _timer;
-
-  Debouncer({required this.delay});
-
-  void run(VoidCallback action) {
-    _timer?.cancel();
-    _timer = Timer(delay, action);
-  }
-}
-
-// Using it:
-final debouncer =
-    Debouncer(delay: Duration(milliseconds: 500)); // Adjust delay as needed
