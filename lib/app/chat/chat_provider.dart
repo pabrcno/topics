@@ -352,7 +352,8 @@ class ChatProvider with ChangeNotifier {
       _chatRepository.createMessage(message)
     ]);
     currentMessageIndex = messages.length - 1;
-    Vibration.vibrate(duration: 100);
+    final hasAmplitude = await Vibration.hasAmplitudeControl() ?? false;
+    if (hasAmplitude) Vibration.vibrate(duration: 100);
   }
 
   void _handleNotificationStreamDone(
