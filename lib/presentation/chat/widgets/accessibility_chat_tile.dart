@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:provider/provider.dart';
+import 'package:topics/domain/core/enums.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:vibration/vibration.dart';
 import '../../../app/tts/tts_provider.dart';
@@ -24,6 +25,12 @@ class AccessibilityChatTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (message.role == EMessageRole.assistant) {
+        final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
+        ttsProvider.speak(message.content);
+      }
+    });
     return GestureDetector(
         onDoubleTap: () {
           final ttsProvider = Provider.of<TTSProvider>(context, listen: false);
