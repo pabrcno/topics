@@ -686,8 +686,9 @@ class ChatProvider with ChangeNotifier {
       if (hasAmplitudeControl) {
         Vibration.vibrate(duration: 500, amplitude: 20);
       }
+    }, onError: (e) {
+      setLoading(false);
     });
-    setLoading(false);
   }
 
   Future<void> changeChatTopicId(String topicId, Chat? chat) async {

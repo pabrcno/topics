@@ -55,6 +55,7 @@ class ChatBodyBase extends StatelessWidget {
                                     provider.isLoading,
                                 child: const ToolsContainer(
                                   widgetList: [
+                                    // TODO: Fix image input logic
                                     // ImageInput(),
                                     ImageEqualizerButton()
                                   ],
