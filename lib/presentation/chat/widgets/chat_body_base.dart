@@ -8,7 +8,6 @@ import 'package:topics/presentation/chat/widgets/chat_input.dart';
 
 import 'package:topics/presentation/chat/widgets/tools/image_equalizer.dart';
 import 'package:topics/presentation/chat/widgets/tools/image_generation_tools.dart';
-import 'package:topics/presentation/chat/widgets/tools/image_input.dart';
 import 'package:topics/presentation/chat/widgets/tools/ocr_input.dart';
 import 'package:topics/presentation/chat/widgets/tools/prompt_builder.dart';
 import 'package:topics/presentation/chat/widgets/tools/temperature_slider.dart';
@@ -56,7 +55,7 @@ class ChatBodyBase extends StatelessWidget {
                                     provider.isLoading,
                                 child: const ToolsContainer(
                                   widgetList: [
-                                    ImageInput(),
+                                    // ImageInput(),
                                     ImageEqualizerButton()
                                   ],
                                 ),

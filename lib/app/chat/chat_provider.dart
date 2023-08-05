@@ -686,10 +686,8 @@ class ChatProvider with ChangeNotifier {
       if (hasAmplitudeControl) {
         Vibration.vibrate(duration: 500, amplitude: 20);
       }
-    }, onError: (e) {
-      setLoading(false);
-      throw Exception('Error while sending image generation request: $e');
     });
+    setLoading(false);
   }
 
   Future<void> changeChatTopicId(String topicId, Chat? chat) async {
