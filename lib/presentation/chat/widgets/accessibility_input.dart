@@ -87,7 +87,7 @@ class _AccessibilityInputState extends State<AccessibilityInput> {
             setState(() => messageContent = '');
           },
           child: SizedBox(
-              height: screenSize.height * .15,
+              height: screenSize.height * .10,
               width: screenSize.width,
               child: SingleChildScrollView(
                   child: Column(children: [

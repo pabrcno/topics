@@ -100,9 +100,7 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
         return Scaffold(
           resizeToAvoidBottomInset: true,
           appBar: selectedIndex == 0
-              ? isAccessibilityMode
-                  ? null
-                  : const ChatAppBar()
+              ? const ChatAppBar()
               : AppBar(
                   leading: IconButton(
                     onPressed: () {
