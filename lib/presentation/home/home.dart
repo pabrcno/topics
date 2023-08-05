@@ -129,6 +129,9 @@ class _HomePageState extends State<HomePage> with TickerProviderStateMixin {
                 ),
           body: PageView(
             controller: pageController,
+            physics: selectedIndex == 0
+                ? const NeverScrollableScrollPhysics()
+                : null,
             onPageChanged: (int index) {
               setState(() {
                 selectedIndex = index;

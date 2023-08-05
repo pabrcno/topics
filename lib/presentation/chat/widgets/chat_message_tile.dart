@@ -98,13 +98,15 @@ class ChatMessageTile extends StatelessWidget {
                     boundaryMargin: EdgeInsets.all(20),
                     minScale: 0.1,
                     maxScale: 4,
-                    child: FadeInImage.memoryNetwork(
-                      placeholder: kTransparentImage,
-                      image: message.content,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      fadeInDuration: const Duration(seconds: 1),
-                    ),
+                    child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: FadeInImage.memoryNetwork(
+                          placeholder: kTransparentImage,
+                          image: message.content,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          fadeInDuration: const Duration(seconds: 1),
+                        )),
                   ))
               : Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
