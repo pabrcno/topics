@@ -107,7 +107,7 @@ class _ChatInputState extends State<ChatInput> {
                   controller: widget._textController,
                 ),
                 const SizedBox(width: 5),
-                provider.isLoading
+                provider.isLoading && provider.messageBuffer.isEmpty
                     ? SizedBox(
                         height: 20.0,
                         child: CircularProgressIndicator(

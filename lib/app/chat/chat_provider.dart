@@ -294,15 +294,17 @@ class ChatProvider with ChangeNotifier {
 
   Future<void> _listenToStream(Stream stream, bool platformAllowsVibration,
       Message message, EMessageRole answerRole) async {
-    streamSubscription = stream.listen(
-      (event) {
-        _handleStreamEvent(event, platformAllowsVibration);
-      },
-      onDone: () {
-        _handleStreamDone(message, answerRole);
-      },
-      onError: _handleStreamError,
-    );
+    await errorCommander.run(() async {
+      streamSubscription = stream.listen(
+        (event) {
+          _handleStreamEvent(event, platformAllowsVibration);
+        },
+        onDone: () {
+          _handleStreamDone(message, answerRole);
+        },
+        onError: _handleStreamError,
+      );
+    });
   }
 
   Future<void> _listenToStreamNotification(
@@ -383,8 +385,8 @@ class ChatProvider with ChangeNotifier {
     ]);
   }
 
-  void _cancelStreamSubscription() {
-    streamSubscription?.cancel();
+  void _cancelStreamSubscription() async {
+    await streamSubscription?.cancel();
     streamSubscription = null;
   }
 
@@ -576,8 +578,10 @@ class ChatProvider with ChangeNotifier {
     });
   }
 
-  void stopStream() {
-    streamSubscription?.cancel();
+  void stopStream() async {
+    streamSubscription?.pause();
+    await streamSubscription?.cancel();
+
     streamSubscription = null; // Cancel the stream subscription if it exists
     messages.add(
       Message(
