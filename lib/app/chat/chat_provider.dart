@@ -605,6 +605,87 @@ class ChatProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> _imageGenerationLogic({
+    required String prompt,
+    required double weight,
+    required int height,
+    required int width,
+    bool isNotification = false,
+  }) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    int steps = (prefs.getInt(ImageEqSharedPrefKeys.steps) ?? 50);
+    double imageStrength =
+        (prefs.getDouble(ImageEqSharedPrefKeys.imageStrength) ?? 0.35);
+    int cfgScale = (prefs.getInt(ImageEqSharedPrefKeys.cfgScale) ?? 7);
+    String? stylePreset = (prefs.getString(ImageEqSharedPrefKeys.stylePreset));
+
+    if (!userChats
+        .map(
+          (chat) => chat.id,
+        )
+        .contains(currentChat?.id)) {
+      if (currentChat!.summary == 'Chat') {
+        currentChat = currentChat!.copyWith(summary: prompt);
+      }
+      await _chatRepository.createChat(currentChat!);
+    }
+    if (currentChat == null) return;
+    setLoading(true);
+    final newImageGenerationRequest = ImageGenerationRequest(
+        prompt: prompt,
+        weight: weight,
+        height: height,
+        width: width,
+        steps: steps,
+        chatId: currentChat!.id,
+        imageStrength: initImagePath != null ? imageStrength : null,
+        initImageMode: initImagePath != null ? "IMAGE_STRENGTH" : null,
+        initImage: initImagePath != null
+            ? const Base64Codec().encode(
+                File(initImagePath!).readAsBytesSync(),
+              )
+            : null,
+        cfgScale: cfgScale,
+        stylePreset: stylePreset == '' ? null : stylePreset);
+
+    final userMessage = Message(
+      id: const Uuid().v4(),
+      content: prompt,
+      sentAt: DateTime.now(),
+      chatId: currentChat!.id,
+      isUser: true,
+      role: EMessageRole.user,
+    );
+    messages.add(userMessage);
+    notifyListeners();
+    await _chatRepository.createMessage(userMessage);
+    final userHasMessages =
+        await _decrementUserMessages(decrementValue: (steps ~/ 20).toInt());
+
+    if (!userHasMessages) {
+      setLoading(false);
+      return;
+    }
+    final hasAmplitudeControl = await Vibration.hasAmplitudeControl() ?? false;
+    final imageMessages =
+        await _imageGenerationApi.generateImage(newImageGenerationRequest);
+    messages.addAll(imageMessages);
+
+    if (isNotification) {
+      NotificationService.updateChatNotification(
+          messages.last.content, EMessageRole.imageAssistant, isLoading);
+    }
+
+    setLoading(false);
+
+    if (hasAmplitudeControl) {
+      Vibration.vibrate(duration: 500, amplitude: 20);
+    }
+    await Future.wait(
+        imageMessages.map((message) => _chatRepository.createMessage(message)));
+  }
+
   Future<void> sendImageGenerationRequest({
     required String prompt,
     required double weight,
@@ -617,79 +698,13 @@ class ChatProvider with ChangeNotifier {
     int? samples,
   }) async {
     await errorCommander.run(() async {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-
-      int steps = (prefs.getInt(ImageEqSharedPrefKeys.steps) ?? 50);
-      double imageStrength =
-          (prefs.getDouble(ImageEqSharedPrefKeys.imageStrength) ?? 0.35);
-      int cfgScale = (prefs.getInt(ImageEqSharedPrefKeys.cfgScale) ?? 7);
-      String? stylePreset =
-          (prefs.getString(ImageEqSharedPrefKeys.stylePreset));
-
-      if (!userChats
-          .map(
-            (chat) => chat.id,
-          )
-          .contains(currentChat?.id)) {
-        if (currentChat!.summary == 'Chat') {
-          currentChat = currentChat!.copyWith(summary: prompt);
-        }
-        await _chatRepository.createChat(currentChat!);
-      }
-      if (currentChat == null) return;
-      setLoading(true);
-      // Create a new ImageGenerationRequest object
-      final newImageGenerationRequest = ImageGenerationRequest(
-          prompt: prompt,
-          weight: weight,
-          height: height,
-          width: width,
-          steps: steps,
-          chatId: currentChat!.id,
-          imageStrength: initImagePath != null ? imageStrength : null,
-          initImageMode: initImagePath != null ? "IMAGE_STRENGTH" : null,
-          initImage: initImagePath != null
-              ? const Base64Codec().encode(
-                  File(initImagePath!).readAsBytesSync(),
-                )
-              : null,
-          cfgScale: cfgScale,
-          stylePreset: stylePreset == '' ? null : stylePreset);
-
-      final userMessage = Message(
-        id: const Uuid().v4(),
-        content: prompt,
-        sentAt: DateTime.now(),
-        chatId: currentChat!.id,
-        isUser: true,
-        role: EMessageRole.user,
+      await _imageGenerationLogic(
+        prompt: prompt,
+        weight: weight,
+        height: height,
+        width: width,
+        isNotification: false,
       );
-      messages.add(userMessage);
-      notifyListeners();
-      await _chatRepository.createMessage(userMessage);
-      final userHasMessages =
-          await _decrementUserMessages(decrementValue: (steps ~/ 20).toInt());
-
-      // Send this new image generation request to your backend for storage
-      if (!userHasMessages) {
-        setLoading(false);
-        return;
-      }
-      final hasAmplitudeControl =
-          await Vibration.hasAmplitudeControl() ?? false;
-      final imageMessages =
-          await _imageGenerationApi.generateImage(newImageGenerationRequest);
-      messages.addAll(imageMessages);
-
-      await Future.wait(imageMessages
-          .map((message) => _chatRepository.createMessage(message)));
-
-      setLoading(false);
-
-      notifyListeners();
-      if (hasAmplitudeControl) {
-        Vibration.vibrate(duration: 500, amplitude: 20);
-      }
     }, onError: (e) {
       setLoading(false);
     });
@@ -745,85 +760,15 @@ class ChatProvider with ChangeNotifier {
     String? sampler,
     int? samples,
   }) async {
-    await errorCommander.run(
-      () async {
-        SharedPreferences prefs = await SharedPreferences.getInstance();
-
-        int steps = (prefs.getInt(ImageEqSharedPrefKeys.steps) ?? 50);
-        double imageStrength =
-            (prefs.getDouble(ImageEqSharedPrefKeys.imageStrength) ?? 0.35);
-        int cfgScale = (prefs.getInt(ImageEqSharedPrefKeys.cfgScale) ?? 7);
-        String? stylePreset =
-            (prefs.getString(ImageEqSharedPrefKeys.stylePreset));
-
-        if (!userChats
-            .map(
-              (chat) => chat.id,
-            )
-            .contains(currentChat?.id)) {
-          if (currentChat!.summary == 'Chat') {
-            currentChat = currentChat!.copyWith(summary: prompt);
-          }
-          await _chatRepository.createChat(currentChat!);
-        }
-        if (currentChat == null) return;
-        setLoading(true);
-        // Create a new ImageGenerationRequest object
-        final newImageGenerationRequest = ImageGenerationRequest(
-            prompt: prompt,
-            weight: weight,
-            height: height,
-            width: width,
-            steps: steps,
-            chatId: currentChat!.id,
-            imageStrength: initImagePath != null ? imageStrength : null,
-            initImageMode: initImagePath != null ? "IMAGE_STRENGTH" : null,
-            initImage: initImagePath != null
-                ? const Base64Codec().encode(
-                    File(initImagePath!).readAsBytesSync(),
-                  )
-                : null,
-            cfgScale: cfgScale,
-            stylePreset: stylePreset == '' ? null : stylePreset);
-
-        final userMessage = Message(
-          id: const Uuid().v4(),
-          content: prompt,
-          sentAt: DateTime.now(),
-          chatId: currentChat!.id,
-          isUser: true,
-          role: EMessageRole.user,
-        );
-        messages.add(userMessage);
-        notifyListeners();
-        await _chatRepository.createMessage(userMessage);
-        final userHasMessages =
-            await _decrementUserMessages(decrementValue: (steps ~/ 20).toInt());
-
-        // Send this new image generation request to your backend for storage
-        if (!userHasMessages) {
-          setLoading(false);
-          return;
-        }
-        final hasAmplitudeControl =
-            await Vibration.hasAmplitudeControl() ?? false;
-        final imageMessages =
-            await _imageGenerationApi.generateImage(newImageGenerationRequest);
-        messages.addAll(imageMessages);
-        NotificationService.updateChatNotification(
-            messages.last.content, EMessageRole.imageAssistant, isLoading);
-        await Future.wait(imageMessages
-            .map((message) => _chatRepository.createMessage(message)));
-
-        setLoading(false);
-
-        notifyListeners();
-        if (hasAmplitudeControl) {
-          Vibration.vibrate(duration: 500, amplitude: 20);
-        }
-      },
-    );
-    setLoading(false);
+    await errorCommander.run(() async {
+      await _imageGenerationLogic(
+        prompt: prompt,
+        weight: weight,
+        height: height,
+        width: width,
+        isNotification: true,
+      );
+    });
   }
 
   Future<void> sendNotificationMessage(String content) async {
