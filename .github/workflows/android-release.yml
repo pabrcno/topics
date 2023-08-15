@@ -45,16 +45,13 @@ jobs:
         env:
           CHAT_URL: ${{ secrets.CHAT_URL }}
 
-      - name: Create Release
+      - name: Create Release using gh
         id: create_release
-        uses: actions/create-release@v1
+        run: |
+          gh auth login --with-token <<< "${{ secrets.TOKEN_GITHUB }}"
+          gh release create ${{ steps.version.outputs.version }} --title "Release ${{ steps.version.outputs.version }}" --notes "Release notes for ${{ steps.version.outputs.version }}" --draft=false --prerelease=false
         env:
           GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
-        with:
-          tag_name: ${{ steps.version.outputs.version }}
-          release_name: Release ${{ steps.version.outputs.version }}
-          draft: false
-          prerelease: false
 
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1
