@@ -36,6 +36,11 @@ jobs:
         id: version
         run: |
           echo "::set-output name=version::$(grep 'version: ' pubspec.yaml | cut -d ' ' -f2)"
+      - name: Create Release using gh
+        id: create_release
+        run: |
+          gh auth login
+          gh release create ${{ steps.version.outputs.version }} --title "Release ${{ steps.version.outputs.version }}" --notes "Release notes for ${{ steps.version.outputs.version }}" --draft=false --prerelease=false
 
       - name: Build AAB
         run: |
@@ -44,14 +49,6 @@ jobs:
           flutter build appbundle --release --no-tree-shake-icons
         env:
           CHAT_URL: ${{ secrets.CHAT_URL }}
-
-      - name: Create Release using gh
-        id: create_release
-        run: |
-          gh auth login
-          gh release create ${{ steps.version.outputs.version }} --title "Release ${{ steps.version.outputs.version }}" --notes "Release notes for ${{ steps.version.outputs.version }}" --draft=false --prerelease=false
-        env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN_GITHUB }}
 
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1
