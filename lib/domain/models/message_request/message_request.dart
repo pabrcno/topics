@@ -6,11 +6,11 @@ part 'message_request.g.dart';
 
 @freezed
 class MessageRequest with _$MessageRequest {
-  const factory MessageRequest({
-    required String userToken,
-    required List<Message> messages,
-    required double temperature,
-  }) = _MessageRequest;
+  const factory MessageRequest(
+      {required String userToken,
+      required List<Message> messages,
+      required double temperature,
+      required String model}) = _MessageRequest;
 
   factory MessageRequest.fromJson(Map<String, dynamic> json) =>
       _$MessageRequestFromJson(json);

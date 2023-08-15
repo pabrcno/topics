@@ -35,13 +35,42 @@ class _ChatMessagesListViewState extends State<ChatMessagesListView> {
         });
 
         if (provider.messages.isEmpty && provider.messageBuffer.isEmpty) {
-          return const Center(
-              child: Opacity(
-                  opacity: .8,
-                  child: SizedBox(
-                    height: 150,
-                    child: AnimatedLogo(), // path to your logo image
-                  )));
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ButtonBar(
+                  alignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    Opacity(
+                      opacity: provider.chatModel == EModel.gpt3.stringValue
+                          ? 1
+                          : 0.5,
+                      child: FilledButton(
+                          onPressed: () {
+                            provider.setChatModel(EModel.gpt3.stringValue);
+                          },
+                          child: Text(EModel.gpt3.stringValue.toUpperCase())),
+                    ),
+                    Opacity(
+                      opacity: provider.chatModel == EModel.gpt4.stringValue
+                          ? 1
+                          : 0.5,
+                      child: FilledButton(
+                          onPressed: () {
+                            provider.setChatModel(EModel.gpt4.stringValue);
+                          },
+                          child: Text(EModel.gpt4.stringValue.toUpperCase())),
+                    ),
+                  ],
+                ),
+                Opacity(
+                    opacity: .8,
+                    child: SizedBox(
+                      height: 150,
+                      child: AnimatedLogo(), // path to your logo image
+                    )),
+                SizedBox()
+              ]);
         } else {
           return Padding(
               padding: const EdgeInsets.only(bottom: 100),

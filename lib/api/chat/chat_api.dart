@@ -14,7 +14,7 @@ class ChatApi implements IChatApi {
   ChatApi(this._authService);
   @override
   Future<Stream<Message>> createChatCompletionStream(
-      List<Message> messages, double temperature) async {
+      List<Message> messages, double temperature, String model) async {
     final chatUrl = dotenv.env['CHAT_URL']!;
     //LOCAL 10.0.2.2:8080
     final uri = Uri.parse(chatUrl);
@@ -23,7 +23,8 @@ class ChatApi implements IChatApi {
     String jsonMessage = json.encode(MessageRequest(
             userToken: await _authService.getUserToken() ?? '',
             messages: messages,
-            temperature: temperature)
+            temperature: temperature,
+            model: model)
         .toJson());
 
     channel.sink.add(jsonMessage);

@@ -23,6 +23,7 @@ mixin _$MessageRequest {
   String get userToken => throw _privateConstructorUsedError;
   List<Message> get messages => throw _privateConstructorUsedError;
   double get temperature => throw _privateConstructorUsedError;
+  String get model => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -36,7 +37,11 @@ abstract class $MessageRequestCopyWith<$Res> {
           MessageRequest value, $Res Function(MessageRequest) then) =
       _$MessageRequestCopyWithImpl<$Res, MessageRequest>;
   @useResult
-  $Res call({String userToken, List<Message> messages, double temperature});
+  $Res call(
+      {String userToken,
+      List<Message> messages,
+      double temperature,
+      String model});
 }
 
 /// @nodoc
@@ -55,6 +60,7 @@ class _$MessageRequestCopyWithImpl<$Res, $Val extends MessageRequest>
     Object? userToken = null,
     Object? messages = null,
     Object? temperature = null,
+    Object? model = null,
   }) {
     return _then(_value.copyWith(
       userToken: null == userToken
@@ -69,6 +75,10 @@ class _$MessageRequestCopyWithImpl<$Res, $Val extends MessageRequest>
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
               as double,
+      model: null == model
+          ? _value.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as String,
     ) as $Val);
   }
 }
@@ -81,7 +91,11 @@ abstract class _$$_MessageRequestCopyWith<$Res>
       __$$_MessageRequestCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String userToken, List<Message> messages, double temperature});
+  $Res call(
+      {String userToken,
+      List<Message> messages,
+      double temperature,
+      String model});
 }
 
 /// @nodoc
@@ -98,6 +112,7 @@ class __$$_MessageRequestCopyWithImpl<$Res>
     Object? userToken = null,
     Object? messages = null,
     Object? temperature = null,
+    Object? model = null,
   }) {
     return _then(_$_MessageRequest(
       userToken: null == userToken
@@ -112,6 +127,10 @@ class __$$_MessageRequestCopyWithImpl<$Res>
           ? _value.temperature
           : temperature // ignore: cast_nullable_to_non_nullable
               as double,
+      model: null == model
+          ? _value.model
+          : model // ignore: cast_nullable_to_non_nullable
+              as String,
     ));
   }
 }
@@ -122,7 +141,8 @@ class _$_MessageRequest implements _MessageRequest {
   const _$_MessageRequest(
       {required this.userToken,
       required final List<Message> messages,
-      required this.temperature})
+      required this.temperature,
+      required this.model})
       : _messages = messages;
 
   factory _$_MessageRequest.fromJson(Map<String, dynamic> json) =>
@@ -140,10 +160,12 @@ class _$_MessageRequest implements _MessageRequest {
 
   @override
   final double temperature;
+  @override
+  final String model;
 
   @override
   String toString() {
-    return 'MessageRequest(userToken: $userToken, messages: $messages, temperature: $temperature)';
+    return 'MessageRequest(userToken: $userToken, messages: $messages, temperature: $temperature, model: $model)';
   }
 
   @override
@@ -155,13 +177,14 @@ class _$_MessageRequest implements _MessageRequest {
                 other.userToken == userToken) &&
             const DeepCollectionEquality().equals(other._messages, _messages) &&
             (identical(other.temperature, temperature) ||
-                other.temperature == temperature));
+                other.temperature == temperature) &&
+            (identical(other.model, model) || other.model == model));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, userToken,
-      const DeepCollectionEquality().hash(_messages), temperature);
+      const DeepCollectionEquality().hash(_messages), temperature, model);
 
   @JsonKey(ignore: true)
   @override
@@ -181,7 +204,8 @@ abstract class _MessageRequest implements MessageRequest {
   const factory _MessageRequest(
       {required final String userToken,
       required final List<Message> messages,
-      required final double temperature}) = _$_MessageRequest;
+      required final double temperature,
+      required final String model}) = _$_MessageRequest;
 
   factory _MessageRequest.fromJson(Map<String, dynamic> json) =
       _$_MessageRequest.fromJson;
@@ -192,6 +216,8 @@ abstract class _MessageRequest implements MessageRequest {
   List<Message> get messages;
   @override
   double get temperature;
+  @override
+  String get model;
   @override
   @JsonKey(ignore: true)
   _$$_MessageRequestCopyWith<_$_MessageRequest> get copyWith =>

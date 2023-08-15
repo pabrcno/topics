@@ -192,6 +192,7 @@ class MockIChatApi extends _i1.Mock implements _i7.IChatApi {
   _i3.Future<_i3.Stream<_i5.Message>> createChatCompletionStream(
     List<_i5.Message>? messages,
     double? temperature,
+    String? model,
   ) =>
       (super.noSuchMethod(
         Invocation.method(
@@ -199,6 +200,7 @@ class MockIChatApi extends _i1.Mock implements _i7.IChatApi {
           [
             messages,
             temperature,
+            model,
           ],
         ),
         returnValue: _i3.Future<_i3.Stream<_i5.Message>>.value(
@@ -242,6 +244,22 @@ class MockIUserRepository extends _i1.Mock implements _i8.IUserRepository {
           [
             uid,
             decrement,
+          ],
+        ),
+        returnValue: _i3.Future<void>.value(),
+        returnValueForMissingStub: _i3.Future<void>.value(),
+      ) as _i3.Future<void>);
+  @override
+  _i3.Future<void> increaseMessages(
+    String? uid,
+    int? increment,
+  ) =>
+      (super.noSuchMethod(
+        Invocation.method(
+          #increaseMessages,
+          [
+            uid,
+            increment,
           ],
         ),
         returnValue: _i3.Future<void>.value(),

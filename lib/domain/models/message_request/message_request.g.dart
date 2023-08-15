@@ -13,6 +13,7 @@ _$_MessageRequest _$$_MessageRequestFromJson(Map<String, dynamic> json) =>
           .map((e) => Message.fromJson(e as Map<String, dynamic>))
           .toList(),
       temperature: (json['temperature'] as num).toDouble(),
+      model: json['model'] as String,
     );
 
 Map<String, dynamic> _$$_MessageRequestToJson(_$_MessageRequest instance) =>
@@ -20,4 +21,5 @@ Map<String, dynamic> _$$_MessageRequestToJson(_$_MessageRequest instance) =>
       'userToken': instance.userToken,
       'messages': instance.messages,
       'temperature': instance.temperature,
+      'model': instance.model,
     };

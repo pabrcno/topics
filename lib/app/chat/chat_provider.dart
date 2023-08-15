@@ -52,6 +52,12 @@ class ChatProvider with ChangeNotifier {
   List<Chat> userChats = [];
   String? _initImagePath;
 
+  String chatModel = EModel.gpt3.stringValue;
+  setChatModel(String model) {
+    chatModel = model;
+    notifyListeners();
+  }
+
   int _currentMessageIndex = 0;
   String? get initImagePath => _initImagePath;
 
@@ -285,7 +291,7 @@ class ChatProvider with ChangeNotifier {
 
   Future<Stream> _createChatStream(List<Message> chatMessages) async {
     return await _chatApi.createChatCompletionStream(
-        chatMessages, currentChat?.temperature ?? 0.7);
+        chatMessages, currentChat?.temperature ?? 0.7, chatModel);
   }
 
   bool _checkPlatformForVibration() {
